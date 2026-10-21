@@ -1,0 +1,21 @@
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 40px;
+  margin-bottom: var(--space-4);
+  color: var(--color-ink-muted);
+}
+
+.summary strong {
+  color: var(--color-ink);
+}
+
+.reset {
+  border: none;
+  background: none;
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: underline;
+}

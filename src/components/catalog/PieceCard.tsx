@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { findCategory } from '../../constants/categories';
+import { categoryLabel } from '../../constants/categories';
 import { UNKNOWN_BRAND } from '../../constants/catalog';
 import { pieceUrl } from '../../routes';
 import type { Piece } from '../../types/piece';
@@ -15,13 +15,11 @@ interface PieceCardProps {
  * mais un seul lien est lu par le lecteur d'écran : le titre.
  */
 export function PieceCard({ piece }: PieceCardProps) {
-  const categoryLabel = findCategory(piece.category)?.label ?? piece.category;
-
   return (
     <article className={styles.card}>
       <div className={styles.media}>
         <img src={piece.thumbnail} alt="" loading="lazy" width={300} height={300} />
-        <span className={styles.badge}>{categoryLabel}</span>
+        <span className={styles.badge}>{categoryLabel(piece.category)}</span>
       </div>
       <div className={styles.body}>
         <p className={styles.brand}>{piece.brand ?? UNKNOWN_BRAND}</p>
