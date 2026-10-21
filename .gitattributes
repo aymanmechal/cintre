@@ -1,0 +1,2 @@
+# Force les fins de ligne LF dans le dépôt (cohérent avec Prettier "endOfLine": "lf")
+* text=auto eol=lf
