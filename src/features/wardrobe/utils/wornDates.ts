@@ -1,3 +1,4 @@
+import { formatPieceCount } from '../../../shared/utils/format';
 import { FORGOTTEN_AFTER_DAYS, MILLISECONDS_PER_DAY, OwnershipStatus } from '../constants/wardrobe';
 import type { WardrobeItem } from '../types/wardrobe';
 
@@ -45,6 +46,11 @@ export function formatCalendarDate(isoDate: string, today: Date): string {
     day: 'numeric',
     month: 'long',
   });
+}
+
+export function formatForgottenMessage(forgottenCount: number): string {
+  const verb = forgottenCount > 1 ? 'dorment' : 'dort';
+  return `${formatPieceCount(forgottenCount)} ${verb} dans ta garde-robe. Et si tu les ressortais ?`;
 }
 
 export function countForgottenItems(items: readonly WardrobeItem[], now: Date): number {

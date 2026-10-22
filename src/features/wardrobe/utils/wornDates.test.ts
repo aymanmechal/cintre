@@ -6,6 +6,7 @@ import {
   countDaysSince,
   countForgottenItems,
   formatCalendarDate,
+  formatForgottenMessage,
   formatLastWorn,
   isForgotten,
   isFutureDate,
@@ -82,6 +83,18 @@ describe('formatCalendarDate', () => {
 
   it('écrit le jour en toutes lettres sinon', () => {
     expect(formatCalendarDate('2025-03-10', TODAY)).toBe('lundi 10 mars');
+  });
+});
+
+describe('formatForgottenMessage', () => {
+  it('accorde le verbe au singulier', () => {
+    expect(formatForgottenMessage(1)).toBe(
+      '1 pièce dort dans ta garde-robe. Et si tu les ressortais ?',
+    );
+  });
+
+  it('accorde le verbe au pluriel', () => {
+    expect(formatForgottenMessage(3)).toContain('3 pièces dorment');
   });
 });
 

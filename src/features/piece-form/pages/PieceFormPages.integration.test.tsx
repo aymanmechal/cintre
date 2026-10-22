@@ -1,0 +1,205 @@
+import { screen, waitFor, within } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { mockDummyJson, type MockedApi } from '../../../test/apiMock';
+import { makeWardrobeItem } from '../../../test/factories';
+import { readStoredWardrobe, renderApp } from '../../../test/renderApp';
+
+let api: MockedApi;
+
+beforeEach(() => {
+  api = mockDummyJson();
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
+
+function sidebar(): HTMLElement {
+  return screen.getByRole('complementary', { name: 'Aperçu et résultat' });
+}
+
+function nameField(): HTMLElement {
+  return screen.getByLabelText(/^Nom/);
+}
+
+describe('Ajouter une pièce : formulaire', () => {
+  it("affiche l'aperçu en direct pendant la saisie", async () => {
+    const { user } = renderApp('/ajouter');
+    expect(within(sidebar()).getByText('Nom de ta pièce')).toBeInTheDocument();
+    await user.type(nameField(), 'Veste en jean');
+    await user.type(screen.getByLabelText('Marque'), 'Levi');
+    await user.type(screen.getByLabelText(/^Prix/), '89.9');
+    expect(within(sidebar()).getByText('Veste en jean')).toBeInTheDocument();
+    expect(within(sidebar()).getByText('Levi')).toBeInTheDocument();
+    expect(within(sidebar()).getByText(/89,90/)).toBeInTheDocument();
+  });
+
+  it("change la couleur de l'aperçu avec le type (attribut de catégorie)", async () => {
+    const { user } = renderApp('/ajouter');
+    await user.selectOptions(screen.getByLabelText('Type'), 'chaussures');
+    expect(sidebar().querySelector('[data-piece-type="chaussures"]')).not.toBeNull();
+  });
+
+  it("refuse un nom vide, sans appeler l'API", async () => {
+    const { user } = renderApp('/ajouter');
+    await user.click(screen.getByRole('button', { name: 'Ajouter la pièce' }));
+    expect(screen.getByText(/Le nom doit faire au moins 2/)).toBeInTheDocument();
+    expect(api.requests).toHaveLength(0);
+  });
+
+  it('refuse un prix négatif et un lien de photo invalide', async () => {
+    const { user } = renderApp('/ajouter');
+    await user.type(nameField(), 'Veste');
+    await user.type(screen.getByLabelText(/^Prix/), '-5');
+    await user.type(screen.getByLabelText('Lien de la photo'), 'pas un lien');
+    await user.click(screen.getByRole('button', { name: 'Ajouter la pièce' }));
+    expect(screen.getByText(/Le prix doit être un nombre/)).toBeInTheDocument();
+    expect(screen.getByText(/doit commencer par http/)).toBeInTheDocument();
+  });
+
+  it("masque le rangement quand c'est une envie", async () => {
+    const { user } = renderApp('/ajouter');
+    expect(screen.getByLabelText('Rangée')).toBeInTheDocument();
+    await user.selectOptions(screen.getByLabelText('Statut'), 'wanted');
+    expect(screen.queryByLabelText('Rangée')).not.toBeInTheDocument();
+  });
+});
+
+describe('Ajouter une pièce : enregistrement', () => {
+  it('envoie un POST, range la pièce en local et affiche la confirmation à droite', async () => {
+    const { user } = renderApp('/ajouter');
+    await user.type(nameField(), 'Veste en jean');
+    await user.type(screen.getByLabelText('Marque'), 'Levi');
+    await user.click(screen.getByRole('button', { name: 'Ajouter la pièce' }));
+
+    expect(await within(sidebar()).findByText('Pièce ajoutée')).toBeInTheDocument();
+    const post = api.requests.find((request) => request.method === 'POST');
+    expect(post?.url).toBe('/products/add');
+    expect(post?.body).toMatchObject({ title: 'Veste en jean', brand: 'Levi' });
+
+    const [item] = readStoredWardrobe();
+    expect(item.piece.title).toBe('Veste en jean');
+    expect(item.piece.id).toBeLessThan(0);
+  });
+
+  it('vide le formulaire après un ajout réussi', async () => {
+    const { user } = renderApp('/ajouter');
+    await user.type(nameField(), 'Veste en jean');
+    await user.click(screen.getByRole('button', { name: 'Ajouter la pièce' }));
+    await within(sidebar()).findByText('Pièce ajoutée');
+    expect(nameField()).toHaveValue('');
+  });
+
+  it("propose le lien vers la garde-robe après l'ajout", async () => {
+    const { user } = renderApp('/ajouter');
+    await user.type(nameField(), 'Veste en jean');
+    await user.click(screen.getByRole('button', { name: 'Ajouter la pièce' }));
+    expect(
+      await within(sidebar()).findByRole('link', { name: 'Voir ma garde-robe' }),
+    ).toBeInTheDocument();
+  });
+
+  it("garde les valeurs saisies quand l'API échoue", async () => {
+    api.setWriteStatus(500);
+    const { user } = renderApp('/ajouter');
+    await user.type(nameField(), 'Veste en jean');
+    await user.click(screen.getByRole('button', { name: 'Ajouter la pièce' }));
+
+    expect(await within(sidebar()).findByRole('alert')).toHaveTextContent(/Impossible d.ajouter/);
+    expect(nameField()).toHaveValue('Veste en jean');
+    expect(readStoredWardrobe()).toEqual([]);
+  });
+
+  it('permet de réessayer après une erreur', async () => {
+    api.setWriteStatus(500);
+    const { user } = renderApp('/ajouter');
+    await user.type(nameField(), 'Veste en jean');
+    await user.click(screen.getByRole('button', { name: 'Ajouter la pièce' }));
+    await within(sidebar()).findByRole('alert');
+
+    api.setWriteStatus(200);
+    await user.click(screen.getByRole('button', { name: 'Ajouter la pièce' }));
+    expect(await within(sidebar()).findByText('Pièce ajoutée')).toBeInTheDocument();
+  });
+});
+
+describe('Modifier une pièce', () => {
+  const CUSTOM = makeWardrobeItem({ id: -5, title: 'Veste perso', thumbnail: '' });
+  const CATALOG = makeWardrobeItem({ id: 7, title: 'Chemise 7', thumbnail: '' });
+
+  it('pré-remplit le formulaire avec la pièce', () => {
+    renderApp('/garde-robe/-5/modifier', { wardrobe: [CUSTOM] });
+    expect(nameField()).toHaveValue('Veste perso');
+  });
+
+  it('dit « introuvable » pour une pièce absente de la garde-robe', () => {
+    renderApp('/garde-robe/999/modifier', { wardrobe: [CUSTOM] });
+    expect(screen.getByText('Pièce introuvable')).toBeInTheDocument();
+  });
+
+  it("enregistre une pièce perso sans appeler l'API", async () => {
+    const { user } = renderApp('/garde-robe/-5/modifier', { wardrobe: [CUSTOM] });
+    await user.clear(nameField());
+    await user.type(nameField(), 'Veste rénovée');
+    await user.click(screen.getByRole('button', { name: 'Enregistrer' }));
+
+    expect(await within(sidebar()).findByText('Modifications enregistrées')).toBeInTheDocument();
+    expect(readStoredWardrobe()[0].piece.title).toBe('Veste rénovée');
+    expect(api.requests).toHaveLength(0);
+  });
+
+  it('envoie un PATCH pour une pièce du catalogue', async () => {
+    const { user } = renderApp('/garde-robe/7/modifier', { wardrobe: [CATALOG] });
+    await user.clear(nameField());
+    await user.type(nameField(), 'Chemise modifiée');
+    await user.click(screen.getByRole('button', { name: 'Enregistrer' }));
+
+    await within(sidebar()).findByText('Modifications enregistrées');
+    const patch = api.requests.find((request) => request.method === 'PATCH');
+    expect(patch?.url).toBe('/products/7');
+  });
+
+  it('conserve la date de dernier port après une modification', async () => {
+    const worn = makeWardrobeItem(
+      { id: -5, title: 'Veste perso', thumbnail: '' },
+      { lastWornOn: '2026-01-02' },
+    );
+    const { user } = renderApp('/garde-robe/-5/modifier', { wardrobe: [worn] });
+    await user.type(nameField(), ' bis');
+    await user.click(screen.getByRole('button', { name: 'Enregistrer' }));
+    await within(sidebar()).findByText('Modifications enregistrées');
+    expect(readStoredWardrobe()[0].lastWornOn).toBe('2026-01-02');
+  });
+});
+
+describe('Supprimer une pièce', () => {
+  const CATALOG = makeWardrobeItem({ id: 7, title: 'Chemise 7', thumbnail: '' });
+
+  it('demande confirmation et peut être annulé', async () => {
+    const { user } = renderApp('/garde-robe/7/modifier', { wardrobe: [CATALOG] });
+    await user.click(screen.getByRole('button', { name: 'Supprimer' }));
+    const dialog = screen.getByRole('dialog');
+    expect(within(dialog).getByText('Supprimer ?')).toBeInTheDocument();
+    await user.click(within(dialog).getByRole('button', { name: 'Annuler' }));
+    expect(readStoredWardrobe()).toHaveLength(1);
+  });
+
+  it('supprime côté API et côté garde-robe, puis revient à la garde-robe', async () => {
+    const { user } = renderApp('/garde-robe/7/modifier', { wardrobe: [CATALOG] });
+    await user.click(screen.getByRole('button', { name: 'Supprimer' }));
+    await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Supprimer' }));
+
+    await waitFor(() => expect(readStoredWardrobe()).toEqual([]));
+    expect(api.requests.some((request) => request.method === 'DELETE')).toBe(true);
+    expect(await screen.findByText('Ta garde-robe est vide')).toBeInTheDocument();
+  });
+
+  it("garde la pièce quand l'API échoue", async () => {
+    api.setWriteStatus(500);
+    const { user } = renderApp('/garde-robe/7/modifier', { wardrobe: [CATALOG] });
+    await user.click(screen.getByRole('button', { name: 'Supprimer' }));
+    await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Supprimer' }));
+    expect(await screen.findByText(/Impossible de supprimer/)).toBeInTheDocument();
+    expect(readStoredWardrobe()).toHaveLength(1);
+  });
+});
