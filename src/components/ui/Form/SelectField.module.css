@@ -13,7 +13,7 @@
 }
 
 .label {
-  color: var(--color-ink-muted);
+  color: var(--field-label-color, var(--color-ink-muted));
   font-size: 0.875rem;
   font-weight: 500;
 }
@@ -23,6 +23,7 @@
   border: 2px solid var(--color-border);
   border-radius: var(--radius-pill);
   background: var(--color-surface);
+  color: var(--color-ink);
 }
 
 .select:hover,
