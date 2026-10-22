@@ -1,32 +1,71 @@
-# React + TypeScript + Vite
+# Cintré
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Application de garde-robe numérique : on y retrouve les vêtements qu'on possède (et où ils sont rangés), on garde ceux qui font envie, et on ajoute ses propres pièces. Le catalogue vient de l'API publique [DummyJSON](https://dummyjson.com/), filtré pour ne garder que les vêtements et accessoires.
 
-Currently, two official plugins are available:
+Application en ligne : _à compléter avec le lien Vercel_
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Prérequis
 
-## React Compiler
+- Node.js 20 ou plus récent
+- npm
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Installation et lancement
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+L'application est servie sur http://localhost:5173.
+
+| Commande               | Rôle                                      |
+| ---------------------- | ----------------------------------------- |
+| `npm run dev`          | Serveur de développement                  |
+| `npm run build`        | Vérification des types puis build de prod |
+| `npm run preview`      | Prévisualisation du build                 |
+| `npm run lint`         | Linter (oxlint)                           |
+| `npm run format:check` | Vérification du formatage (Prettier)      |
+| `npm run check`        | Lint + formatage + types                  |
+
+## Configuration
+
+Aucune variable d'environnement : l'API DummyJSON est publique et sans clé.
+
+## Fonctionnalités
+
+- Catalogue paginé avec recherche, filtre par catégorie et tri par prix (côté client, sur l'ensemble des résultats), conservés dans un contexte React.
+- Fiche détail `/piece/:id`.
+- Garde-robe `/garde-robe` : statut « Je l'ai » / « Envie », lieu de rangement, tri et regroupement. Sauvegardée dans le `localStorage`.
+- Formulaire d'ajout contrôlé avec validation, requête `POST`, indicateur d'envoi, erreur avec nouvel essai sans perte des valeurs.
+- États de chargement, d'erreur et de liste vide.
+- Accessibilité : labels associés, focus visible, lien d'évitement, `prefers-reduced-motion`.
+
+### Bonus réalisés
+
+- CRUD complet : modification (`PATCH`) et suppression (`DELETE`) avec confirmation.
+- Mode sombre via un contexte, sauvegardé dans le `localStorage`.
+- Recherche avec délai de 300 ms (`useDebouncedValue`).
+- TypeScript.
+- Déploiement sur Vercel (`vercel.json` : réécriture vers `index.html` pour que le rechargement d'une URL fonctionne).
+
+## Choix techniques
+
+- **React 19 + TypeScript + Vite**.
+- **react-router** : navigation entre les pages.
+- **prettier** et **oxlint** : formatage et lint.
+- **CSS Modules + tokens CSS** : pas de Tailwind ni de bibliothèque de composants.
+- **Recherche, filtre et pagination côté client** : DummyJSON ne permet pas de combiner recherche et filtre de catégorie sur plusieurs catégories. On charge donc tout le catalogue en une requête (`limit=0`), puis on filtre, trie et pagine localement, dans cet ordre.
+- **`useReducer` + Context** pour les filtres, la garde-robe et le thème.
+- **`fetch` + hooks** (`useAsync`) plutôt que TanStack Query.
+- **Architecture** : composants atomiques (un dossier par famille), logique dans les hooks et `utils`, valeurs de choix dans des enums, aucun commentaire (noms explicites).
+
+## Limites et problèmes connus
+
+- DummyJSON simule les écritures sans rien enregistrer : le `POST` renvoie toujours l'id 195, et un `PATCH`/`DELETE` sur une pièce ajoutée renvoie 404. Les pièces personnelles reçoivent donc un id négatif local et ne sont synchronisées qu'en `localStorage`.
+- Les pièces ajoutées n'ont pas forcément de photo.
+- Interface pensée pour ordinateur, adaptée au mobile de façon minimale.
+- Les données sont stockées par navigateur (pas de compte).
+
+## Outils d'IA
+
+Claude (Claake Code) a été utilisé pour générer et relire le code, sous ma direction, avec explications de chaque choix pour que je puisse les justifier à l'oral.
