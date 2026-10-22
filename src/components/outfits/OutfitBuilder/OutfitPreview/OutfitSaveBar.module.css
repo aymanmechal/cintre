@@ -1,0 +1,17 @@
+.saveBar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.submit {
+  width: 100%;
+  padding-block: var(--space-3);
+  font-size: 1.25rem;
+}
+
+.hint {
+  color: var(--color-ink-muted);
+  font-size: 0.8125rem;
+  text-align: center;
+}

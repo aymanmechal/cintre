@@ -4,7 +4,7 @@ import { getOutfitReadiness, selectMissingItems } from '../../../utils/outfits';
 import { DeleteOutfitButton } from './DeleteOutfitButton';
 import { MissingPiecesList } from './MissingPiecesList';
 import { OutfitPieceThumbnail } from './OutfitPieceThumbnail';
-import { OutfitReadinessBadge } from './OutfitReadinessBadge';
+import { OutfitReadinessBadge } from '../OutfitReadinessBadge/OutfitReadinessBadge';
 import styles from './OutfitCard.module.css';
 
 interface OutfitCardProps {

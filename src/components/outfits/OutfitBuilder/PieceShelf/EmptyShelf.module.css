@@ -1,0 +1,14 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-3);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-card);
+  text-align: center;
+}
+
+.message {
+  color: var(--color-ink-muted);
+}

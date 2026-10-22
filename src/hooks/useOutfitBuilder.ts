@@ -1,24 +1,27 @@
 import { useState, type FormEvent } from 'react';
-import type { OutfitSlot } from '../constants/outfits';
+import { FIRST_OUTFIT_SLOT, type OutfitSlot } from '../constants/outfits';
 import { useOutfits } from '../contexts/outfits/useOutfits';
 import type { OutfitSelection } from '../types/outfit';
 import {
   buildDefaultOutfitName,
+  countMissingPieces,
   createEmptySelection,
   createOutfitId,
-  hasEnoughPieces,
+  findNextEmptySlot,
   toPieceIds,
 } from '../utils/outfits';
 
 export interface OutfitBuilderState {
   name: string;
   selection: OutfitSelection;
+  activeSlot: OutfitSlot;
   defaultName: string;
-  hasTriedToSave: boolean;
-  isSelectionValid: boolean;
+  missingPieceCount: number;
   hasJustSaved: boolean;
   changeName: (name: string) => void;
-  togglePiece: (slot: OutfitSlot, pieceId: number) => void;
+  selectSlot: (slot: OutfitSlot) => void;
+  togglePiece: (pieceId: number) => void;
+  clearSlot: (slot: OutfitSlot) => void;
   save: (event: FormEvent<HTMLFormElement>) => void;
 }
 
@@ -26,27 +29,38 @@ export function useOutfitBuilder(): OutfitBuilderState {
   const { outfits, createOutfit } = useOutfits();
   const [name, setName] = useState('');
   const [selection, setSelection] = useState(createEmptySelection);
-  const [hasTriedToSave, setHasTriedToSave] = useState(false);
+  const [activeSlot, setActiveSlot] = useState<OutfitSlot>(FIRST_OUTFIT_SLOT);
   const [hasJustSaved, setHasJustSaved] = useState(false);
 
   const defaultName = buildDefaultOutfitName(outfits.length);
-  const isSelectionValid = hasEnoughPieces(selection);
+  const missingPieceCount = countMissingPieces(selection);
 
-  function togglePiece(slot: OutfitSlot, pieceId: number) {
+  function updateSelection(nextSelection: OutfitSelection) {
     setHasJustSaved(false);
-    setSelection((current) => ({ ...current, [slot]: current[slot] === pieceId ? null : pieceId }));
+    setSelection(nextSelection);
+  }
+
+  function togglePiece(pieceId: number) {
+    const isAlreadySelected = selection[activeSlot] === pieceId;
+    const nextSelection = { ...selection, [activeSlot]: isAlreadySelected ? null : pieceId };
+    updateSelection(nextSelection);
+    if (!isAlreadySelected) setActiveSlot(findNextEmptySlot(nextSelection, activeSlot));
+  }
+
+  function clearSlot(slot: OutfitSlot) {
+    updateSelection({ ...selection, [slot]: null });
+    setActiveSlot(slot);
   }
 
   function resetBuilder() {
     setName('');
     setSelection(createEmptySelection());
-    setHasTriedToSave(false);
+    setActiveSlot(FIRST_OUTFIT_SLOT);
   }
 
   function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setHasTriedToSave(true);
-    if (!isSelectionValid) return;
+    if (missingPieceCount > 0) return;
     createOutfit({
       id: createOutfitId(),
       name: name.trim() || defaultName,
@@ -59,12 +73,14 @@ export function useOutfitBuilder(): OutfitBuilderState {
   return {
     name,
     selection,
+    activeSlot,
     defaultName,
-    hasTriedToSave,
-    isSelectionValid,
+    missingPieceCount,
     hasJustSaved,
     changeName: setName,
+    selectSlot: setActiveSlot,
     togglePiece,
+    clearSlot,
     save,
   };
 }

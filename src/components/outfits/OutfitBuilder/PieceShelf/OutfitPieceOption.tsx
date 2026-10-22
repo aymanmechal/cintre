@@ -1,12 +1,12 @@
-import type { WardrobeItem } from '../../../types/wardrobe';
-import { WardrobeItemImage } from '../../wardrobe/ItemCard/WardrobeItemImage';
-import { OwnershipTag } from '../OwnershipTag/OwnershipTag';
+import type { WardrobeItem } from '../../../../types/wardrobe';
+import { WardrobeItemImage } from '../../../wardrobe/ItemCard/WardrobeItemImage';
+import { OwnershipTag } from '../../OwnershipTag/OwnershipTag';
 import styles from './OutfitPieceOption.module.css';
 
 interface OutfitPieceOptionProps {
   item: WardrobeItem;
   isSelected: boolean;
-  onToggle: () => void;
+  onToggle: (pieceId: number) => void;
 }
 
 export function OutfitPieceOption({ item, isSelected, onToggle }: OutfitPieceOptionProps) {
@@ -18,13 +18,16 @@ export function OutfitPieceOption({ item, isSelected, onToggle }: OutfitPieceOpt
       type="button"
       data-piece-type={piece.pieceType}
       aria-pressed={isSelected}
-      onClick={onToggle}
+      onClick={() => onToggle(piece.id)}
     >
       <span className={styles.media}>
         <WardrobeItemImage imageUrl={piece.thumbnail} />
+        <span className={styles.tag}>
+          <OwnershipTag status={item.status} />
+        </span>
       </span>
+      <span className={styles.brand}>{piece.brand}</span>
       <span className={styles.title}>{piece.title}</span>
-      <OwnershipTag status={item.status} />
     </button>
   );
 }

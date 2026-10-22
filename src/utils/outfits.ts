@@ -25,16 +25,66 @@ export function toPieceIds(selection: OutfitSelection): number[] {
   return OUTFIT_SLOTS.map((slot) => selection[slot]).filter((pieceId) => pieceId !== null);
 }
 
-export function hasEnoughPieces(selection: OutfitSelection): boolean {
-  return toPieceIds(selection).length >= MIN_PIECES_PER_OUTFIT;
+export function formatPieceCount(count: number): string {
+  return `${count} pièce${count > 1 ? 's' : ''}`;
+}
+
+export function countMissingPieces(selection: OutfitSelection): number {
+  return Math.max(MIN_PIECES_PER_OUTFIT - toPieceIds(selection).length, 0);
+}
+
+export function buildMissingPiecesHint(missingPieceCount: number): string {
+  return `Choisis encore ${formatPieceCount(missingPieceCount)} pour créer la tenue.`;
+}
+
+export function findNextEmptySlot(selection: OutfitSelection, currentSlot: OutfitSlot): OutfitSlot {
+  const currentIndex = OUTFIT_SLOTS.indexOf(currentSlot);
+  const slotsAfterCurrent = [
+    ...OUTFIT_SLOTS.slice(currentIndex + 1),
+    ...OUTFIT_SLOTS.slice(0, currentIndex),
+  ];
+  return slotsAfterCurrent.find((slot) => selection[slot] === null) ?? currentSlot;
 }
 
 function isWardrobeItem(item: WardrobeItem | undefined): item is WardrobeItem {
   return item !== undefined;
 }
 
+function resolvePieceIds(
+  pieceIds: readonly number[],
+  items: readonly WardrobeItem[],
+): WardrobeItem[] {
+  return pieceIds.map((pieceId) => findWardrobeItem(items, pieceId)).filter(isWardrobeItem);
+}
+
 export function resolveOutfitItems(outfit: Outfit, items: readonly WardrobeItem[]): WardrobeItem[] {
-  return outfit.pieceIds.map((pieceId) => findWardrobeItem(items, pieceId)).filter(isWardrobeItem);
+  return resolvePieceIds(outfit.pieceIds, items);
+}
+
+export function resolveSelectedItems(
+  selection: OutfitSelection,
+  items: readonly WardrobeItem[],
+): WardrobeItem[] {
+  return resolvePieceIds(toPieceIds(selection), items);
+}
+
+export function findSelectedItem(
+  selection: OutfitSelection,
+  slot: OutfitSlot,
+  items: readonly WardrobeItem[],
+): WardrobeItem | undefined {
+  const pieceId = selection[slot];
+  return pieceId === null ? undefined : findWardrobeItem(items, pieceId);
+}
+
+function compareOwnedFirst(first: WardrobeItem, second: WardrobeItem): number {
+  const isFirstWanted = Number(first.status === OwnershipStatus.Wanted);
+  const isSecondWanted = Number(second.status === OwnershipStatus.Wanted);
+  return isFirstWanted - isSecondWanted;
+}
+
+export function selectShelfItems(items: readonly WardrobeItem[], slot: OutfitSlot): WardrobeItem[] {
+  return selectItemsForSlot(items, slot).sort(compareOwnedFirst);
 }
 
 export function selectMissingItems(outfitItems: readonly WardrobeItem[]): WardrobeItem[] {

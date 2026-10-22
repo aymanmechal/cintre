@@ -1,0 +1,99 @@
+.tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.select {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-2);
+  padding-right: var(--space-5);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-block);
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.select:hover {
+  border-color: var(--color-ink-muted);
+}
+
+.select[aria-pressed='true'] {
+  border-color: var(--color-ink);
+  box-shadow: 4px 4px 0 var(--color-ink);
+}
+
+.select:focus-visible {
+  outline: 3px solid var(--color-action);
+  outline-offset: 2px;
+}
+
+.media {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  overflow: hidden;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-block);
+  background: var(--piece-type-color, transparent);
+}
+
+.tile[data-piece-type] .media {
+  border-style: solid;
+  border-color: transparent;
+}
+
+.tile[data-status='wanted'] .media {
+  border-style: dashed;
+  border-color: var(--color-wanted);
+}
+
+.media img,
+.media div {
+  padding: var(--space-1);
+}
+
+.plus {
+  color: var(--color-ink-muted);
+  font-size: 2rem;
+  font-weight: 300;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.slotLabel {
+  color: var(--color-ink-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pieceTitle {
+  max-width: 100%;
+  overflow: hidden;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.clear {
+  position: absolute;
+  right: var(--space-2);
+}
