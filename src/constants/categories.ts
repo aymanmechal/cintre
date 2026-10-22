@@ -22,6 +22,8 @@ export const PIECE_TYPE_LABELS: Record<PieceType, string> = {
 
 export const PIECE_TYPES = Object.values(PieceType);
 
+export const DEFAULT_PIECE_TYPE = PieceType.Tops;
+
 export interface ClothingCategory {
   slug: string;
   pieceType: PieceType;

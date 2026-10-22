@@ -1,5 +1,6 @@
 import {
   CLOTHING_CATEGORIES,
+  DEFAULT_PIECE_TYPE,
   PIECE_TYPES,
   TITLE_KEYWORD_RULES,
   type PieceType,
@@ -29,4 +30,8 @@ export function classifyPieceType(title: string, categorySlug: string): PieceTyp
 
 export function toPieceTypeFilter(value: string): PieceTypeFilter {
   return PIECE_TYPES.find((pieceType) => pieceType === value) ?? ALL_PIECE_TYPES;
+}
+
+export function toPieceType(value: string): PieceType {
+  return PIECE_TYPES.find((pieceType) => pieceType === value) ?? DEFAULT_PIECE_TYPE;
 }

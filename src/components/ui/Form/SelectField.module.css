@@ -1,7 +1,15 @@
 .field {
   display: flex;
-  align-items: center;
   gap: var(--space-2);
+}
+
+.inline {
+  align-items: center;
+}
+
+.stacked {
+  flex-direction: column;
+  gap: var(--space-1);
 }
 
 .label {

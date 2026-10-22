@@ -7,15 +7,6 @@
   background: var(--color-surface);
 }
 
-.image {
-  flex-shrink: 0;
-  width: 120px;
-  height: 120px;
-  border-radius: var(--radius-block);
-  background: var(--color-bg);
-  object-fit: contain;
-}
-
 .body {
   display: flex;
   flex-direction: column;
@@ -27,16 +18,4 @@
 .brand {
   color: var(--color-ink-muted);
   font-size: 0.8125rem;
-}
-
-.title {
-  font-size: 1.0625rem;
-}
-
-.title a {
-  text-decoration: none;
-}
-
-.title a:hover {
-  text-decoration: underline;
 }

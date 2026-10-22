@@ -1,8 +1,13 @@
+import { AddPieceForm } from '../components/addPiece/AddPieceForm/AddPieceForm';
+import { AddPieceHeader } from '../components/addPiece/AddPieceHeader/AddPieceHeader';
+import { formatPageTitle } from '../utils/format';
+
 export function AddPiecePage() {
   return (
     <section>
-      <h1>Ajouter une pièce</h1>
-      <p>Formulaire d’ajout — à construire.</p>
+      <title>{formatPageTitle('Ajouter une pièce')}</title>
+      <AddPieceHeader />
+      <AddPieceForm />
     </section>
   );
 }

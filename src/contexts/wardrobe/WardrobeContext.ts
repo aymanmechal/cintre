@@ -5,6 +5,7 @@ import type { WardrobeItem } from '../../types/wardrobe';
 
 export interface WardrobeActions {
   savePiece: (piece: Piece, status: OwnershipStatus) => void;
+  addItem: (item: WardrobeItem) => void;
   removePiece: (pieceId: number) => void;
   changeLocation: (pieceId: number, location: StorageLocation) => void;
 }
