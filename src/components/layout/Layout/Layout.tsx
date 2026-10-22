@@ -11,7 +11,7 @@ export function Layout() {
     <div className={styles.layout}>
       <SkipLink targetId={MAIN_CONTENT_ID} />
       <Header />
-      <main id={MAIN_CONTENT_ID} className={styles.main}>
+      <main id={MAIN_CONTENT_ID} className={styles.main} tabIndex={-1}>
         <Outlet />
       </main>
       <Footer />

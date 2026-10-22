@@ -5,12 +5,14 @@ import { ErrorMessage } from '../components/ui/ErrorMessage/ErrorMessage';
 import { Loader } from '../components/ui/Loader/Loader';
 import { AsyncStatus } from '../hooks/asyncStatus';
 import { useCatalog } from '../hooks/useCatalog';
+import { formatPageTitle } from '../utils/format';
 
 export function CatalogPage() {
   const catalog = useCatalog();
 
   return (
     <section>
+      <title>{formatPageTitle('Catalogue')}</title>
       <CatalogHeader />
       <CatalogToolbar />
 

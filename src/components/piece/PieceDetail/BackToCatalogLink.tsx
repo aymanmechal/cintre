@@ -5,7 +5,8 @@ import styles from './BackToCatalogLink.module.css';
 export function BackToCatalogLink() {
   return (
     <Link className={styles.backLink} to={ROUTES.catalog}>
-      ← Retour au catalogue
+      <span aria-hidden="true">← </span>
+      Retour au catalogue
     </Link>
   );
 }

@@ -1,4 +1,5 @@
 import { PageNumberList } from './PageNumberList';
+import { PaginationStep } from './paginationStep';
 import { PaginationStepButton } from './PaginationStepButton';
 import styles from './Pagination.module.css';
 
@@ -14,13 +15,13 @@ export function Pagination({ page, pageCount, onPageChange }: PaginationProps) {
   return (
     <nav className={styles.pagination} aria-label="Pagination">
       <PaginationStepButton
-        label="← Précédent"
+        step={PaginationStep.Previous}
         disabled={page === 1}
         onClick={() => onPageChange(page - 1)}
       />
       <PageNumberList page={page} pageCount={pageCount} onPageChange={onPageChange} />
       <PaginationStepButton
-        label="Suivant →"
+        step={PaginationStep.Next}
         disabled={page === pageCount}
         onClick={() => onPageChange(page + 1)}
       />

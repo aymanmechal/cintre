@@ -6,11 +6,11 @@ interface PieceRatingProps {
 }
 
 export function PieceRating({ rating }: PieceRatingProps) {
-  const ratingText = formatRating(rating);
-
   return (
-    <p className={styles.rating} aria-label={`Note : ${ratingText}`}>
-      ★ {ratingText}
+    <p className={styles.rating}>
+      <span aria-hidden="true">★ </span>
+      <span className="visually-hidden">Note : </span>
+      {formatRating(rating)}
     </p>
   );
 }

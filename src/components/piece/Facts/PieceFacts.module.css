@@ -4,3 +4,9 @@
   gap: var(--space-3);
   margin-top: var(--space-4);
 }
+
+@media (max-width: 600px) {
+  .facts {
+    grid-template-columns: 1fr;
+  }
+}

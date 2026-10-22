@@ -25,3 +25,9 @@
   color: var(--color-ink-muted);
   line-height: 1.6;
 }
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 1.75rem;
+  }
+}
