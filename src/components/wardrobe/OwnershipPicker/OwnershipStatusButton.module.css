@@ -1,19 +1,41 @@
 .statusButton {
-  padding: var(--space-2) var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
   background: var(--color-surface);
   color: var(--color-ink);
   font-weight: 600;
   cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.compact {
+  padding: 2px var(--space-2);
+  font-size: 0.75rem;
+}
+
+.regular {
+  padding: var(--space-2) var(--space-4);
+}
+
+.owned {
+  --status-color: var(--color-owned);
+}
+
+.wanted {
+  --status-color: var(--color-wanted);
 }
 
 .statusButton:hover {
-  border-color: var(--color-primary);
+  border-color: var(--status-color);
 }
 
 .statusButton[aria-pressed='true'] {
-  border-color: var(--color-primary);
-  background: var(--color-primary);
-  color: var(--color-on-primary);
+  border-color: var(--status-color);
+  background: var(--status-color);
+  color: #ffffff;
 }

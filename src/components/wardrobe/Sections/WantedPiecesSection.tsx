@@ -1,4 +1,4 @@
-import { OWNERSHIP_STATUS_LABELS, OwnershipStatus } from '../../../constants/wardrobe';
+import { OWNERSHIP_SECTION_TITLES, OwnershipStatus } from '../../../constants/wardrobe';
 import type { WardrobeItem } from '../../../types/wardrobe';
 import { WardrobeItemGrid } from '../ItemCard/WardrobeItemGrid';
 import { WardrobeSection } from './WardrobeSection';
@@ -9,7 +9,7 @@ interface WantedPiecesSectionProps {
 
 export function WantedPiecesSection({ items }: WantedPiecesSectionProps) {
   return (
-    <WardrobeSection title={OWNERSHIP_STATUS_LABELS[OwnershipStatus.Wanted]} count={items.length}>
+    <WardrobeSection title={OWNERSHIP_SECTION_TITLES[OwnershipStatus.Wanted]} count={items.length}>
       <WardrobeItemGrid items={items} />
     </WardrobeSection>
   );

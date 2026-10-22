@@ -1,11 +1,21 @@
 export enum OwnershipStatus {
-  Owned = 'possedee',
-  Wanted = 'souhaitee',
+  Owned = 'owned',
+  Wanted = 'wanted',
 }
 
 export const OWNERSHIP_STATUS_LABELS: Record<OwnershipStatus, string> = {
   [OwnershipStatus.Owned]: "Je l'ai",
-  [OwnershipStatus.Wanted]: 'Je la veux',
+  [OwnershipStatus.Wanted]: 'Envie',
+};
+
+export const OWNERSHIP_STATUS_ICONS: Record<OwnershipStatus, string> = {
+  [OwnershipStatus.Owned]: '✓',
+  [OwnershipStatus.Wanted]: '♡',
+};
+
+export const OWNERSHIP_SECTION_TITLES: Record<OwnershipStatus, string> = {
+  [OwnershipStatus.Owned]: 'Mes pièces',
+  [OwnershipStatus.Wanted]: 'Mes envies',
 };
 
 export const OWNERSHIP_STATUSES = Object.values(OwnershipStatus);

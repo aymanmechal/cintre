@@ -19,6 +19,7 @@
 
 .actionPosition {
   position: absolute;
+  z-index: 1;
   top: var(--space-3);
   right: var(--space-3);
 }

@@ -10,6 +10,8 @@
   --color-on-action: #ffffff;
   --color-badge: #e6c82a;
   --color-success: #00b181;
+  --color-owned: #00b181;
+  --color-wanted: #8b3dff;
 
   --font-heading: 'Bricolage Grotesque', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
