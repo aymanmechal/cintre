@@ -4,7 +4,7 @@ test.describe('Ajouter, modifier, supprimer une pièce', () => {
   test('affiche la confirmation à droite, visible sans défiler', async ({ page, api }) => {
     await page.goto('/ajouter');
     await page.getByLabel(/^Nom/).fill('Veste en jean');
-    await page.getByLabel('Marque').fill('Levi');
+    await page.getByLabel('Marque', { exact: true }).fill('Levi');
     await page.getByLabel(/^Prix/).fill('89.9');
 
     const sidebar = page.getByRole('complementary', { name: 'Aperçu et résultat' });

@@ -26,6 +26,14 @@ describe('catalogFiltersReducer', () => {
     expect(next).toMatchObject({ pieceType: PieceType.Shoes, page: 1 });
   });
 
+  it('change la marque et revient à la page 1', () => {
+    const next = catalogFiltersReducer(ON_PAGE_THREE, {
+      type: CatalogFiltersActionType.BrandChanged,
+      brand: 'Norse',
+    });
+    expect(next).toMatchObject({ brand: 'Norse', page: 1 });
+  });
+
   it('change le tri et revient à la page 1', () => {
     const next = catalogFiltersReducer(ON_PAGE_THREE, {
       type: CatalogFiltersActionType.SortOrderChanged,
@@ -44,7 +52,7 @@ describe('catalogFiltersReducer', () => {
 
   it('remet tous les filtres à zéro', () => {
     const next = catalogFiltersReducer(
-      { ...ON_PAGE_THREE, query: 'lin' },
+      { ...ON_PAGE_THREE, query: 'lin', brand: 'Norse' },
       { type: CatalogFiltersActionType.FiltersReset },
     );
     expect(next).toEqual(INITIAL_CATALOG_FILTERS);

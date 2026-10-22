@@ -56,6 +56,50 @@ describe('Catalogue : recherche, filtre, tri', () => {
     expect(await screen.findByText('5 pièces trouvées')).toBeInTheDocument();
   });
 
+  it("propose les marques de l'API et filtre par marque", async () => {
+    const { user } = renderApp('/catalogue');
+    await screen.findByText('14 pièces trouvées');
+    const brandSelect = screen.getByLabelText('Marque');
+    expect(
+      within(brandSelect)
+        .getAllByRole('option')
+        .map((option) => option.textContent),
+    ).toEqual(['Toutes les marques', 'Norse', 'Tricker']);
+    await user.selectOptions(brandSelect, 'Tricker');
+    expect(await screen.findByText('5 pièces trouvées')).toBeInTheDocument();
+    expect(listTitles().every((title) => title.startsWith('Derby'))).toBe(true);
+  });
+
+  it('combine recherche, type et marque : chaque résultat respecte tous les critères', async () => {
+    const { user } = renderApp('/catalogue');
+    await screen.findByText('14 pièces trouvées');
+    await user.selectOptions(screen.getByLabelText('Marque'), 'Norse');
+    await user.selectOptions(screen.getByLabelText('Type'), 'chaussures');
+    expect(await screen.findByText('Aucune pièce ne correspond')).toBeInTheDocument();
+    await user.selectOptions(screen.getByLabelText('Type'), 'chemises');
+    expect(await screen.findByText('9 pièces trouvées')).toBeInTheDocument();
+    await user.type(screen.getByRole('searchbox'), 'Chemise 3');
+    expect(await screen.findByText('1 pièce trouvée')).toBeInTheDocument();
+  });
+
+  it('revient à la page 1 quand on change de marque', async () => {
+    const { user } = renderApp('/catalogue');
+    await screen.findByText('14 pièces trouvées');
+    await user.click(screen.getByRole('button', { name: 'Page 2' }));
+    await user.selectOptions(screen.getByLabelText('Marque'), 'Norse');
+    expect(await screen.findByText('9 pièces trouvées')).toBeInTheDocument();
+    expect(screen.getAllByRole('article')).toHaveLength(9);
+  });
+
+  it('efface la marque avec « Effacer les filtres »', async () => {
+    const { user } = renderApp('/catalogue');
+    await screen.findByText('14 pièces trouvées');
+    await user.selectOptions(screen.getByLabelText('Marque'), 'Norse');
+    await user.click(screen.getAllByRole('button', { name: /Effacer les filtres/ })[0]);
+    expect(await screen.findByText('14 pièces trouvées')).toBeInTheDocument();
+    expect(screen.getByLabelText('Marque')).toHaveValue('toutes');
+  });
+
   it('trie par prix croissant sur tout le catalogue, pas seulement la page', async () => {
     const { user } = renderApp('/catalogue');
     await screen.findByText('14 pièces trouvées');

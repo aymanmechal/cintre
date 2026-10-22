@@ -38,7 +38,7 @@ Aucune variable d'environnement : l'API DummyJSON est publique et sans clé.
 
 ## Fonctionnalités
 
-- Catalogue paginé avec recherche, filtre par catégorie et tri par prix (côté client, sur l'ensemble des résultats), conservés dans un contexte React.
+- Catalogue paginé avec recherche et deux filtres combinables (type de pièce et marque), plus un tri par prix. Tout est appliqué côté client sur l'ensemble des résultats, puis paginé, et conservé dans un contexte React. La liste des marques est construite à partir des données de l'API.
 - Fiche détail `/piece/:id`.
 - Garde-robe `/garde-robe` : statut « Je l'ai » / « Envie », tri (dont « Oubliées d'abord ») et regroupement par rangement ou par type. Un mode « Modifier » fait apparaître les boutons d'édition. Sauvegardée dans le `localStorage`.
 - Pièces oubliées : date de dernier port, badge « À ressortir » après 30 jours et bandeau de rappel.

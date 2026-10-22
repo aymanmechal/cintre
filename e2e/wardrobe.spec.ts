@@ -15,7 +15,7 @@ test.describe('Garde-robe', () => {
     await expect(page.getByText(/1 pièce dort dans ta garde-robe/)).toBeVisible();
     await expect(page.getByText('À ressortir')).toHaveCount(1);
     await page.getByRole('button', { name: 'Voir les plus oubliées' }).click();
-    await expect(page.getByLabel('Trier')).toHaveValue('oubliees');
+    await expect(page.getByLabel('Trier', { exact: true })).toHaveValue('oubliees');
   });
 
   test("cache les boutons d'édition jusqu'au mode Modifier", async ({ page }) => {
@@ -45,7 +45,7 @@ test.describe('Garde-robe', () => {
 
   test('regroupe par type à la demande', async ({ page }) => {
     await page.goto('/garde-robe');
-    await page.getByLabel('Ranger').selectOption('type');
+    await page.getByLabel('Ranger', { exact: true }).selectOption('type');
     await expect(page.getByRole('heading', { name: 'Chaussures' })).toBeVisible();
   });
 });

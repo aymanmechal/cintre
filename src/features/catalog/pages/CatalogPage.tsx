@@ -5,16 +5,18 @@ import { ErrorMessage } from '../../../shared/ui/ErrorMessage/ErrorMessage';
 import { Loader } from '../../../shared/ui/Loader/Loader';
 import { AsyncStatus } from '../../../shared/hooks/asyncStatus';
 import { useCatalog } from '../hooks/useCatalog';
+import { listBrands } from '../utils/filterPieces';
 import { formatPageTitle } from '../../../shared/utils/format';
 
 export function CatalogPage() {
   const catalog = useCatalog();
+  const brands = catalog.status === AsyncStatus.Success ? listBrands(catalog.data) : [];
 
   return (
     <section>
       <title>{formatPageTitle('Catalogue')}</title>
       <CatalogHeader />
-      <CatalogToolbar />
+      <CatalogToolbar brands={brands} />
 
       {catalog.status === AsyncStatus.Loading && <Loader label="Chargement du catalogue…" />}
       {catalog.status === AsyncStatus.Error && (

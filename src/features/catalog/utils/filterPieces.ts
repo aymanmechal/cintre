@@ -1,3 +1,4 @@
+import { ALL_BRANDS, type BrandFilter } from '../constants/catalog';
 import {
   PIECE_TYPE_LABELS,
   ALL_PIECE_TYPES,
@@ -16,6 +17,10 @@ function matchesSearchQuery(piece: Piece, query: string): boolean {
   return normalizeForSearch(buildSearchableText(piece)).includes(normalizedQuery);
 }
 
+function matchesBrand(piece: Piece, brand: BrandFilter): boolean {
+  return brand === ALL_BRANDS || piece.brand === brand;
+}
+
 function matchesPieceType(piece: Piece, pieceType: PieceTypeFilter): boolean {
   return pieceType === ALL_PIECE_TYPES || piece.pieceType === pieceType;
 }
@@ -23,10 +28,21 @@ function matchesPieceType(piece: Piece, pieceType: PieceTypeFilter): boolean {
 export function filterPieces(pieces: readonly Piece[], filters: CatalogFilters): Piece[] {
   return pieces.filter(
     (piece) =>
-      matchesSearchQuery(piece, filters.query) && matchesPieceType(piece, filters.pieceType),
+      matchesSearchQuery(piece, filters.query) &&
+      matchesPieceType(piece, filters.pieceType) &&
+      matchesBrand(piece, filters.brand),
   );
 }
 
+export function listBrands(pieces: readonly Piece[]): string[] {
+  const brands = pieces.flatMap((piece) => (piece.brand === null ? [] : [piece.brand]));
+  return [...new Set(brands)].sort((first, second) => first.localeCompare(second, 'fr'));
+}
+
 export function hasActiveFilters(filters: CatalogFilters): boolean {
-  return filters.query.trim() !== '' || filters.pieceType !== ALL_PIECE_TYPES;
+  return (
+    filters.query.trim() !== '' ||
+    filters.pieceType !== ALL_PIECE_TYPES ||
+    filters.brand !== ALL_BRANDS
+  );
 }

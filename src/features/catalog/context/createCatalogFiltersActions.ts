@@ -9,6 +9,7 @@ export function createCatalogFiltersActions(
     changeQuery: (query) => dispatch({ type: CatalogFiltersActionType.QueryChanged, query }),
     changePieceType: (pieceType) =>
       dispatch({ type: CatalogFiltersActionType.PieceTypeChanged, pieceType }),
+    changeBrand: (brand) => dispatch({ type: CatalogFiltersActionType.BrandChanged, brand }),
     changeSortOrder: (sortOrder) =>
       dispatch({ type: CatalogFiltersActionType.SortOrderChanged, sortOrder }),
     changePage: (page) => dispatch({ type: CatalogFiltersActionType.PageChanged, page }),
