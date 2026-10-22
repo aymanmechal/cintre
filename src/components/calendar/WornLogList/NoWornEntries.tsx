@@ -1,10 +1,5 @@
-import { EmptyState } from '../../ui/EmptyState/EmptyState';
+import styles from './NoWornEntries.module.css';
 
 export function NoWornEntries() {
-  return (
-    <EmptyState
-      title="Calendrier vide"
-      message="Ajoute ta première tenue portée avec le formulaire."
-    />
-  );
+  return <p className={styles.empty}>Rien de noté ce jour-là.</p>;
 }

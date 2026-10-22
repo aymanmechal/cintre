@@ -1,0 +1,79 @@
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-height: 104px;
+  padding: var(--space-2);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-block);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.cell:hover {
+  border-color: var(--color-ink-muted);
+}
+
+.cell[data-current-month='false'] {
+  background: transparent;
+  color: var(--color-ink-muted);
+}
+
+.cell[aria-pressed='true'] {
+  border-color: var(--color-ink);
+  box-shadow: 4px 4px 0 var(--color-ink);
+}
+
+.cell:focus-visible {
+  outline: 3px solid var(--color-action);
+  outline-offset: 2px;
+}
+
+.number {
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-weight: 800;
+}
+
+.cell[data-today='true'] .number {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-pill);
+  background: var(--color-action);
+  color: var(--color-on-action);
+}
+
+.outfits {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.outfit {
+  overflow: hidden;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--candy-green);
+  color: var(--color-on-candy);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cell[data-planned='true'] .outfit {
+  border: 1px dashed var(--color-wanted);
+  background: var(--candy-violet);
+}
+
+.more {
+  color: var(--color-ink-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}

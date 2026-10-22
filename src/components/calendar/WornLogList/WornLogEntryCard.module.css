@@ -15,12 +15,17 @@
   gap: var(--space-3);
 }
 
-.date {
+.status {
   color: var(--color-wanted);
   font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.card[data-planned='true'] {
+  border-style: dashed;
+  border-color: var(--color-wanted);
 }
 
 .name {

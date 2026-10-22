@@ -1,0 +1,12 @@
+.headers {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  padding: 0;
+  color: var(--color-ink-muted);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  list-style: none;
+  text-align: center;
+  text-transform: uppercase;
+}

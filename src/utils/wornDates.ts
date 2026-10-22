@@ -27,6 +27,10 @@ export function isForgotten(item: WardrobeItem, now: Date): boolean {
   return item.lastWornOn === null || countDaysSince(item.lastWornOn, now) > FORGOTTEN_AFTER_DAYS;
 }
 
+export function isFutureDate(isoDate: string, today: Date): boolean {
+  return isoDate > toIsoDate(today);
+}
+
 export function isNewerWornDate(date: string, currentLastWornOn: string | null): boolean {
   return currentLastWornOn === null || date > currentLastWornOn;
 }
@@ -35,6 +39,7 @@ export function formatCalendarDate(isoDate: string, today: Date): string {
   const days = countDaysSince(isoDate, today);
   if (days === 0) return "Aujourd'hui";
   if (days === 1) return 'Hier';
+  if (days === -1) return 'Demain';
   return new Date(`${isoDate}T00:00:00`).toLocaleDateString('fr-FR', {
     weekday: 'long',
     day: 'numeric',

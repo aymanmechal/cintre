@@ -67,13 +67,14 @@ function markPiecesWorn(
   pieceIds: readonly number[],
   date: string,
 ): WardrobeItem[] {
-  return items.map((item) =>
+  const updatedItems = items.map((item) =>
     pieceIds.includes(item.piece.id) &&
     item.status === OwnershipStatus.Owned &&
     isNewerWornDate(date, item.lastWornOn)
       ? { ...item, lastWornOn: date }
       : item,
   );
+  return updatedItems.some((item, index) => item !== items[index]) ? updatedItems : [...items];
 }
 
 export function wardrobeReducer(items: WardrobeItem[], action: WardrobeAction): WardrobeItem[] {

@@ -9,7 +9,7 @@
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-stretch: var(--font-stretch-condensed);
   font-weight: 800;
   text-transform: uppercase;
