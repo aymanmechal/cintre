@@ -1,0 +1,16 @@
+.themeSwitch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-size: 1.125rem;
+}
+
+.themeSwitch:hover {
+  border-color: var(--color-primary);
+}

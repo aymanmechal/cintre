@@ -1,6 +1,7 @@
 import { AddPieceLink } from './AddPieceLink';
 import { Logo } from './Logo';
 import { MainNav } from '../Navigation/MainNav';
+import { ThemeSwitch } from './ThemeSwitch';
 import styles from './Header.module.css';
 
 export function Header() {
@@ -10,6 +11,7 @@ export function Header() {
         <Logo />
         <MainNav />
         <div className={styles.actions}>
+          <ThemeSwitch />
           <AddPieceLink />
         </div>
       </div>

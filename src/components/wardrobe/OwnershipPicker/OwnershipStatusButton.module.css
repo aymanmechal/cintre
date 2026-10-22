@@ -38,5 +38,5 @@
 .statusButton[aria-pressed='true'] {
   border-color: var(--status-color);
   background: var(--status-color);
-  color: #ffffff;
+  color: var(--color-on-status);
 }

@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { Layout } from './components/layout/Layout/Layout';
 import { CatalogFiltersProvider } from './contexts/catalogFilters/CatalogFiltersProvider';
+import { ThemeProvider } from './contexts/theme/ThemeProvider';
 import { WardrobeProvider } from './contexts/wardrobe/WardrobeProvider';
 import { HomePage } from './pages/HomePage';
 import { CatalogPage } from './pages/CatalogPage';
@@ -12,22 +13,24 @@ import { ROUTES } from './routes';
 
 function App() {
   return (
-    <CatalogFiltersProvider>
-      <WardrobeProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route index element={<HomePage />} />
-              <Route path={ROUTES.catalog} element={<CatalogPage />} />
-              <Route path={ROUTES.pieceDetail} element={<PieceDetailPage />} />
-              <Route path={ROUTES.wardrobe} element={<WardrobePage />} />
-              <Route path={ROUTES.addPiece} element={<AddPiecePage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </WardrobeProvider>
-    </CatalogFiltersProvider>
+    <ThemeProvider>
+      <CatalogFiltersProvider>
+        <WardrobeProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route index element={<HomePage />} />
+                <Route path={ROUTES.catalog} element={<CatalogPage />} />
+                <Route path={ROUTES.pieceDetail} element={<PieceDetailPage />} />
+                <Route path={ROUTES.wardrobe} element={<WardrobePage />} />
+                <Route path={ROUTES.addPiece} element={<AddPiecePage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </WardrobeProvider>
+      </CatalogFiltersProvider>
+    </ThemeProvider>
   );
 }
 
