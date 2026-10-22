@@ -1,6 +1,5 @@
 import type { PieceFormLabels } from '../../../types/pieceForm';
-import { Button } from '../../ui/Button/Button';
-import { ButtonVariant } from '../../ui/Button/buttonVariant';
+import { Button, ButtonVariant } from '../../ui/Button/Button';
 
 interface PieceFormSubmitButtonProps {
   isSubmitting: boolean;

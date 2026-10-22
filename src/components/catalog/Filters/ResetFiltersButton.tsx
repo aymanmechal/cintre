@@ -1,6 +1,5 @@
 import { useCatalogFilters } from '../../../contexts/catalogFilters/useCatalogFilters';
-import { Button } from '../../ui/Button/Button';
-import type { ButtonVariant } from '../../ui/Button/buttonVariant';
+import { Button, ButtonVariant } from '../../ui/Button/Button';
 
 interface ResetFiltersButtonProps {
   variant: ButtonVariant;

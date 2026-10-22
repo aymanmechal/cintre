@@ -1,6 +1,6 @@
 import { ROUTES } from '../../../routes';
 import { ButtonLink } from '../../ui/Button/ButtonLink';
-import { ButtonVariant } from '../../ui/Button/buttonVariant';
+import { ButtonVariant } from '../../ui/Button/Button';
 import styles from './HomeHero.module.css';
 
 export function HomeHero() {

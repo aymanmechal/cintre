@@ -1,7 +1,7 @@
 import { useCatalogFilters } from '../../../contexts/catalogFilters/useCatalogFilters';
 import { hasActiveFilters } from '../../../utils/filterPieces';
 import { formatFoundPiecesCount } from '../../../utils/format';
-import { ButtonVariant } from '../../ui/Button/buttonVariant';
+import { ButtonVariant } from '../../ui/Button/Button';
 import { ResetFiltersButton } from '../Filters/ResetFiltersButton';
 import styles from './ResultsSummary.module.css';
 

@@ -1,6 +1,5 @@
 import { useWardrobe } from '../../../contexts/wardrobe/useWardrobe';
-import { Button } from '../../ui/Button/Button';
-import { ButtonVariant } from '../../ui/Button/buttonVariant';
+import { Button, ButtonVariant } from '../../ui/Button/Button';
 
 interface MarkWornButtonProps {
   pieceId: number;

@@ -1,7 +1,7 @@
 import { OUTFIT_SLOT_LABELS, type OutfitSlot } from '../../../../constants/outfits';
 import { ROUTES } from '../../../../routes';
 import { ButtonLink } from '../../../ui/Button/ButtonLink';
-import { ButtonVariant } from '../../../ui/Button/buttonVariant';
+import { ButtonVariant } from '../../../ui/Button/Button';
 import styles from './EmptyShelf.module.css';
 
 interface EmptyShelfProps {

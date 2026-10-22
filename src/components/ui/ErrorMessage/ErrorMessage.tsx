@@ -1,5 +1,4 @@
-import { Button } from '../Button/Button';
-import { ButtonVariant } from '../Button/buttonVariant';
+import { Button, ButtonVariant } from '../Button/Button';
 import styles from './ErrorMessage.module.css';
 
 interface ErrorMessageProps {

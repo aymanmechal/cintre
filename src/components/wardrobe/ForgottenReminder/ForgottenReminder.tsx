@@ -1,7 +1,6 @@
 import { WardrobeSortOrder } from '../../../constants/wardrobeView';
 import { formatPieceCount } from '../../../utils/format';
-import { Button } from '../../ui/Button/Button';
-import { ButtonVariant } from '../../ui/Button/buttonVariant';
+import { Button, ButtonVariant } from '../../ui/Button/Button';
 import styles from './ForgottenReminder.module.css';
 
 interface ForgottenReminderProps {

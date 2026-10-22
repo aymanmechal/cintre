@@ -1,4 +1,4 @@
-import { ButtonVariant } from '../../ui/Button/buttonVariant';
+import { ButtonVariant } from '../../ui/Button/Button';
 import { EmptyState } from '../../ui/EmptyState/EmptyState';
 import { ResetFiltersButton } from '../Filters/ResetFiltersButton';
 

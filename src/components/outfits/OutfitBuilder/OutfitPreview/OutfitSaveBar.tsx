@@ -1,6 +1,5 @@
 import { buildMissingPiecesHint } from '../../../../utils/outfits';
-import { Button } from '../../../ui/Button/Button';
-import { ButtonVariant } from '../../../ui/Button/buttonVariant';
+import { Button, ButtonVariant } from '../../../ui/Button/Button';
 import { FormFeedback } from '../../../ui/FormFeedback/FormFeedback';
 import { FeedbackTone } from '../../../ui/FormFeedback/feedbackTone';
 import styles from './OutfitSaveBar.module.css';

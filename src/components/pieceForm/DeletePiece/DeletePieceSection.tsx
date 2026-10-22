@@ -1,8 +1,7 @@
 import { SubmitStatus } from '../../../constants/pieceForm';
 import { useDeletePiece } from '../../../hooks/useDeletePiece';
 import type { Piece } from '../../../types/piece';
-import { Button } from '../../ui/Button/Button';
-import { ButtonVariant } from '../../ui/Button/buttonVariant';
+import { Button, ButtonVariant } from '../../ui/Button/Button';
 import { ConfirmDialog } from '../../ui/ConfirmDialog/ConfirmDialog';
 import styles from './DeletePieceSection.module.css';
 

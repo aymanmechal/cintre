@@ -1,9 +1,15 @@
 import type { ButtonHTMLAttributes } from 'react';
-import { ButtonVariant } from './buttonVariant';
 import styles from './Button.module.css';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
+}
+
+export enum ButtonVariant {
+  Primary = 'primary',
+  Action = 'action',
+  Ghost = 'ghost',
+  Danger = 'danger',
 }
 
 export function Button({

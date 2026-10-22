@@ -1,5 +1,5 @@
 import { Link, type LinkProps } from 'react-router';
-import { ButtonVariant } from './buttonVariant';
+import { ButtonVariant } from './Button';
 import styles from './Button.module.css';
 
 interface ButtonLinkProps extends LinkProps {

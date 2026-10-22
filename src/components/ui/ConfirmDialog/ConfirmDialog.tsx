@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Button } from '../Button/Button';
-import { ButtonVariant } from '../Button/buttonVariant';
+import { Button, ButtonVariant } from '../Button/Button';
 import { FeedbackTone } from '../FormFeedback/feedbackTone';
 import { FormFeedback } from '../FormFeedback/FormFeedback';
 import styles from './ConfirmDialog.module.css';
