@@ -1,0 +1,11 @@
+.backLink {
+  display: inline-block;
+  margin-bottom: var(--space-4);
+  color: var(--color-ink-muted);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.backLink:hover {
+  color: var(--color-primary);
+}

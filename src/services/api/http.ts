@@ -1,14 +1,11 @@
-export class HttpError extends Error {
-  readonly status: number;
+import { HttpError, NotFoundError } from './errors';
 
-  constructor(status: number) {
-    super(`Erreur HTTP ${status}`);
-    this.name = 'HttpError';
-    this.status = status;
-  }
-}
+const HTTP_NOT_FOUND = 404;
 
 function throwIfNotOk(response: Response): void {
+  if (response.status === HTTP_NOT_FOUND) {
+    throw new NotFoundError(response.url);
+  }
   if (!response.ok) {
     throw new HttpError(response.status);
   }
