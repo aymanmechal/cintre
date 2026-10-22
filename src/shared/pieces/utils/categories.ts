@@ -4,8 +4,9 @@ import {
   PIECE_TYPES,
   TITLE_KEYWORD_RULES,
   type PieceType,
+  ALL_PIECE_TYPES,
+  type PieceTypeFilter,
 } from '../constants/categories';
-import { ALL_PIECE_TYPES, type PieceTypeFilter } from '../constants/categories';
 import { normalizeForSearch } from '../../utils/text';
 
 function findPieceTypeOfCategory(categorySlug: string): PieceType | undefined {

@@ -25,7 +25,12 @@ L'application est servie sur http://localhost:5173.
 | `npm run preview`      | Prévisualisation du build                 |
 | `npm run lint`         | Linter (oxlint)                           |
 | `npm run format:check` | Vérification du formatage (Prettier)      |
-| `npm run check`        | Lint + formatage + types                  |
+| `npm run check`        | Lint + formatage + types + tests          |
+| `npm test`             | Tests unitaires et d'intégration (Vitest) |
+| `npm run test:watch`   | Les mêmes tests, relancés à chaque modif  |
+| `npm run test:e2e`     | Tests de bout en bout (Playwright)        |
+
+Pour lancer les tests de bout en bout la première fois, installer le navigateur de test : `npx playwright install chromium`.
 
 ## Configuration
 
@@ -61,7 +66,64 @@ Aucune variable d'environnement : l'API DummyJSON est publique et sans clé.
 - **Recherche, filtre et pagination côté client** : DummyJSON ne permet pas de combiner recherche et filtre de catégorie sur plusieurs catégories. On charge donc tout le catalogue en une requête (`limit=0`), puis on filtre, trie et pagine localement, dans cet ordre.
 - **`useReducer` + Context** pour les filtres, la garde-robe, les tenues, le calendrier et le thème.
 - **`fetch` + hooks** (`useAsync`) plutôt que TanStack Query.
-- **Architecture** : composants atomiques (un dossier par famille), logique dans les hooks et `utils`, valeurs de choix dans des enums, aucun commentaire (noms explicites).
+- **Architecture par fonctionnalité** (voir plus bas) : composants atomiques, logique dans les hooks et `utils`, valeurs de choix dans des enums, aucun commentaire (noms explicites).
+
+## Architecture
+
+Le code est rangé par **fonctionnalité** : chaque page a ses composants, ses hooks et sa logique dans son propre dossier.
+
+```
+src/
+├── app/                 Démarrage : App, providers, routes, layout (en-tête, pied de page), styles globaux
+├── features/            Une fonctionnalité = un dossier autonome
+│   ├── home/            Accueil
+│   ├── catalog/         Catalogue : recherche, filtres, tri, pagination
+│   ├── piece-detail/    Fiche d'une pièce
+│   ├── wardrobe/        Garde-robe, statuts, pièces oubliées (la base utilisée par les autres)
+│   ├── piece-form/      Ajouter, modifier, supprimer une pièce
+│   ├── outfits/         Composeur et liste de tenues
+│   ├── calendar/        Calendrier des tenues portées ou prévues
+│   └── theme/           Mode clair / sombre
+├── shared/              Ce qui sert à plusieurs fonctionnalités
+│   ├── ui/              Composants génériques : Button, Form, Badge, EmptyState…
+│   ├── pieces/          Le modèle « pièce » et l'accès à l'API DummyJSON
+│   ├── api/             Client HTTP (fetch, erreurs)
+│   ├── hooks/           useAsync, useDebouncedValue…
+│   └── utils/           Formats, stockage, texte
+└── test/                Outils communs aux tests (fabriques, API simulée, rendu de l'app)
+```
+
+Chaque fonctionnalité contient les mêmes sous-dossiers : `pages/` (l'écran), `components/` (un dossier par composant, avec son CSS Module), `hooks/`, `context/` (si besoin : contexte, provider, reducer, actions), `utils/`, `constants/`, `types/` et parfois `api/`.
+
+Règles de dépendance :
+
+- `shared` ne dépend jamais d'une fonctionnalité ni de `app`.
+- Une fonctionnalité peut utiliser `shared` et `wardrobe`, mais jamais l'inverse : il n'y a aucun cycle entre fonctionnalités.
+- Un fichier de test est rangé à côté du code qu'il teste (`xxx.test.ts`).
+
+## Tests
+
+Trois niveaux, du plus rapide au plus réaliste :
+
+| Niveau       | Outil                        | Ce qui est testé                                                                               | Où                                     |
+| ------------ | ---------------------------- | ---------------------------------------------------------------------------------------------- | -------------------------------------- |
+| Unitaire     | Vitest                       | Fonctions pures, reducers, stockage, client HTTP, mappers, hook de délai                       | `*.test.ts` à côté du code             |
+| Intégration  | Vitest + Testing Library     | Une page entière avec ses contextes : on clique comme un utilisateur, l'API est simulée        | `*.integration.test.tsx` dans `pages/` |
+| Bout en bout | Playwright (vrai navigateur) | Parcours complets : du catalogue à la tenue portée, rechargements, mode sombre, erreurs réseau | `e2e/`                                 |
+
+- **Vitest** : même moteur que Vite, donc aucune configuration en plus, et un lancement très rapide.
+- **Testing Library** : on cherche les éléments comme l'utilisateur (par rôle et par libellé), pas par classe CSS. Un test casse seulement si le comportement change.
+- **Playwright** : teste dans un vrai navigateur, ce que jsdom ne sait pas faire (mise en page, défilement, `<dialog>`, rechargement de page).
+- **API simulée** : les tests ne dépendent jamais du réseau. Les tests d'intégration remplacent `fetch`, les tests de bout en bout interceptent les requêtes vers DummyJSON. Ils sont donc rapides et reproductibles.
+- Les dates sont figées dans les tests (`vi.setSystemTime`, `page.clock.setFixedTime`) pour que « aujourd'hui » ne change pas le résultat.
+
+## Données en dur et API
+
+Tout ce qui est une donnée du catalogue vient de l'API DummyJSON (pièces, prix, photos, marques, détails). Quelques listes restent dans le code, volontairement, parce que ce sont des choix de l'application et non des données :
+
+- les **types de pièces** (hauts, bas, chaussures…) et le regroupement des catégories DummyJSON dans ces types : DummyJSON n'a pas de « bas » ni de notion de tenue ;
+- les **libellés français**, les statuts (« Je l'ai » / « Envie »), les lieux de rangement, les emplacements d'une tenue ;
+- les **seuils** (pièce oubliée après 30 jours, 12 pièces par page, 4 accessoires maximum), rangés dans des constantes nommées.
 
 ## Limites et problèmes connus
 

@@ -1,5 +1,4 @@
-import type { PieceType } from '../../../../shared/pieces/constants/categories';
-import { PIECE_TYPE_LABELS } from '../../../../shared/pieces/constants/categories';
+import { type PieceType, PIECE_TYPE_LABELS } from '../../../../shared/pieces/constants/categories';
 import styles from './MarqueeLabel.module.css';
 
 interface MarqueeLabelProps {

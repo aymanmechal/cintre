@@ -1,5 +1,8 @@
-import { PIECE_TYPE_LABELS } from '../../../shared/pieces/constants/categories';
-import { ALL_PIECE_TYPES, type PieceTypeFilter } from '../../../shared/pieces/constants/categories';
+import {
+  PIECE_TYPE_LABELS,
+  ALL_PIECE_TYPES,
+  type PieceTypeFilter,
+} from '../../../shared/pieces/constants/categories';
 import { type CatalogFilters } from '../context/catalogFiltersReducer';
 import type { Piece } from '../../../shared/pieces/types/piece';
 import { normalizeForSearch } from '../../../shared/utils/text';

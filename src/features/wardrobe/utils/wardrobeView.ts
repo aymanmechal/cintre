@@ -1,4 +1,9 @@
-import { PIECE_TYPE_LABELS, PIECE_TYPES } from '../../../shared/pieces/constants/categories';
+import {
+  PIECE_TYPE_LABELS,
+  PIECE_TYPES,
+  ALL_PIECE_TYPES,
+  type PieceTypeFilter,
+} from '../../../shared/pieces/constants/categories';
 import {
   STORAGE_LOCATION_LABELS,
   STORAGE_LOCATIONS,
@@ -12,7 +17,6 @@ import {
   WardrobeGrouping,
   WardrobeSortOrder,
 } from '../constants/wardrobeView';
-import { ALL_PIECE_TYPES, type PieceTypeFilter } from '../../../shared/pieces/constants/categories';
 import type { WardrobeItem } from '../types/wardrobe';
 import type { WardrobeGroup, WardrobeView } from '../types/wardrobeView';
 import { selectItemsByStatus } from './wardrobe';
