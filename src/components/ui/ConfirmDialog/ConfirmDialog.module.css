@@ -1,0 +1,37 @@
+.dialog {
+  max-width: 440px;
+  margin: auto;
+  padding: var(--space-5);
+  border: none;
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-soft);
+}
+
+.dialog::backdrop {
+  background: rgb(11 34 51 / 55%);
+}
+
+.title {
+  font-size: 2rem;
+  font-stretch: var(--font-stretch-condensed);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.message {
+  margin-top: var(--space-2);
+  color: var(--color-ink-muted);
+}
+
+.message + * {
+  margin-top: var(--space-3);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}

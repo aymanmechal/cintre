@@ -8,6 +8,7 @@ import { CatalogPage } from './pages/CatalogPage';
 import { PieceDetailPage } from './pages/PieceDetailPage';
 import { WardrobePage } from './pages/WardrobePage';
 import { AddPiecePage } from './pages/AddPiecePage';
+import { EditPiecePage } from './pages/EditPiecePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { ROUTES } from './routes';
 
@@ -24,6 +25,7 @@ function App() {
                 <Route path={ROUTES.pieceDetail} element={<PieceDetailPage />} />
                 <Route path={ROUTES.wardrobe} element={<WardrobePage />} />
                 <Route path={ROUTES.addPiece} element={<AddPiecePage />} />
+                <Route path={ROUTES.editPiece} element={<EditPiecePage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Route>
             </Routes>

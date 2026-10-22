@@ -3,8 +3,8 @@ import {
   TITLE_MAX_LENGTH,
   TITLE_MIN_LENGTH,
   VALIDATION_MESSAGES,
-} from '../constants/addPiece';
-import type { AddPieceFormErrors, AddPieceFormValues } from '../types/addPiece';
+} from '../constants/pieceForm';
+import type { PieceFormErrors, PieceFormValues } from '../types/pieceForm';
 
 const ALLOWED_URL_PROTOCOLS = ['http:', 'https:'];
 
@@ -37,7 +37,7 @@ function validateImageUrl(imageUrl: string): string | undefined {
   return isWebUrl(imageUrl.trim()) ? undefined : VALIDATION_MESSAGES.invalidImageUrl;
 }
 
-export function validateAddPieceForm(values: AddPieceFormValues): AddPieceFormErrors {
+export function validatePieceForm(values: PieceFormValues): PieceFormErrors {
   return {
     title: validateTitle(values.title),
     price: validatePrice(values.price),
@@ -45,6 +45,6 @@ export function validateAddPieceForm(values: AddPieceFormValues): AddPieceFormEr
   };
 }
 
-export function hasErrors(errors: AddPieceFormErrors): boolean {
+export function hasErrors(errors: PieceFormErrors): boolean {
   return Object.values(errors).some((error) => error !== undefined);
 }

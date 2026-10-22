@@ -1,6 +1,6 @@
 import { DEFAULT_PIECE_TYPE } from './categories';
 import { DEFAULT_STORAGE_LOCATION, OwnershipStatus } from './wardrobe';
-import type { AddPieceFormValues } from '../types/addPiece';
+import type { PieceFormLabels, PieceFormValues } from '../types/pieceForm';
 
 export enum SubmitStatus {
   Idle = 'idle',
@@ -15,7 +15,7 @@ export const MAX_PRICE = 100_000;
 export const CUSTOM_PIECE_RATING = 0;
 export const CUSTOM_PIECE_STOCK = 0;
 
-export const INITIAL_ADD_PIECE_VALUES: AddPieceFormValues = {
+export const INITIAL_PIECE_FORM_VALUES: PieceFormValues = {
   title: '',
   brand: '',
   pieceType: DEFAULT_PIECE_TYPE,
@@ -31,3 +31,17 @@ export const VALIDATION_MESSAGES = {
   invalidPrice: `Le prix doit être un nombre entre 0 et ${MAX_PRICE}.`,
   invalidImageUrl: 'L’adresse de l’image doit commencer par http:// ou https://.',
 } as const;
+
+export const ADD_PIECE_FORM_LABELS: PieceFormLabels = {
+  submit: 'Ajouter la pièce',
+  submitting: 'Ajout en cours…',
+  success: 'Pièce ajoutée',
+  error: 'Impossible d’ajouter la pièce. Vérifie ta connexion puis réessaie.',
+};
+
+export const EDIT_PIECE_FORM_LABELS: PieceFormLabels = {
+  submit: 'Enregistrer',
+  submitting: 'Enregistrement…',
+  success: 'Modifications enregistrées',
+  error: 'Impossible d’enregistrer. Vérifie ta connexion puis réessaie.',
+};

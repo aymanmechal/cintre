@@ -28,8 +28,14 @@
   color: var(--color-on-action);
 }
 
+.danger {
+  background: var(--color-danger);
+  color: var(--color-on-status);
+}
+
 .primary:hover,
-.action:hover {
+.action:hover,
+.danger:hover {
   transform: rotate(-2deg) scale(1.04);
 }
 
@@ -44,4 +50,10 @@
 
 .ghost:hover {
   border-color: var(--color-ink);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }

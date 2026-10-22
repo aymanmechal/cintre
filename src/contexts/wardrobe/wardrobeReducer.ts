@@ -10,6 +10,7 @@ import { findWardrobeItem, toPieceSnapshot } from '../../utils/wardrobe';
 export enum WardrobeActionType {
   PieceSaved = 'pieceSaved',
   ItemAdded = 'itemAdded',
+  ItemUpdated = 'itemUpdated',
   PieceRemoved = 'pieceRemoved',
   LocationChanged = 'locationChanged',
 }
@@ -17,12 +18,13 @@ export enum WardrobeActionType {
 export type WardrobeAction =
   | { type: WardrobeActionType.PieceSaved; piece: Piece; status: OwnershipStatus }
   | { type: WardrobeActionType.ItemAdded; item: WardrobeItem }
+  | { type: WardrobeActionType.ItemUpdated; item: WardrobeItem }
   | { type: WardrobeActionType.PieceRemoved; pieceId: number }
   | { type: WardrobeActionType.LocationChanged; pieceId: number; location: StorageLocation };
 
 type WardrobeItemChanges = Partial<Pick<WardrobeItem, 'status' | 'location'>>;
 
-function updateItem(
+function changeItem(
   items: readonly WardrobeItem[],
   pieceId: number,
   changes: WardrobeItemChanges,
@@ -40,12 +42,16 @@ function savePiece(
   status: OwnershipStatus,
 ): WardrobeItem[] {
   return findWardrobeItem(items, piece.id)
-    ? updateItem(items, piece.id, { status })
+    ? changeItem(items, piece.id, { status })
     : [...items, createItem(piece, status)];
 }
 
 function addItem(items: readonly WardrobeItem[], item: WardrobeItem): WardrobeItem[] {
   return [...items.filter((existing) => existing.piece.id !== item.piece.id), item];
+}
+
+function replaceItem(items: readonly WardrobeItem[], updatedItem: WardrobeItem): WardrobeItem[] {
+  return items.map((item) => (item.piece.id === updatedItem.piece.id ? updatedItem : item));
 }
 
 export function wardrobeReducer(items: WardrobeItem[], action: WardrobeAction): WardrobeItem[] {
@@ -54,9 +60,11 @@ export function wardrobeReducer(items: WardrobeItem[], action: WardrobeAction): 
       return savePiece(items, action.piece, action.status);
     case WardrobeActionType.ItemAdded:
       return addItem(items, action.item);
+    case WardrobeActionType.ItemUpdated:
+      return replaceItem(items, action.item);
     case WardrobeActionType.PieceRemoved:
       return items.filter((item) => item.piece.id !== action.pieceId);
     case WardrobeActionType.LocationChanged:
-      return updateItem(items, action.pieceId, { location: action.location });
+      return changeItem(items, action.pieceId, { location: action.location });
   }
 }

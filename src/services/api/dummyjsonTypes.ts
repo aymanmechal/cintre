@@ -20,3 +20,12 @@ export interface ApiProductList {
   skip: number;
   limit: number;
 }
+
+export interface ApiSavedProduct {
+  id: number;
+  title?: string;
+  brand?: string | null;
+  price?: number;
+  thumbnail?: string;
+  isDeleted?: boolean;
+}

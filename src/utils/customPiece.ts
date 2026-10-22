@@ -1,33 +1,21 @@
-import { CUSTOM_PIECE_RATING, CUSTOM_PIECE_STOCK } from '../constants/addPiece';
-import type { AddPieceFormValues } from '../types/addPiece';
+import { CUSTOM_PIECE_RATING, CUSTOM_PIECE_STOCK } from '../constants/pieceForm';
+import type { PieceFormValues } from '../types/pieceForm';
 import type { Piece } from '../types/piece';
-import type { WardrobeItem } from '../types/wardrobe';
+import { toPieceFields } from './pieceFormValues';
 
 function createCustomPieceId(): number {
   return -Date.now();
-}
-
-function parseOptionalPrice(price: string): number {
-  return price.trim() === '' ? 0 : Number(price);
 }
 
 export function isCatalogPiece(pieceId: number): boolean {
   return pieceId > 0;
 }
 
-export function buildCustomPiece(values: AddPieceFormValues): Piece {
+export function buildCustomPiece(values: PieceFormValues): Piece {
   return {
     id: createCustomPieceId(),
-    title: values.title.trim(),
-    brand: values.brand.trim() || null,
-    pieceType: values.pieceType,
-    price: parseOptionalPrice(values.price),
     rating: CUSTOM_PIECE_RATING,
     stock: CUSTOM_PIECE_STOCK,
-    thumbnail: values.imageUrl.trim(),
+    ...toPieceFields(values),
   };
-}
-
-export function buildWardrobeItem(piece: Piece, values: AddPieceFormValues): WardrobeItem {
-  return { piece, status: values.status, location: values.location };
 }

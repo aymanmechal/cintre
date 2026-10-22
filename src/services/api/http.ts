@@ -20,11 +20,23 @@ export async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> 
   return (await response.json()) as T;
 }
 
-export function postJson<T>(url: string, body: unknown, signal?: AbortSignal): Promise<T> {
+function sendJson<T>(url: string, method: HttpMethod, body: unknown, signal?: AbortSignal) {
   return fetchJson<T>(url, {
-    method: HttpMethod.Post,
+    method,
     headers: JSON_HEADERS,
     body: JSON.stringify(body),
     signal,
   });
+}
+
+export function postJson<T>(url: string, body: unknown, signal?: AbortSignal): Promise<T> {
+  return sendJson<T>(url, HttpMethod.Post, body, signal);
+}
+
+export function patchJson<T>(url: string, body: unknown, signal?: AbortSignal): Promise<T> {
+  return sendJson<T>(url, HttpMethod.Patch, body, signal);
+}
+
+export function deleteJson<T>(url: string, signal?: AbortSignal): Promise<T> {
+  return fetchJson<T>(url, { method: HttpMethod.Delete, signal });
 }

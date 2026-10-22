@@ -9,7 +9,7 @@ interface IconButtonProps {
 export function IconButton({ icon, label, onClick }: IconButtonProps) {
   return (
     <button
-      className={styles.iconButton}
+      className={`${styles.iconButton} ${styles.danger}`}
       type="button"
       aria-label={label}
       title={label}

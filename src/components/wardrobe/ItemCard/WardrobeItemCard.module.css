@@ -18,7 +18,9 @@
   left: var(--space-3);
 }
 
-.removePosition {
+.actionsPosition {
+  display: flex;
+  gap: var(--space-1);
   position: absolute;
   top: var(--space-3);
   right: var(--space-3);

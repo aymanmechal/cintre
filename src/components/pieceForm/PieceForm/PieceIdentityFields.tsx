@@ -1,9 +1,9 @@
 import { PIECE_TYPE_OPTIONS } from '../../../constants/selectOptions';
 import type {
-  AddPieceFormErrors,
-  AddPieceFormValues,
-  ChangeAddPieceField,
-} from '../../../types/addPiece';
+  PieceFormErrors,
+  PieceFormValues,
+  ChangePieceFormField,
+} from '../../../types/pieceForm';
 import { toPieceType } from '../../../utils/categories';
 import { FieldLayout } from '../../ui/Form/fieldLayout';
 import { FormSection } from '../../ui/Form/FormSection';
@@ -12,9 +12,9 @@ import { TextField } from '../../ui/Form/TextField';
 import { TextFieldType } from '../../ui/Form/textFieldType';
 
 interface PieceIdentityFieldsProps {
-  values: AddPieceFormValues;
-  errors: AddPieceFormErrors;
-  onChange: ChangeAddPieceField;
+  values: PieceFormValues;
+  errors: PieceFormErrors;
+  onChange: ChangePieceFormField;
 }
 
 export function PieceIdentityFields({ values, errors, onChange }: PieceIdentityFieldsProps) {

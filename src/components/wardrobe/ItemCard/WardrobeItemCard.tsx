@@ -5,6 +5,7 @@ import { formatBrand, formatPrice } from '../../../utils/format';
 import { Badge } from '../../ui/Badge/Badge';
 import { OwnershipPicker } from '../OwnershipPicker/OwnershipPicker';
 import { OwnershipPickerSize } from '../OwnershipPicker/ownershipPickerSize';
+import { EditPieceLink } from '../EditPieceLink/EditPieceLink';
 import { RemoveFromWardrobeButton } from '../RemoveFromWardrobeButton/RemoveFromWardrobeButton';
 import { LocationSelect } from './LocationSelect';
 import { WardrobeItemImage } from './WardrobeItemImage';
@@ -25,7 +26,8 @@ export function WardrobeItemCard({ item }: WardrobeItemCardProps) {
         <div className={styles.badgePosition}>
           <Badge label={PIECE_TYPE_LABELS[piece.pieceType]} />
         </div>
-        <div className={styles.removePosition}>
+        <div className={styles.actionsPosition}>
+          <EditPieceLink pieceId={piece.id} pieceTitle={piece.title} />
           <RemoveFromWardrobeButton pieceId={piece.id} pieceTitle={piece.title} />
         </div>
         <div className={styles.pickerPosition}>

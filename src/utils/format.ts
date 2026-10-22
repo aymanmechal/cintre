@@ -30,3 +30,9 @@ export function formatStock(stock: number): string {
 export function formatPageTitle(pageName: string): string {
   return `${pageName} — Cintré`;
 }
+
+export function formatApiProductId(apiProductId: number | null): string {
+  return apiProductId === null
+    ? 'Pièce perso : enregistrée uniquement sur cet appareil'
+    : `Réponse de l’API : produit n°${apiProductId}`;
+}

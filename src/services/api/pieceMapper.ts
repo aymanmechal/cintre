@@ -1,6 +1,6 @@
 import type { PieceType } from '../../constants/categories';
 import type { Piece, PieceDetail } from '../../types/piece';
-import type { ApiProduct } from './dummyJsonTypes';
+import type { ApiProduct, ApiSavedProduct } from './dummyJsonTypes';
 
 export function mapApiProductToPiece(product: ApiProduct, pieceType: PieceType): Piece {
   return {
@@ -23,5 +23,15 @@ export function mapApiProductToPieceDetail(product: ApiProduct, pieceType: Piece
     warrantyInformation: product.warrantyInformation ?? '',
     shippingInformation: product.shippingInformation ?? '',
     returnPolicy: product.returnPolicy ?? '',
+  };
+}
+
+export function mergeSavedProduct(piece: Piece, product: ApiSavedProduct): Piece {
+  return {
+    ...piece,
+    title: product.title ?? piece.title,
+    brand: product.brand ?? piece.brand,
+    price: product.price ?? piece.price,
+    thumbnail: product.thumbnail ?? piece.thumbnail,
   };
 }

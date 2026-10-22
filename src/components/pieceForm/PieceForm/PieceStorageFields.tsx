@@ -3,15 +3,15 @@ import {
   STORAGE_LOCATION_OPTIONS,
 } from '../../../constants/selectOptions';
 import { OwnershipStatus } from '../../../constants/wardrobe';
-import type { AddPieceFormValues, ChangeAddPieceField } from '../../../types/addPiece';
+import type { PieceFormValues, ChangePieceFormField } from '../../../types/pieceForm';
 import { toOwnershipStatus, toStorageLocation } from '../../../utils/wardrobe';
 import { FieldLayout } from '../../ui/Form/fieldLayout';
 import { FormSection } from '../../ui/Form/FormSection';
 import { SelectField } from '../../ui/Form/SelectField';
 
 interface PieceStorageFieldsProps {
-  values: AddPieceFormValues;
-  onChange: ChangeAddPieceField;
+  values: PieceFormValues;
+  onChange: ChangePieceFormField;
 }
 
 export function PieceStorageFields({ values, onChange }: PieceStorageFieldsProps) {
