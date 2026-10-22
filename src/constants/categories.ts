@@ -1,5 +1,3 @@
-import type { Gender } from '../types/piece';
-
 /** Les types de pièce proposés dans le filtre (plusieurs catégories API peuvent partager un type). */
 export const PIECE_TYPES = [
   { id: 'chemises', label: 'Chemises' },
@@ -17,21 +15,20 @@ export type PieceType = (typeof PIECE_TYPES)[number]['id'];
 export interface Category {
   slug: string;
   type: PieceType;
-  gender: Gender;
 }
 
 /** Les catégories DummyJSON retenues pour Cintré (49 pièces au total). */
 export const CATEGORIES: readonly Category[] = [
-  { slug: 'mens-shirts', type: 'chemises', gender: 'homme' },
-  { slug: 'mens-shoes', type: 'chaussures', gender: 'homme' },
-  { slug: 'mens-watches', type: 'montres', gender: 'homme' },
-  { slug: 'tops', type: 'hauts', gender: 'mixte' },
-  { slug: 'womens-dresses', type: 'robes', gender: 'femme' },
-  { slug: 'womens-shoes', type: 'chaussures', gender: 'femme' },
-  { slug: 'womens-bags', type: 'sacs', gender: 'femme' },
-  { slug: 'womens-watches', type: 'montres', gender: 'femme' },
-  { slug: 'womens-jewellery', type: 'bijoux', gender: 'femme' },
-  { slug: 'sunglasses', type: 'lunettes', gender: 'mixte' },
+  { slug: 'mens-shirts', type: 'chemises' },
+  { slug: 'mens-shoes', type: 'chaussures' },
+  { slug: 'mens-watches', type: 'montres' },
+  { slug: 'tops', type: 'hauts' },
+  { slug: 'womens-dresses', type: 'robes' },
+  { slug: 'womens-shoes', type: 'chaussures' },
+  { slug: 'womens-bags', type: 'sacs' },
+  { slug: 'womens-watches', type: 'montres' },
+  { slug: 'womens-jewellery', type: 'bijoux' },
+  { slug: 'sunglasses', type: 'lunettes' },
 ];
 
 export function findCategory(slug: string): Category | undefined {

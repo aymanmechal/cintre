@@ -1,10 +1,5 @@
-import { findCategory } from '../../constants/categories';
-import type { Gender, Piece, PieceDetail } from '../../types/piece';
+import type { Piece, PieceDetail } from '../../types/piece';
 import type { ApiProduct } from './dummyjsonTypes';
-
-function genderOf(categorySlug: string): Gender {
-  return findCategory(categorySlug)?.gender ?? 'mixte';
-}
 
 /** Traduit un produit DummyJSON en Piece : si l'API change, seul ce fichier bouge. */
 export function toPiece(product: ApiProduct): Piece {
@@ -13,7 +8,6 @@ export function toPiece(product: ApiProduct): Piece {
     title: product.title,
     brand: product.brand ?? null,
     category: product.category,
-    gender: genderOf(product.category),
     price: product.price,
     rating: product.rating,
     stock: product.stock,

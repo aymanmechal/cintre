@@ -18,21 +18,13 @@ function matchesType(piece: Piece, type: CatalogFilters['type']): boolean {
   return type === 'tous' || typeOfCategory(piece.category) === type;
 }
 
-/** Une pièce mixte apparaît aussi bien chez les hommes que chez les femmes. */
-function matchesGender(piece: Piece, gender: CatalogFilters['gender']): boolean {
-  return gender === 'tous' || piece.gender === gender || piece.gender === 'mixte';
-}
-
-/** Les 3 critères se combinent (ET logique). Fonction pure : facile à tester. */
+/** Les 2 critères se combinent (ET logique). Fonction pure : facile à tester. */
 export function filterPieces(pieces: readonly Piece[], filters: CatalogFilters): Piece[] {
   return pieces.filter(
-    (piece) =>
-      matchesQuery(piece, filters.query) &&
-      matchesType(piece, filters.type) &&
-      matchesGender(piece, filters.gender),
+    (piece) => matchesQuery(piece, filters.query) && matchesType(piece, filters.type),
   );
 }
 
 export function hasActiveFilters(filters: CatalogFilters): boolean {
-  return filters.query.trim() !== '' || filters.type !== 'tous' || filters.gender !== 'tous';
+  return filters.query.trim() !== '' || filters.type !== 'tous';
 }

@@ -16,7 +16,6 @@ export function CatalogFiltersProvider({ children }: CatalogFiltersProviderProps
       filters,
       setQuery: (query) => dispatch({ type: 'setQuery', query }),
       setType: (pieceType) => dispatch({ type: 'setType', pieceType }),
-      setGender: (gender) => dispatch({ type: 'setGender', gender }),
       setPage: (page) => dispatch({ type: 'setPage', page }),
       resetFilters: () => dispatch({ type: 'reset' }),
     }),

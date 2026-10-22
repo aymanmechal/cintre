@@ -1,11 +1,10 @@
 import { createContext } from 'react';
-import type { CatalogFilters, GenderFilter, TypeFilter } from './catalogFiltersReducer';
+import type { CatalogFilters, TypeFilter } from './catalogFiltersReducer';
 
 export interface CatalogFiltersValue {
   filters: CatalogFilters;
   setQuery: (query: string) => void;
   setType: (type: TypeFilter) => void;
-  setGender: (gender: GenderFilter) => void;
   setPage: (page: number) => void;
   resetFilters: () => void;
 }
