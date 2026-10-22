@@ -1,30 +1,32 @@
-import { categoryLabel, typeOfCategory } from '../constants/categories';
-import type { CatalogFilters } from '../contexts/catalogFilters/catalogFiltersReducer';
+import {
+  ALL_PIECE_TYPES,
+  type CatalogFilters,
+  type PieceTypeFilter,
+} from '../contexts/catalogFilters/catalogFiltersReducer';
 import type { Piece } from '../types/piece';
-import { normalizeText } from './text';
+import { findPieceTypeOfCategory, getCategoryLabel } from './categories';
+import { normalizeForSearch } from './text';
 
-/** La recherche porte sur le titre, la marque et le type (ex. "chaussures"). */
-function matchesQuery(piece: Piece, query: string): boolean {
-  const search = normalizeText(query);
-  if (search === '') return true;
-
-  const haystack = normalizeText(
-    [piece.title, piece.brand ?? '', categoryLabel(piece.category)].join(' '),
-  );
-  return haystack.includes(search);
+function buildSearchableText(piece: Piece): string {
+  return [piece.title, piece.brand ?? '', getCategoryLabel(piece.category)].join(' ');
 }
 
-function matchesType(piece: Piece, type: CatalogFilters['type']): boolean {
-  return type === 'tous' || typeOfCategory(piece.category) === type;
+function matchesSearchQuery(piece: Piece, query: string): boolean {
+  const normalizedQuery = normalizeForSearch(query);
+  return normalizeForSearch(buildSearchableText(piece)).includes(normalizedQuery);
 }
 
-/** Les 2 critères se combinent (ET logique). Fonction pure : facile à tester. */
+function matchesPieceType(piece: Piece, pieceType: PieceTypeFilter): boolean {
+  return pieceType === ALL_PIECE_TYPES || findPieceTypeOfCategory(piece.category) === pieceType;
+}
+
 export function filterPieces(pieces: readonly Piece[], filters: CatalogFilters): Piece[] {
   return pieces.filter(
-    (piece) => matchesQuery(piece, filters.query) && matchesType(piece, filters.type),
+    (piece) =>
+      matchesSearchQuery(piece, filters.query) && matchesPieceType(piece, filters.pieceType),
   );
 }
 
 export function hasActiveFilters(filters: CatalogFilters): boolean {
-  return filters.query.trim() !== '' || filters.type !== 'tous';
+  return filters.query.trim() !== '' || filters.pieceType !== ALL_PIECE_TYPES;
 }

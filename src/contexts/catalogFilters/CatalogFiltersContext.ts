@@ -1,13 +1,15 @@
 import { createContext } from 'react';
-import type { CatalogFilters, TypeFilter } from './catalogFiltersReducer';
+import type { CatalogFilters, PieceTypeFilter } from './catalogFiltersReducer';
 
-export interface CatalogFiltersValue {
-  filters: CatalogFilters;
-  setQuery: (query: string) => void;
-  setType: (type: TypeFilter) => void;
-  setPage: (page: number) => void;
+export interface CatalogFiltersActions {
+  changeQuery: (query: string) => void;
+  changePieceType: (pieceType: PieceTypeFilter) => void;
+  changePage: (page: number) => void;
   resetFilters: () => void;
 }
 
-/** null par défaut : permet de détecter un oubli du Provider (voir useCatalogFilters). */
+export interface CatalogFiltersValue extends CatalogFiltersActions {
+  filters: CatalogFilters;
+}
+
 export const CatalogFiltersContext = createContext<CatalogFiltersValue | null>(null);

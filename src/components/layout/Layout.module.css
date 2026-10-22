@@ -12,7 +12,6 @@
   padding: var(--space-5) var(--space-4);
 }
 
-/* Lien d'évitement : invisible, apparaît quand on arrive dessus au clavier. */
 .skipLink {
   position: absolute;
   top: var(--space-2);

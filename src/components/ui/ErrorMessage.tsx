@@ -6,7 +6,6 @@ interface ErrorMessageProps {
   onRetry?: () => void;
 }
 
-/** role="alert" : annoncé immédiatement par les lecteurs d'écran. */
 export function ErrorMessage({ title, message, onRetry }: ErrorMessageProps) {
   return (
     <div className={styles.error} role="alert">

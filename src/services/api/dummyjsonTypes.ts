@@ -1,5 +1,3 @@
-/** Format BRUT renvoyé par DummyJSON (on ne le manipule que dans la couche API). */
-
 export interface ApiProduct {
   id: number;
   title: string;

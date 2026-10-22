@@ -1,4 +1,3 @@
-/* Reset minimal + styles globaux. Les composants utilisent ensuite des CSS Modules. */
 *,
 *::before,
 *::after {
@@ -55,13 +54,11 @@ a {
   color: inherit;
 }
 
-/* Contour visible uniquement à la navigation clavier (a11y). */
 :focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
-/* Texte lisible seulement par les lecteurs d'écran. */
 .visually-hidden {
   position: absolute;
   width: 1px;

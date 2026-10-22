@@ -57,12 +57,11 @@
   font-size: 1.0625rem;
 }
 
-.link {
+.stretchedLink {
   text-decoration: none;
 }
 
-/* Étire la zone cliquable du lien sur toute la carte. */
-.link::after {
+.stretchedLink::after {
   content: '';
   position: absolute;
   inset: 0;

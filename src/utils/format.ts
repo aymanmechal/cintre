@@ -1,6 +1,15 @@
-const priceFormatter = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
+import { UNKNOWN_BRAND_LABEL } from '../constants/catalog';
 
-/** 29.99 → "29,99 €" (virgule et espace à la française). */
+const euroFormatter = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
+
 export function formatPrice(price: number): string {
-  return priceFormatter.format(price);
+  return euroFormatter.format(price);
+}
+
+export function formatBrand(brand: string | null): string {
+  return brand ?? UNKNOWN_BRAND_LABEL;
+}
+
+export function formatFoundPiecesCount(count: number): string {
+  return count > 1 ? `${count} pièces trouvées` : `${count} pièce trouvée`;
 }

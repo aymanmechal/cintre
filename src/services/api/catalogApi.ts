@@ -1,26 +1,23 @@
-import { isClothingCategory } from '../../constants/categories';
 import type { Piece, PieceDetail } from '../../types/piece';
-import type { ApiProduct, ApiProductList } from './dummyjsonTypes';
+import { isClothingCategory } from '../../utils/categories';
+import type { ApiProduct, ApiProductList } from './dummyJsonTypes';
 import { fetchJson } from './http';
-import { toPiece, toPieceDetail } from './pieceMapper';
+import { mapApiProductToPiece, mapApiProductToPieceDetail } from './pieceMapper';
 
-const API_URL = 'https://dummyjson.com/products';
-const CARD_FIELDS = 'title,brand,category,price,rating,stock,thumbnail';
+const PRODUCTS_URL = 'https://dummyjson.com/products';
+const PIECE_CARD_FIELDS = 'title,brand,category,price,rating,stock,thumbnail';
+const ALL_PRODUCTS_URL = `${PRODUCTS_URL}?limit=0&select=${PIECE_CARD_FIELDS}`;
 
-/**
- * Charge tout le catalogue en UNE requête (limit=0), puis garde les vêtements.
- * Pourquoi tout charger ? L'API ne sait pas combiner recherche + catégorie :
- * on filtre et pagine donc côté navigateur (49 pièces, c'est léger).
- */
-export async function fetchCatalog(signal?: AbortSignal): Promise<Piece[]> {
-  const url = `${API_URL}?limit=0&select=${CARD_FIELDS}`;
-  const list = await fetchJson<ApiProductList>(url, { signal });
-
-  return list.products.filter((product) => isClothingCategory(product.category)).map(toPiece);
+function keepClothingProducts(products: readonly ApiProduct[]): ApiProduct[] {
+  return products.filter((product) => isClothingCategory(product.category));
 }
 
-export async function fetchPieceById(id: number, signal?: AbortSignal): Promise<PieceDetail> {
-  const product = await fetchJson<ApiProduct>(`${API_URL}/${id}`, { signal });
+export async function fetchCatalog(signal?: AbortSignal): Promise<Piece[]> {
+  const productList = await fetchJson<ApiProductList>(ALL_PRODUCTS_URL, { signal });
+  return keepClothingProducts(productList.products).map(mapApiProductToPiece);
+}
 
-  return toPieceDetail(product);
+export async function fetchPieceById(pieceId: number, signal?: AbortSignal): Promise<PieceDetail> {
+  const product = await fetchJson<ApiProduct>(`${PRODUCTS_URL}/${pieceId}`, { signal });
+  return mapApiProductToPieceDetail(product);
 }

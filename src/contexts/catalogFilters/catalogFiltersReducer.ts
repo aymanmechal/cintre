@@ -1,41 +1,40 @@
+import { FIRST_PAGE } from '../../constants/catalog';
 import type { PieceType } from '../../constants/categories';
 
-export type TypeFilter = PieceType | 'tous';
+export const ALL_PIECE_TYPES = 'tous';
+
+export type PieceTypeFilter = PieceType | typeof ALL_PIECE_TYPES;
 
 export interface CatalogFilters {
   query: string;
-  type: TypeFilter;
+  pieceType: PieceTypeFilter;
   page: number;
 }
 
 export type CatalogFiltersAction =
-  | { type: 'setQuery'; query: string }
-  | { type: 'setType'; pieceType: TypeFilter }
-  | { type: 'setPage'; page: number }
-  | { type: 'reset' };
+  | { type: 'queryChanged'; query: string }
+  | { type: 'pieceTypeChanged'; pieceType: PieceTypeFilter }
+  | { type: 'pageChanged'; page: number }
+  | { type: 'filtersReset' };
 
-export const INITIAL_FILTERS: CatalogFilters = {
+export const INITIAL_CATALOG_FILTERS: CatalogFilters = {
   query: '',
-  type: 'tous',
-  page: 1,
+  pieceType: ALL_PIECE_TYPES,
+  page: FIRST_PAGE,
 };
 
-/**
- * Toutes les règles de changement d'état au même endroit.
- * Règle métier : changer un critère ramène toujours en page 1.
- */
 export function catalogFiltersReducer(
-  state: CatalogFilters,
+  filters: CatalogFilters,
   action: CatalogFiltersAction,
 ): CatalogFilters {
   switch (action.type) {
-    case 'setQuery':
-      return { ...state, query: action.query, page: 1 };
-    case 'setType':
-      return { ...state, type: action.pieceType, page: 1 };
-    case 'setPage':
-      return { ...state, page: action.page };
-    case 'reset':
-      return INITIAL_FILTERS;
+    case 'queryChanged':
+      return { ...filters, query: action.query, page: FIRST_PAGE };
+    case 'pieceTypeChanged':
+      return { ...filters, pieceType: action.pieceType, page: FIRST_PAGE };
+    case 'pageChanged':
+      return { ...filters, page: action.page };
+    case 'filtersReset':
+      return INITIAL_CATALOG_FILTERS;
   }
 }

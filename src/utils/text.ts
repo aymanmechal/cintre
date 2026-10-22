@@ -1,8 +1,9 @@
-/** Minuscules + sans accents : "Écharpe" et "echarpe" deviennent comparables. */
-export function normalizeText(text: string): string {
-  return text
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .trim();
+const DIACRITICS = /[\u0300-\u036f]/g;
+
+function removeAccents(text: string): string {
+  return text.normalize('NFD').replace(DIACRITICS, '');
+}
+
+export function normalizeForSearch(text: string): string {
+  return removeAccents(text).toLowerCase().trim();
 }

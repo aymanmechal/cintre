@@ -3,7 +3,6 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import styles from './Layout.module.css';
 
-/** Gabarit commun : en-tête + contenu de la page courante (Outlet) + pied de page. */
 export function Layout() {
   return (
     <div className={styles.layout}>

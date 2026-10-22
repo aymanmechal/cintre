@@ -1,8 +1,7 @@
 import type { Piece, PieceDetail } from '../../types/piece';
-import type { ApiProduct } from './dummyjsonTypes';
+import type { ApiProduct } from './dummyJsonTypes';
 
-/** Traduit un produit DummyJSON en Piece : si l'API change, seul ce fichier bouge. */
-export function toPiece(product: ApiProduct): Piece {
+export function mapApiProductToPiece(product: ApiProduct): Piece {
   return {
     id: product.id,
     title: product.title,
@@ -15,9 +14,9 @@ export function toPiece(product: ApiProduct): Piece {
   };
 }
 
-export function toPieceDetail(product: ApiProduct): PieceDetail {
+export function mapApiProductToPieceDetail(product: ApiProduct): PieceDetail {
   return {
-    ...toPiece(product),
+    ...mapApiProductToPiece(product),
     description: product.description ?? '',
     images: product.images ?? [product.thumbnail],
     warrantyInformation: product.warrantyInformation ?? '',

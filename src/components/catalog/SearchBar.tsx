@@ -2,7 +2,7 @@ import { useCatalogFilters } from '../../contexts/catalogFilters/useCatalogFilte
 import styles from './SearchBar.module.css';
 
 export function SearchBar() {
-  const { filters, setQuery } = useCatalogFilters();
+  const { filters, changeQuery } = useCatalogFilters();
 
   return (
     <div className={styles.search}>
@@ -15,7 +15,7 @@ export function SearchBar() {
         type="search"
         placeholder="Rechercher une pièce, une marque, un type…"
         value={filters.query}
-        onChange={(event) => setQuery(event.target.value)}
+        onChange={(event) => changeQuery(event.target.value)}
       />
     </div>
   );

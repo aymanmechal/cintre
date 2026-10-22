@@ -30,7 +30,6 @@
   filter: brightness(0.92);
 }
 
-/* Écran étroit : la navigation passe sur sa propre ligne. */
 @media (max-width: 720px) {
   .inner {
     flex-wrap: wrap;

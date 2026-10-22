@@ -7,7 +7,6 @@ const NAV_LINKS = [
   { to: ROUTES.wardrobe, label: 'Ma garde-robe' },
 ] as const;
 
-/** NavLink ajoute aria-current="page" au lien actif : on s'en sert aussi pour le style. */
 export function MainNav() {
   return (
     <nav aria-label="Navigation principale">

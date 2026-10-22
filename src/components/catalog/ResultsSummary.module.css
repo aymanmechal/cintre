@@ -8,10 +8,6 @@
   color: var(--color-ink-muted);
 }
 
-.summary strong {
-  color: var(--color-ink);
-}
-
 .reset {
   border: none;
   background: none;

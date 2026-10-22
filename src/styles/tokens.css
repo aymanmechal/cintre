@@ -1,10 +1,4 @@
-/*
- * Design tokens : une seule source de vérité pour la DA.
- * Les noms décrivent un RÔLE (ink, surface, action…), jamais une teinte :
- * on peut changer une couleur ou ajouter un thème sans toucher aux composants.
- */
 :root {
-  /* Couleurs */
   --color-bg: #f6f1ec;
   --color-surface: #ffffff;
   --color-ink: #0b2233;
@@ -17,16 +11,13 @@
   --color-badge: #e6c82a;
   --color-success: #00b181;
 
-  /* Typographie */
   --font-heading: 'Bricolage Grotesque', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
 
-  /* Formes */
   --radius-block: 12px;
   --radius-card: 24px;
   --radius-pill: 9999px;
 
-  /* Espacements (échelle 4/8/16/24/40/64) */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 16px;
@@ -34,14 +25,11 @@
   --space-5: 40px;
   --space-6: 64px;
 
-  /* Effets */
   --shadow-soft: 0 18px 40px -18px rgb(11 34 51 / 35%);
 
-  /* Mise en page */
   --container-max: 1200px;
 }
 
-/* Thème sombre : seules les valeurs changent, les noms restent. */
 [data-theme='dark'] {
   --color-bg: #141414;
   --color-surface: #1f1f1f;

@@ -1,4 +1,3 @@
-/** Erreur HTTP avec son code (404, 503…), pour pouvoir réagir différemment selon le cas. */
 export class HttpError extends Error {
   readonly status: number;
 
@@ -9,17 +8,14 @@ export class HttpError extends Error {
   }
 }
 
-/**
- * fetch + vérification du statut + JSON typé.
- * Piège classique : fetch ne rejette PAS sur une 404/500, seulement sur une panne réseau.
- * On vérifie donc response.ok nous-mêmes.
- */
-export async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, init);
-
+function throwIfNotOk(response: Response): void {
   if (!response.ok) {
     throw new HttpError(response.status);
   }
+}
 
+export async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
+  const response = await fetch(url, init);
+  throwIfNotOk(response);
   return (await response.json()) as T;
 }
