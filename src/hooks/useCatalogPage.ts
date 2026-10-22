@@ -2,6 +2,7 @@ import { PIECES_PER_PAGE } from '../constants/catalog';
 import { useCatalogFilters } from '../contexts/catalogFilters/useCatalogFilters';
 import type { Piece } from '../types/piece';
 import { filterPieces } from '../utils/filterPieces';
+import { sortPieces } from '../utils/sortPieces';
 import { clampPage, countPages, getPageItems } from '../utils/pagination';
 
 export interface CatalogPageResult {
@@ -14,7 +15,7 @@ export interface CatalogPageResult {
 export function useCatalogPage(pieces: readonly Piece[]): CatalogPageResult {
   const { filters } = useCatalogFilters();
 
-  const matchingPieces = filterPieces(pieces, filters);
+  const matchingPieces = sortPieces(filterPieces(pieces, filters), filters.sortOrder);
   const pageCount = countPages(matchingPieces.length, PIECES_PER_PAGE);
   const page = clampPage(filters.page, pageCount);
 

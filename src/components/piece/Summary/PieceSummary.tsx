@@ -1,5 +1,5 @@
+import { PIECE_TYPE_LABELS } from '../../../constants/categories';
 import type { PieceDetail } from '../../../types/piece';
-import { getCategoryLabel } from '../../../utils/categories';
 import { formatBrand } from '../../../utils/format';
 import { Badge } from '../../ui/Badge/Badge';
 import { PiecePrice } from './PiecePrice';
@@ -13,7 +13,7 @@ interface PieceSummaryProps {
 export function PieceSummary({ piece }: PieceSummaryProps) {
   return (
     <div className={styles.summary}>
-      <Badge label={getCategoryLabel(piece.category)} />
+      <Badge label={PIECE_TYPE_LABELS[piece.pieceType]} />
       <p className={styles.brand}>{formatBrand(piece.brand)}</p>
       <h1 className={styles.title}>{piece.title}</h1>
       <div className={styles.priceRow}>

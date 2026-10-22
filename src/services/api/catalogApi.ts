@@ -1,5 +1,5 @@
 import type { Piece, PieceDetail } from '../../types/piece';
-import { isClothingCategory } from '../../utils/categories';
+import { classifyPieceType } from '../../utils/categories';
 import type { ApiProduct, ApiProductList } from './dummyJsonTypes';
 import { NotFoundError } from './errors';
 import { fetchJson } from './http';
@@ -9,23 +9,25 @@ const PRODUCTS_URL = 'https://dummyjson.com/products';
 const PIECE_CARD_FIELDS = 'title,brand,category,price,rating,stock,thumbnail';
 const ALL_PRODUCTS_URL = `${PRODUCTS_URL}?limit=0&select=${PIECE_CARD_FIELDS}`;
 
-function keepClothingProducts(products: readonly ApiProduct[]): ApiProduct[] {
-  return products.filter((product) => isClothingCategory(product.category));
+function toClothingPiece(product: ApiProduct): Piece | null {
+  const pieceType = classifyPieceType(product.title, product.category);
+  return pieceType ? mapApiProductToPiece(product, pieceType) : null;
 }
 
-function ensureIsClothing(product: ApiProduct): ApiProduct {
-  if (!isClothingCategory(product.category)) {
-    throw new NotFoundError(`Pièce ${product.id}`);
-  }
-  return product;
+function isPiece(piece: Piece | null): piece is Piece {
+  return piece !== null;
 }
 
 export async function fetchCatalog(signal?: AbortSignal): Promise<Piece[]> {
   const productList = await fetchJson<ApiProductList>(ALL_PRODUCTS_URL, { signal });
-  return keepClothingProducts(productList.products).map(mapApiProductToPiece);
+  return productList.products.map(toClothingPiece).filter(isPiece);
 }
 
 export async function fetchPieceById(pieceId: number, signal?: AbortSignal): Promise<PieceDetail> {
   const product = await fetchJson<ApiProduct>(`${PRODUCTS_URL}/${pieceId}`, { signal });
-  return mapApiProductToPieceDetail(ensureIsClothing(product));
+  const pieceType = classifyPieceType(product.title, product.category);
+  if (!pieceType) {
+    throw new NotFoundError(`Pièce ${pieceId}`);
+  }
+  return mapApiProductToPieceDetail(product, pieceType);
 }

@@ -1,6 +1,6 @@
+import { PIECE_TYPE_LABELS } from '../../../constants/categories';
 import { buildPieceUrl } from '../../../routes';
 import type { Piece } from '../../../types/piece';
-import { getCategoryLabel } from '../../../utils/categories';
 import { formatBrand, formatPrice } from '../../../utils/format';
 import { PieceCardBody } from './PieceCardBody';
 import { PieceCardMedia } from './PieceCardMedia';
@@ -13,7 +13,10 @@ interface PieceCardProps {
 export function PieceCard({ piece }: PieceCardProps) {
   return (
     <article className={styles.card}>
-      <PieceCardMedia imageUrl={piece.thumbnail} categoryLabel={getCategoryLabel(piece.category)} />
+      <PieceCardMedia
+        imageUrl={piece.thumbnail}
+        categoryLabel={PIECE_TYPE_LABELS[piece.pieceType]}
+      />
       <PieceCardBody
         brand={formatBrand(piece.brand)}
         title={piece.title}

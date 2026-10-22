@@ -2,29 +2,24 @@ import { PIECE_TYPE_LABELS, PIECE_TYPES } from '../../../constants/categories';
 import { ALL_PIECE_TYPES } from '../../../contexts/catalogFilters/catalogFiltersReducer';
 import { useCatalogFilters } from '../../../contexts/catalogFilters/useCatalogFilters';
 import { toPieceTypeFilter } from '../../../utils/categories';
-import styles from './PieceTypeSelect.module.css';
+import { SelectField } from '../../ui/Form/SelectField';
+import type { SelectOption } from '../../ui/Form/selectOption';
+
+const PIECE_TYPE_OPTIONS: readonly SelectOption[] = [
+  { value: ALL_PIECE_TYPES, label: 'Tous les types' },
+  ...PIECE_TYPES.map((pieceType) => ({ value: pieceType, label: PIECE_TYPE_LABELS[pieceType] })),
+];
 
 export function PieceTypeSelect() {
   const { filters, changePieceType } = useCatalogFilters();
 
   return (
-    <div className={styles.field}>
-      <label className={styles.label} htmlFor="catalog-piece-type">
-        Type
-      </label>
-      <select
-        id="catalog-piece-type"
-        className={styles.select}
-        value={filters.pieceType}
-        onChange={(event) => changePieceType(toPieceTypeFilter(event.target.value))}
-      >
-        <option value={ALL_PIECE_TYPES}>Tous les types</option>
-        {PIECE_TYPES.map((pieceType) => (
-          <option key={pieceType} value={pieceType}>
-            {PIECE_TYPE_LABELS[pieceType]}
-          </option>
-        ))}
-      </select>
-    </div>
+    <SelectField
+      id="catalog-piece-type"
+      label="Type"
+      value={filters.pieceType}
+      options={PIECE_TYPE_OPTIONS}
+      onChange={(value) => changePieceType(toPieceTypeFilter(value))}
+    />
   );
 }

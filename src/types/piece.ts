@@ -1,8 +1,10 @@
+import type { PieceType } from '../constants/categories';
+
 export interface Piece {
   id: number;
   title: string;
   brand: string | null;
-  category: string;
+  pieceType: PieceType;
   price: number;
   rating: number;
   stock: number;

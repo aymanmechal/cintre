@@ -1,9 +1,11 @@
 import { createContext } from 'react';
+import type { PieceSortOrder } from '../../constants/sorting';
 import type { CatalogFilters, PieceTypeFilter } from './catalogFiltersReducer';
 
 export interface CatalogFiltersActions {
   changeQuery: (query: string) => void;
   changePieceType: (pieceType: PieceTypeFilter) => void;
+  changeSortOrder: (sortOrder: PieceSortOrder) => void;
   changePage: (page: number) => void;
   resetFilters: () => void;
 }

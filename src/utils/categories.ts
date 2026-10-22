@@ -1,25 +1,30 @@
 import {
   CLOTHING_CATEGORIES,
-  PIECE_TYPE_LABELS,
   PIECE_TYPES,
+  TITLE_KEYWORD_RULES,
   type PieceType,
 } from '../constants/categories';
 import {
   ALL_PIECE_TYPES,
   type PieceTypeFilter,
 } from '../contexts/catalogFilters/catalogFiltersReducer';
+import { normalizeForSearch } from './text';
 
-export function isClothingCategory(categorySlug: string): boolean {
-  return CLOTHING_CATEGORIES.some((category) => category.slug === categorySlug);
-}
-
-export function findPieceTypeOfCategory(categorySlug: string): PieceType | undefined {
+function findPieceTypeOfCategory(categorySlug: string): PieceType | undefined {
   return CLOTHING_CATEGORIES.find((category) => category.slug === categorySlug)?.pieceType;
 }
 
-export function getCategoryLabel(categorySlug: string): string {
-  const pieceType = findPieceTypeOfCategory(categorySlug);
-  return pieceType ? PIECE_TYPE_LABELS[pieceType] : categorySlug;
+function findPieceTypeInTitle(title: string): PieceType | undefined {
+  const words = normalizeForSearch(title).split(/\s+/);
+  return TITLE_KEYWORD_RULES.find((rule) =>
+    rule.keywords.some((keyword) => words.includes(keyword)),
+  )?.pieceType;
+}
+
+export function classifyPieceType(title: string, categorySlug: string): PieceType | undefined {
+  const categoryPieceType = findPieceTypeOfCategory(categorySlug);
+  if (!categoryPieceType) return undefined;
+  return findPieceTypeInTitle(title) ?? categoryPieceType;
 }
 
 export function toPieceTypeFilter(value: string): PieceTypeFilter {

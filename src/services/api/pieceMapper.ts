@@ -1,12 +1,13 @@
+import type { PieceType } from '../../constants/categories';
 import type { Piece, PieceDetail } from '../../types/piece';
 import type { ApiProduct } from './dummyJsonTypes';
 
-export function mapApiProductToPiece(product: ApiProduct): Piece {
+export function mapApiProductToPiece(product: ApiProduct, pieceType: PieceType): Piece {
   return {
     id: product.id,
     title: product.title,
     brand: product.brand ?? null,
-    category: product.category,
+    pieceType,
     price: product.price,
     rating: product.rating,
     stock: product.stock,
@@ -14,9 +15,9 @@ export function mapApiProductToPiece(product: ApiProduct): Piece {
   };
 }
 
-export function mapApiProductToPieceDetail(product: ApiProduct): PieceDetail {
+export function mapApiProductToPieceDetail(product: ApiProduct, pieceType: PieceType): PieceDetail {
   return {
-    ...mapApiProductToPiece(product),
+    ...mapApiProductToPiece(product, pieceType),
     description: product.description ?? '',
     images: product.images ?? [product.thumbnail],
     warrantyInformation: product.warrantyInformation ?? '',

@@ -1,14 +1,14 @@
+import { PIECE_TYPE_LABELS } from '../constants/categories';
 import {
   ALL_PIECE_TYPES,
   type CatalogFilters,
   type PieceTypeFilter,
 } from '../contexts/catalogFilters/catalogFiltersReducer';
 import type { Piece } from '../types/piece';
-import { findPieceTypeOfCategory, getCategoryLabel } from './categories';
 import { normalizeForSearch } from './text';
 
 function buildSearchableText(piece: Piece): string {
-  return [piece.title, piece.brand ?? '', getCategoryLabel(piece.category)].join(' ');
+  return [piece.title, piece.brand ?? '', PIECE_TYPE_LABELS[piece.pieceType]].join(' ');
 }
 
 function matchesSearchQuery(piece: Piece, query: string): boolean {
@@ -17,7 +17,7 @@ function matchesSearchQuery(piece: Piece, query: string): boolean {
 }
 
 function matchesPieceType(piece: Piece, pieceType: PieceTypeFilter): boolean {
-  return pieceType === ALL_PIECE_TYPES || findPieceTypeOfCategory(piece.category) === pieceType;
+  return pieceType === ALL_PIECE_TYPES || piece.pieceType === pieceType;
 }
 
 export function filterPieces(pieces: readonly Piece[], filters: CatalogFilters): Piece[] {
