@@ -1,16 +1,17 @@
 import { Outlet } from 'react-router';
-import { Header } from './Header';
 import { Footer } from './Footer';
+import { Header } from './Header';
+import { SkipLink } from './SkipLink';
 import styles from './Layout.module.css';
+
+const MAIN_CONTENT_ID = 'contenu';
 
 export function Layout() {
   return (
     <div className={styles.layout}>
-      <a className={styles.skipLink} href="#contenu">
-        Aller au contenu
-      </a>
+      <SkipLink targetId={MAIN_CONTENT_ID} />
       <Header />
-      <main id="contenu" className={styles.main}>
+      <main id={MAIN_CONTENT_ID} className={styles.main}>
         <Outlet />
       </main>
       <Footer />

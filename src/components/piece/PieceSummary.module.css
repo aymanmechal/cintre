@@ -5,15 +5,6 @@
   gap: var(--space-2);
 }
 
-.badge {
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-pill);
-  background: var(--color-badge);
-  color: #0b2233;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
 .brand {
   color: var(--color-ink-muted);
 }
@@ -26,16 +17,6 @@
   display: flex;
   align-items: baseline;
   gap: var(--space-4);
-}
-
-.price {
-  font-family: var(--font-heading);
-  font-size: 1.75rem;
-  font-weight: 600;
-}
-
-.rating {
-  color: var(--color-ink-muted);
 }
 
 .description {

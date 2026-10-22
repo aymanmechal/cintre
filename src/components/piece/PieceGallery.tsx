@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GalleryMainImage } from './GalleryMainImage';
 import { GalleryThumbnails } from './GalleryThumbnails';
 import styles from './PieceGallery.module.css';
 
@@ -12,9 +13,7 @@ export function PieceGallery({ images, title }: PieceGalleryProps) {
 
   return (
     <div className={styles.gallery}>
-      <div className={styles.mainImage}>
-        <img src={images[selectedIndex]} alt={title} width={600} height={600} />
-      </div>
+      <GalleryMainImage imageUrl={images[selectedIndex]} alt={title} />
       <GalleryThumbnails
         images={images}
         title={title}

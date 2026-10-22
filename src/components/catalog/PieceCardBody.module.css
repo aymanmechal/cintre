@@ -1,0 +1,30 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+}
+
+.brand {
+  color: var(--color-ink-muted);
+  font-size: 0.8125rem;
+}
+
+.title {
+  font-size: 1.0625rem;
+}
+
+.stretchedLink {
+  text-decoration: none;
+}
+
+.stretchedLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.price {
+  margin-top: var(--space-2);
+  font-weight: 600;
+}

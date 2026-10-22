@@ -10,3 +10,7 @@ export function getPageItems<T>(items: readonly T[], page: number, itemsPerPage:
 export function clampPage(page: number, pageCount: number): number {
   return Math.min(Math.max(page, 1), pageCount);
 }
+
+export function listPageNumbers(pageCount: number): number[] {
+  return Array.from({ length: pageCount }, (_, index) => index + 1);
+}

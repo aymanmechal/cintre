@@ -1,8 +1,8 @@
-import { NavLink } from 'react-router';
 import { ROUTES } from '../../routes';
+import { NavItem } from './NavItem';
 import styles from './MainNav.module.css';
 
-const NAV_LINKS = [
+const NAV_ITEMS = [
   { to: ROUTES.catalog, label: 'Catalogue' },
   { to: ROUTES.wardrobe, label: 'Ma garde-robe' },
 ] as const;
@@ -10,12 +10,10 @@ const NAV_LINKS = [
 export function MainNav() {
   return (
     <nav aria-label="Navigation principale">
-      <ul className={styles.list}>
-        {NAV_LINKS.map((link) => (
-          <li key={link.to}>
-            <NavLink className={styles.link} to={link.to}>
-              {link.label}
-            </NavLink>
+      <ul className={styles.navList}>
+        {NAV_ITEMS.map((item) => (
+          <li key={item.to}>
+            <NavItem to={item.to} label={item.label} />
           </li>
         ))}
       </ul>

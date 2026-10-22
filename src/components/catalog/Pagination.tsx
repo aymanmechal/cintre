@@ -1,3 +1,5 @@
+import { PageNumberList } from './PageNumberList';
+import { PaginationStepButton } from './PaginationStepButton';
 import styles from './Pagination.module.css';
 
 interface PaginationProps {
@@ -6,48 +8,22 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-function pageNumbers(pageCount: number): number[] {
-  return Array.from({ length: pageCount }, (_, index) => index + 1);
-}
-
 export function Pagination({ page, pageCount, onPageChange }: PaginationProps) {
   if (pageCount <= 1) return null;
 
   return (
     <nav className={styles.pagination} aria-label="Pagination">
-      <button
-        className={styles.step}
-        type="button"
-        onClick={() => onPageChange(page - 1)}
+      <PaginationStepButton
+        label="← Précédent"
         disabled={page === 1}
-      >
-        ← Précédent
-      </button>
-
-      <ul className={styles.pages}>
-        {pageNumbers(pageCount).map((number) => (
-          <li key={number}>
-            <button
-              className={styles.number}
-              type="button"
-              onClick={() => onPageChange(number)}
-              aria-current={number === page ? 'page' : undefined}
-              aria-label={`Page ${number}`}
-            >
-              {number}
-            </button>
-          </li>
-        ))}
-      </ul>
-
-      <button
-        className={styles.step}
-        type="button"
-        onClick={() => onPageChange(page + 1)}
+        onClick={() => onPageChange(page - 1)}
+      />
+      <PageNumberList page={page} pageCount={pageCount} onPageChange={onPageChange} />
+      <PaginationStepButton
+        label="Suivant →"
         disabled={page === pageCount}
-      >
-        Suivant →
-      </button>
+        onClick={() => onPageChange(page + 1)}
+      />
     </nav>
   );
 }

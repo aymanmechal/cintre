@@ -15,17 +15,3 @@
 .title {
   font-size: 1.25rem;
 }
-
-.retry {
-  margin-top: var(--space-2);
-  padding: var(--space-2) var(--space-4);
-  border: none;
-  border-radius: var(--radius-pill);
-  background: var(--color-action);
-  color: var(--color-on-action);
-  font-weight: 600;
-}
-
-.retry:hover {
-  filter: brightness(0.92);
-}

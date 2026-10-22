@@ -1,5 +1,4 @@
-import { Link } from 'react-router';
-import { ROUTES } from '../../routes';
+import { AddPieceLink } from './AddPieceLink';
 import { Logo } from './Logo';
 import { MainNav } from './MainNav';
 import styles from './Header.module.css';
@@ -10,9 +9,9 @@ export function Header() {
       <div className={styles.inner}>
         <Logo />
         <MainNav />
-        <Link className={styles.addButton} to={ROUTES.addPiece}>
-          + Ajouter une pièce
-        </Link>
+        <div className={styles.actions}>
+          <AddPieceLink />
+        </div>
       </div>
     </header>
   );

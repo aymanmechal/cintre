@@ -1,3 +1,4 @@
+import { GalleryThumbnail } from './GalleryThumbnail';
 import styles from './GalleryThumbnails.module.css';
 
 interface GalleryThumbnailsProps {
@@ -17,17 +18,14 @@ export function GalleryThumbnails({
 
   return (
     <ul className={styles.thumbnails}>
-      {images.map((image, index) => (
-        <li key={image}>
-          <button
-            className={styles.thumbnail}
-            type="button"
-            aria-label={`Voir l’image ${index + 1} de ${title}`}
-            aria-pressed={index === selectedIndex}
+      {images.map((imageUrl, index) => (
+        <li key={imageUrl}>
+          <GalleryThumbnail
+            imageUrl={imageUrl}
+            label={`Voir l’image ${index + 1} de ${title}`}
+            isSelected={index === selectedIndex}
             onClick={() => onSelect(index)}
-          >
-            <img src={image} alt="" width={80} height={80} />
-          </button>
+          />
         </li>
       ))}
     </ul>

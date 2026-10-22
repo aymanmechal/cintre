@@ -1,3 +1,4 @@
+import { Spinner } from './Spinner';
 import styles from './Loader.module.css';
 
 interface LoaderProps {
@@ -7,7 +8,7 @@ interface LoaderProps {
 export function Loader({ label }: LoaderProps) {
   return (
     <div className={styles.loader} role="status">
-      <span className={styles.spinner} aria-hidden="true" />
+      <Spinner />
       <p>{label}</p>
     </div>
   );
