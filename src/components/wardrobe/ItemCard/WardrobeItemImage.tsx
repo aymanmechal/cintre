@@ -14,6 +14,6 @@ export function WardrobeItemImage({ imageUrl }: WardrobeItemImageProps) {
   }
 
   return (
-    <img className={styles.image} src={imageUrl} alt="" loading="lazy" width={120} height={120} />
+    <img className={styles.image} src={imageUrl} alt="" loading="lazy" width={300} height={300} />
   );
 }

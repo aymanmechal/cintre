@@ -1,18 +1,10 @@
-import { formatPieceCount } from '../../../utils/format';
 import styles from './WardrobeHeader.module.css';
 
-interface WardrobeHeaderProps {
-  ownedCount: number;
-  wantedCount: number;
-}
-
-export function WardrobeHeader({ ownedCount, wantedCount }: WardrobeHeaderProps) {
+export function WardrobeHeader() {
   return (
     <header className={styles.header}>
       <h1>Ma garde-robe</h1>
-      <p className={styles.subtitle}>
-        {formatPieceCount(ownedCount)} à moi · {formatPieceCount(wantedCount)} en envie
-      </p>
+      <p className={styles.subtitle}>Retrouve ce que tu possèdes, et surtout où c’est rangé.</p>
     </header>
   );
 }
