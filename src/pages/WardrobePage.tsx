@@ -1,8 +1,14 @@
+import { WardrobeContent } from '../components/wardrobe/WardrobeContent/WardrobeContent';
+import { useWardrobe } from '../contexts/wardrobe/useWardrobe';
+import { formatPageTitle } from '../utils/format';
+
 export function WardrobePage() {
+  const { items } = useWardrobe();
+
   return (
     <section>
-      <h1>Ma garde-robe</h1>
-      <p>Tes pièces sauvegardées — à construire.</p>
+      <title>{formatPageTitle('Ma garde-robe')}</title>
+      <WardrobeContent items={items} />
     </section>
   );
 }

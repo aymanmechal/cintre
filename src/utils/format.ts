@@ -15,6 +15,10 @@ export function formatFoundPiecesCount(count: number): string {
   return count > 1 ? `${count} pièces trouvées` : `${count} pièce trouvée`;
 }
 
+export function formatPieceCount(count: number): string {
+  return count > 1 ? `${count} pièces` : `${count} pièce`;
+}
+
 export function formatRating(rating: number): string {
   return `${ratingFormatter.format(rating)} / 5`;
 }

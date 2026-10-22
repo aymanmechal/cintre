@@ -1,5 +1,6 @@
 import type { PieceDetail } from '../../../types/piece';
 import { formatPageTitle } from '../../../utils/format';
+import { OwnershipPicker } from '../../wardrobe/OwnershipPicker/OwnershipPicker';
 import { PieceFacts } from '../Facts/PieceFacts';
 import { PieceGallery } from '../Gallery/PieceGallery';
 import { PieceSummary } from '../Summary/PieceSummary';
@@ -16,6 +17,7 @@ export function PieceDetailView({ piece }: PieceDetailViewProps) {
       <PieceGallery key={piece.id} images={piece.images} title={piece.title} />
       <div>
         <PieceSummary piece={piece} />
+        <OwnershipPicker piece={piece} />
         <PieceFacts piece={piece} />
       </div>
     </article>

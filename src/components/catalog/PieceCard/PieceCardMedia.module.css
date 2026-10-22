@@ -16,3 +16,9 @@
   top: var(--space-3);
   left: var(--space-3);
 }
+
+.actionPosition {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+}
