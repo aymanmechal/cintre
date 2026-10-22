@@ -2,7 +2,7 @@
 
 Application de garde-robe numérique : on y retrouve les vêtements qu'on possède (et où ils sont rangés), on garde ceux qui font envie, et on ajoute ses propres pièces. Le catalogue vient de l'API publique [DummyJSON](https://dummyjson.com/), filtré pour ne garder que les vêtements et accessoires.
 
-Application en ligne : _à compléter avec le lien Vercel_
+Application en ligne : https://cintre-one.vercel.app/
 
 ## Prérequis
 
