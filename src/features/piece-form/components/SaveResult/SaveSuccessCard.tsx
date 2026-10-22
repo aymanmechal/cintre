@@ -1,3 +1,4 @@
+import { useRevealOnMount } from '../../../../shared/hooks/useRevealOnMount';
 import { ROUTES } from '../../../../shared/routes';
 import type { SavedPiece } from '../../types/pieceForm';
 import { formatApiProductId, formatBrand, formatPrice } from '../../../../shared/utils/format';
@@ -14,9 +15,10 @@ interface SaveSuccessCardProps {
 
 export function SaveSuccessCard({ title, savedPiece }: SaveSuccessCardProps) {
   const { piece, apiProductId } = savedPiece;
+  const cardRef = useRevealOnMount<HTMLDivElement>();
 
   return (
-    <div className={styles.card} role="status">
+    <div ref={cardRef} className={styles.card} role="status">
       <span className={styles.icon} aria-hidden="true">
         {SUCCESS_ICON}
       </span>

@@ -1,0 +1,51 @@
+import { expect, seedStorage, test, wardrobeItem } from './support/test';
+
+const WARDROBE = [
+  wardrobeItem(1, 'Chemise lin', 'chemises'),
+  wardrobeItem(2, 'Baskets', 'chaussures', '2999-01-01'),
+];
+
+test.describe('Garde-robe', () => {
+  test.beforeEach(async ({ page }) => {
+    await seedStorage(page, { 'cintre.wardrobe': WARDROBE });
+  });
+
+  test('signale les pièces oubliées et les met en avant', async ({ page }) => {
+    await page.goto('/garde-robe');
+    await expect(page.getByText(/1 pièce dort dans ta garde-robe/)).toBeVisible();
+    await expect(page.getByText('À ressortir')).toHaveCount(1);
+    await page.getByRole('button', { name: 'Voir les plus oubliées' }).click();
+    await expect(page.getByLabel('Trier')).toHaveValue('oubliees');
+  });
+
+  test("cache les boutons d'édition jusqu'au mode Modifier", async ({ page }) => {
+    await page.goto('/garde-robe');
+    await expect(page.getByRole('link', { name: 'Modifier Chemise lin' })).toHaveCount(0);
+    await page.getByRole('button', { name: 'Modifier', exact: true }).click();
+    await expect(page.getByRole('link', { name: 'Modifier Chemise lin' })).toBeVisible();
+    await page.getByRole('button', { name: 'Terminer' }).click();
+    await expect(page.getByRole('link', { name: 'Modifier Chemise lin' })).toHaveCount(0);
+  });
+
+  test('marque une pièce portée et supprime le rappel', async ({ page }) => {
+    await page.goto('/garde-robe');
+    await page.getByRole('button', { name: 'Modifier', exact: true }).click();
+    const card = page.getByRole('article').filter({ hasText: 'Chemise lin' });
+    await card.getByRole('button', { name: /Portée aujourd'hui/ }).click();
+    await expect(card.getByText("Portée aujourd'hui").first()).toBeVisible();
+    await expect(page.getByText(/dort dans ta garde-robe/)).toHaveCount(0);
+  });
+
+  test('retire une pièce de la garde-robe', async ({ page }) => {
+    await page.goto('/garde-robe');
+    await page.getByRole('button', { name: 'Modifier', exact: true }).click();
+    await page.getByRole('button', { name: 'Retirer Chemise lin de ma garde-robe' }).click();
+    await expect(page.getByRole('heading', { name: 'Chemise lin' })).toHaveCount(0);
+  });
+
+  test('regroupe par type à la demande', async ({ page }) => {
+    await page.goto('/garde-robe');
+    await page.getByLabel('Ranger').selectOption('type');
+    await expect(page.getByRole('heading', { name: 'Chaussures' })).toBeVisible();
+  });
+});

@@ -18,6 +18,8 @@ Object.defineProperty(window, 'matchMedia', {
 
 Object.defineProperty(window, 'scrollTo', { writable: true, value: () => {} });
 
+Element.prototype.scrollIntoView = () => {};
+
 if (!HTMLDialogElement.prototype.showModal) {
   HTMLDialogElement.prototype.showModal = function showModal(this: HTMLDialogElement) {
     this.setAttribute('open', '');
