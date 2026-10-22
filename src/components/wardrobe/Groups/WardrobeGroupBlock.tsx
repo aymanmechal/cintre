@@ -5,9 +5,10 @@ import styles from './WardrobeGroupBlock.module.css';
 
 interface WardrobeGroupBlockProps {
   group: WardrobeGroup;
+  isEditing: boolean;
 }
 
-export function WardrobeGroupBlock({ group }: WardrobeGroupBlockProps) {
+export function WardrobeGroupBlock({ group, isEditing }: WardrobeGroupBlockProps) {
   return (
     <section className={styles.group}>
       {group.title && (
@@ -16,7 +17,7 @@ export function WardrobeGroupBlock({ group }: WardrobeGroupBlockProps) {
           <span className={styles.count}>{formatPieceCount(group.items.length)}</span>
         </div>
       )}
-      <WardrobeItemGrid items={group.items} />
+      <WardrobeItemGrid items={group.items} isEditing={isEditing} />
     </section>
   );
 }

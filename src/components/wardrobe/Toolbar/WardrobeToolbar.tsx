@@ -1,4 +1,5 @@
 import type { WardrobeViewState } from '../../../hooks/useWardrobeView';
+import { EditModeButton } from './EditModeButton';
 import { StatusTabs } from './StatusTabs';
 import { WardrobeGroupingSelect } from './WardrobeGroupingSelect';
 import { WardrobeSortSelect } from './WardrobeSortSelect';
@@ -27,6 +28,7 @@ export function WardrobeToolbar({ viewState }: WardrobeToolbarProps) {
           value={view.grouping}
           onChange={viewState.changeGrouping}
         />
+        <EditModeButton isEditing={viewState.isEditing} onToggle={viewState.toggleEditing} />
       </div>
     </div>
   );

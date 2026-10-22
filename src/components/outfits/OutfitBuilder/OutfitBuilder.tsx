@@ -14,7 +14,7 @@ export function OutfitBuilder() {
       <PieceShelf
         items={items}
         activeSlot={builder.activeSlot}
-        selectedPieceId={builder.selection[builder.activeSlot]}
+        selectedPieceIds={builder.selection[builder.activeSlot]}
         onSelectSlot={builder.selectSlot}
         onToggle={builder.togglePiece}
       />

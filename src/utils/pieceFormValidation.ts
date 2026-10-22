@@ -24,7 +24,7 @@ function validatePrice(price: string): string | undefined {
   return isValidPrice(Number(price)) ? undefined : VALIDATION_MESSAGES.invalidPrice;
 }
 
-function isWebUrl(value: string): boolean {
+export function isWebUrl(value: string): boolean {
   try {
     return ALLOWED_URL_PROTOCOLS.includes(new URL(value).protocol);
   } catch {

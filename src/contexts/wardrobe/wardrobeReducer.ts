@@ -1,8 +1,4 @@
-import {
-  DEFAULT_STORAGE_LOCATION,
-  OwnershipStatus,
-  StorageLocation,
-} from '../../constants/wardrobe';
+import { DEFAULT_STORAGE_LOCATION, OwnershipStatus } from '../../constants/wardrobe';
 import type { Piece } from '../../types/piece';
 import type { WardrobeItem } from '../../types/wardrobe';
 import { findWardrobeItem, toPieceSnapshot } from '../../utils/wardrobe';
@@ -13,7 +9,6 @@ export enum WardrobeActionType {
   ItemAdded = 'itemAdded',
   ItemUpdated = 'itemUpdated',
   PieceRemoved = 'pieceRemoved',
-  LocationChanged = 'locationChanged',
   PiecesWorn = 'piecesWorn',
 }
 
@@ -22,10 +17,9 @@ export type WardrobeAction =
   | { type: WardrobeActionType.ItemAdded; item: WardrobeItem }
   | { type: WardrobeActionType.ItemUpdated; item: WardrobeItem }
   | { type: WardrobeActionType.PieceRemoved; pieceId: number }
-  | { type: WardrobeActionType.LocationChanged; pieceId: number; location: StorageLocation }
   | { type: WardrobeActionType.PiecesWorn; pieceIds: readonly number[]; date: string };
 
-type WardrobeItemChanges = Partial<Pick<WardrobeItem, 'status' | 'location' | 'lastWornOn'>>;
+type WardrobeItemChanges = Partial<Pick<WardrobeItem, 'status'>>;
 
 function changeItem(
   items: readonly WardrobeItem[],
@@ -87,8 +81,6 @@ export function wardrobeReducer(items: WardrobeItem[], action: WardrobeAction): 
       return replaceItem(items, action.item);
     case WardrobeActionType.PieceRemoved:
       return items.filter((item) => item.piece.id !== action.pieceId);
-    case WardrobeActionType.LocationChanged:
-      return changeItem(items, action.pieceId, { location: action.location });
     case WardrobeActionType.PiecesWorn:
       return markPiecesWorn(items, action.pieceIds, action.date);
   }

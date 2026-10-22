@@ -6,4 +6,4 @@ export interface Outfit {
   pieceIds: number[];
 }
 
-export type OutfitSelection = Record<OutfitSlot, number | null>;
+export type OutfitSelection = Record<OutfitSlot, number[]>;

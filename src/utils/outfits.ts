@@ -1,9 +1,10 @@
 import {
   MIN_PIECES_PER_OUTFIT,
   OUTFIT_SLOT_BY_PIECE_TYPE,
+  OUTFIT_SLOT_CAPACITY,
   OUTFIT_SLOTS,
   OutfitReadiness,
-  type OutfitSlot,
+  OutfitSlot,
 } from '../constants/outfits';
 import { OwnershipStatus } from '../constants/wardrobe';
 import type { Outfit, OutfitSelection } from '../types/outfit';
@@ -11,7 +12,12 @@ import type { WardrobeItem } from '../types/wardrobe';
 import { findWardrobeItem } from './wardrobe';
 
 export function createEmptySelection(): OutfitSelection {
-  return Object.fromEntries(OUTFIT_SLOTS.map((slot) => [slot, null])) as OutfitSelection;
+  return {
+    [OutfitSlot.Top]: [],
+    [OutfitSlot.Bottom]: [],
+    [OutfitSlot.Shoes]: [],
+    [OutfitSlot.Accessory]: [],
+  };
 }
 
 export function selectItemsForSlot(
@@ -22,7 +28,7 @@ export function selectItemsForSlot(
 }
 
 export function toPieceIds(selection: OutfitSelection): number[] {
-  return OUTFIT_SLOTS.map((slot) => selection[slot]).filter((pieceId) => pieceId !== null);
+  return OUTFIT_SLOTS.flatMap((slot) => selection[slot]);
 }
 
 export function formatPieceCount(count: number): string {
@@ -43,7 +49,7 @@ export function findNextEmptySlot(selection: OutfitSelection, currentSlot: Outfi
     ...OUTFIT_SLOTS.slice(currentIndex + 1),
     ...OUTFIT_SLOTS.slice(0, currentIndex),
   ];
-  return slotsAfterCurrent.find((slot) => selection[slot] === null) ?? currentSlot;
+  return slotsAfterCurrent.find((slot) => selection[slot].length === 0) ?? currentSlot;
 }
 
 function isWardrobeItem(item: WardrobeItem | undefined): item is WardrobeItem {
@@ -68,13 +74,43 @@ export function resolveSelectedItems(
   return resolvePieceIds(toPieceIds(selection), items);
 }
 
-export function findSelectedItem(
+export function selectSlotItems(
   selection: OutfitSelection,
   slot: OutfitSlot,
   items: readonly WardrobeItem[],
-): WardrobeItem | undefined {
-  const pieceId = selection[slot];
-  return pieceId === null ? undefined : findWardrobeItem(items, pieceId);
+): WardrobeItem[] {
+  return resolvePieceIds(selection[slot], items);
+}
+
+export function isSingleSlot(slot: OutfitSlot): boolean {
+  return OUTFIT_SLOT_CAPACITY[slot] === 1;
+}
+
+export function canAddAnotherPiece(selection: OutfitSelection, slot: OutfitSlot): boolean {
+  const pieceCount = selection[slot].length;
+  return pieceCount > 0 && pieceCount < OUTFIT_SLOT_CAPACITY[slot];
+}
+
+export function togglePieceInSlot(
+  selection: OutfitSelection,
+  slot: OutfitSlot,
+  pieceId: number,
+): OutfitSelection {
+  const current = selection[slot];
+  if (current.includes(pieceId)) {
+    return { ...selection, [slot]: current.filter((id) => id !== pieceId) };
+  }
+  if (isSingleSlot(slot)) return { ...selection, [slot]: [pieceId] };
+  if (current.length >= OUTFIT_SLOT_CAPACITY[slot]) return selection;
+  return { ...selection, [slot]: [...current, pieceId] };
+}
+
+export function removePieceFromSlot(
+  selection: OutfitSelection,
+  slot: OutfitSlot,
+  pieceId: number,
+): OutfitSelection {
+  return { ...selection, [slot]: selection[slot].filter((id) => id !== pieceId) };
 }
 
 function compareOwnedFirst(first: WardrobeItem, second: WardrobeItem): number {

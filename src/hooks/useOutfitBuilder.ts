@@ -8,7 +8,10 @@ import {
   createEmptySelection,
   createOutfitId,
   findNextEmptySlot,
+  isSingleSlot,
+  removePieceFromSlot,
   toPieceIds,
+  togglePieceInSlot,
 } from '../utils/outfits';
 
 export interface OutfitBuilderState {
@@ -21,7 +24,7 @@ export interface OutfitBuilderState {
   changeName: (name: string) => void;
   selectSlot: (slot: OutfitSlot) => void;
   togglePiece: (pieceId: number) => void;
-  clearSlot: (slot: OutfitSlot) => void;
+  clearPiece: (slot: OutfitSlot, pieceId: number) => void;
   save: (event: FormEvent<HTMLFormElement>) => void;
 }
 
@@ -41,14 +44,16 @@ export function useOutfitBuilder(): OutfitBuilderState {
   }
 
   function togglePiece(pieceId: number) {
-    const isAlreadySelected = selection[activeSlot] === pieceId;
-    const nextSelection = { ...selection, [activeSlot]: isAlreadySelected ? null : pieceId };
+    const nextSelection = togglePieceInSlot(selection, activeSlot, pieceId);
     updateSelection(nextSelection);
-    if (!isAlreadySelected) setActiveSlot(findNextEmptySlot(nextSelection, activeSlot));
+    const wasAdded = nextSelection[activeSlot].includes(pieceId);
+    if (wasAdded && isSingleSlot(activeSlot)) {
+      setActiveSlot(findNextEmptySlot(nextSelection, activeSlot));
+    }
   }
 
-  function clearSlot(slot: OutfitSlot) {
-    updateSelection({ ...selection, [slot]: null });
+  function clearPiece(slot: OutfitSlot, pieceId: number) {
+    updateSelection(removePieceFromSlot(selection, slot, pieceId));
     setActiveSlot(slot);
   }
 
@@ -80,7 +85,7 @@ export function useOutfitBuilder(): OutfitBuilderState {
     changeName: setName,
     selectSlot: setActiveSlot,
     togglePiece,
-    clearSlot,
+    clearPiece,
     save,
   };
 }

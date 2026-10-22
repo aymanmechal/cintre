@@ -42,7 +42,7 @@ export function WardrobeResults({ viewState }: WardrobeResultsProps) {
           onShowForgotten={viewState.changeSortOrder}
         />
       )}
-      <WardrobeGroupList groups={groups} />
+      <WardrobeGroupList groups={groups} isEditing={viewState.isEditing} />
     </>
   );
 }

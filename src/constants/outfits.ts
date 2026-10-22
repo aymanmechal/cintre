@@ -18,7 +18,16 @@ export const OUTFIT_SLOT_PROMPTS: Record<OutfitSlot, string> = {
   [OutfitSlot.Top]: 'Choisis ton haut',
   [OutfitSlot.Bottom]: 'Choisis ton bas',
   [OutfitSlot.Shoes]: 'Choisis tes chaussures',
-  [OutfitSlot.Accessory]: 'Choisis un accessoire',
+  [OutfitSlot.Accessory]: 'Choisis tes accessoires',
+};
+
+export const MAX_ACCESSORIES_PER_OUTFIT = 4;
+
+export const OUTFIT_SLOT_CAPACITY: Record<OutfitSlot, number> = {
+  [OutfitSlot.Top]: 1,
+  [OutfitSlot.Bottom]: 1,
+  [OutfitSlot.Shoes]: 1,
+  [OutfitSlot.Accessory]: MAX_ACCESSORIES_PER_OUTFIT,
 };
 
 export const OUTFIT_SLOTS = Object.values(OutfitSlot);

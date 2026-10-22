@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { OwnershipStatus, StorageLocation } from '../../constants/wardrobe';
+import type { OwnershipStatus } from '../../constants/wardrobe';
 import type { Piece } from '../../types/piece';
 import type { WardrobeItem } from '../../types/wardrobe';
 
@@ -10,7 +10,6 @@ export interface WardrobeActions {
   removePiece: (pieceId: number) => void;
   markWorn: (pieceId: number) => void;
   markPiecesWorn: (pieceIds: readonly number[], date: string) => void;
-  changeLocation: (pieceId: number, location: StorageLocation) => void;
 }
 
 export interface WardrobeValue extends WardrobeActions {

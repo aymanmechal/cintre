@@ -45,3 +45,5 @@ export const EDIT_PIECE_FORM_LABELS: PieceFormLabels = {
   success: 'Modifications enregistrées',
   error: 'Impossible d’enregistrer. Vérifie ta connexion puis réessaie.',
 };
+
+export const PREVIEW_TITLE_PLACEHOLDER = 'Nom de ta pièce';

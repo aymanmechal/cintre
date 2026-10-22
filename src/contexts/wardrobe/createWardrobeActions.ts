@@ -17,7 +17,5 @@ export function createWardrobeActions(dispatch: Dispatch<WardrobeAction>): Wardr
       }),
     markPiecesWorn: (pieceIds, date) =>
       dispatch({ type: WardrobeActionType.PiecesWorn, pieceIds, date }),
-    changeLocation: (pieceId, location) =>
-      dispatch({ type: WardrobeActionType.LocationChanged, pieceId, location }),
   };
 }

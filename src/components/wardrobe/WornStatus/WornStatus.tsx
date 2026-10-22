@@ -7,9 +7,10 @@ import styles from './WornStatus.module.css';
 
 interface WornStatusProps {
   item: WardrobeItem;
+  isEditing: boolean;
 }
 
-export function WornStatus({ item }: WornStatusProps) {
+export function WornStatus({ item, isEditing }: WornStatusProps) {
   const today = useToday();
 
   return (
@@ -19,7 +20,7 @@ export function WornStatus({ item }: WornStatusProps) {
         isForgotten={isForgotten(item, today)}
         today={today}
       />
-      <MarkWornButton pieceId={item.piece.id} />
+      {isEditing && <MarkWornButton pieceId={item.piece.id} />}
     </div>
   );
 }

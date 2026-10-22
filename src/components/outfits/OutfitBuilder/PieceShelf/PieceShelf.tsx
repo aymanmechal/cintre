@@ -9,7 +9,7 @@ import styles from './PieceShelf.module.css';
 interface PieceShelfProps {
   items: readonly WardrobeItem[];
   activeSlot: OutfitSlot;
-  selectedPieceId: number | null;
+  selectedPieceIds: readonly number[];
   onSelectSlot: (slot: OutfitSlot) => void;
   onToggle: (pieceId: number) => void;
 }
@@ -17,7 +17,7 @@ interface PieceShelfProps {
 export function PieceShelf({
   items,
   activeSlot,
-  selectedPieceId,
+  selectedPieceIds,
   onSelectSlot,
   onToggle,
 }: PieceShelfProps) {
@@ -36,7 +36,11 @@ export function PieceShelf({
       {shelfItems.length === 0 ? (
         <EmptyShelf slot={activeSlot} />
       ) : (
-        <PieceOptionGrid items={shelfItems} selectedPieceId={selectedPieceId} onToggle={onToggle} />
+        <PieceOptionGrid
+          items={shelfItems}
+          selectedPieceIds={selectedPieceIds}
+          onToggle={onToggle}
+        />
       )}
     </section>
   );

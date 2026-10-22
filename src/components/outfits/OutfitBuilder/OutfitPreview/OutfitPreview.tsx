@@ -1,7 +1,11 @@
 import { OUTFIT_SLOTS } from '../../../../constants/outfits';
 import type { OutfitBuilderState } from '../../../../hooks/useOutfitBuilder';
 import type { WardrobeItem } from '../../../../types/wardrobe';
-import { findSelectedItem, resolveSelectedItems } from '../../../../utils/outfits';
+import {
+  canAddAnotherPiece,
+  resolveSelectedItems,
+  selectSlotItems,
+} from '../../../../utils/outfits';
 import { TextField } from '../../../ui/Form/TextField';
 import { OutfitSaveBar } from './OutfitSaveBar';
 import { OutfitSelectionSummary } from './OutfitSelectionSummary';
@@ -24,10 +28,11 @@ export function OutfitPreview({ items, builder }: OutfitPreviewProps) {
           <OutfitSlotTile
             key={slot}
             slot={slot}
-            item={findSelectedItem(builder.selection, slot, items)}
+            items={selectSlotItems(builder.selection, slot, items)}
             isActive={slot === builder.activeSlot}
             onSelect={builder.selectSlot}
-            onClear={builder.clearSlot}
+            canAddAnother={canAddAnotherPiece(builder.selection, slot)}
+            onClear={builder.clearPiece}
           />
         ))}
       </ul>

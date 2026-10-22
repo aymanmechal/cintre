@@ -1,25 +1,18 @@
 import { SubmitStatus } from '../../../constants/pieceForm';
-import { usePieceForm, type SavePieceForm } from '../../../hooks/usePieceForm';
-import type { PieceFormLabels, PieceFormValues } from '../../../types/pieceForm';
-import { PieceFormFeedback } from './PieceFormFeedback';
+import type { PieceFormState } from '../../../hooks/usePieceForm';
+import type { PieceFormLabels } from '../../../types/pieceForm';
 import { PieceFormSubmitButton } from './PieceFormSubmitButton';
 import { PieceIdentityFields } from './PieceIdentityFields';
 import { PieceStorageFields } from './PieceStorageFields';
 import styles from './PieceForm.module.css';
 
 interface PieceFormProps {
-  initialValues: PieceFormValues;
+  form: PieceFormState;
   labels: PieceFormLabels;
-  onSave: SavePieceForm;
-  shouldResetOnSuccess: boolean;
 }
 
-export function PieceForm({ initialValues, labels, onSave, shouldResetOnSuccess }: PieceFormProps) {
-  const { values, errors, submitStatus, savedPiece, changeField, submit } = usePieceForm({
-    initialValues,
-    onSave,
-    shouldResetOnSuccess,
-  });
+export function PieceForm({ form, labels }: PieceFormProps) {
+  const { values, errors, submitStatus, changeField, submit } = form;
 
   return (
     <form className={styles.form} noValidate onSubmit={submit}>
@@ -32,7 +25,6 @@ export function PieceForm({ initialValues, labels, onSave, shouldResetOnSuccess 
           labels={labels}
         />
       </div>
-      <PieceFormFeedback submitStatus={submitStatus} labels={labels} savedPiece={savedPiece} />
     </form>
   );
 }

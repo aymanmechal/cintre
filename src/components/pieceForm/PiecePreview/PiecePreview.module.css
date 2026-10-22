@@ -1,0 +1,63 @@
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--piece-type-color, var(--color-surface));
+  transition: background 0.2s ease;
+}
+
+.badgePosition {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+}
+
+.body {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 0 var(--space-1);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.brand {
+  color: var(--color-ink-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.title[data-empty='true'] {
+  color: var(--color-ink-muted);
+}
+
+.price {
+  flex-shrink: 0;
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-stretch: var(--font-stretch-condensed);
+  font-weight: 800;
+}

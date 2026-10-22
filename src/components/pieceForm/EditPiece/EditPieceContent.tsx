@@ -4,7 +4,7 @@ import type { WardrobeItem } from '../../../types/wardrobe';
 import { toPieceFormValues } from '../../../utils/pieceFormValues';
 import { PageHeader } from '../../ui/PageHeader/PageHeader';
 import { DeletePieceSection } from '../DeletePiece/DeletePieceSection';
-import { PieceForm } from '../PieceForm/PieceForm';
+import { PieceFormWorkspace } from '../PieceFormWorkspace/PieceFormWorkspace';
 
 interface EditPieceContentProps {
   item: WardrobeItem;
@@ -16,7 +16,7 @@ export function EditPieceContent({ item }: EditPieceContentProps) {
   return (
     <>
       <PageHeader title="Modifier la pièce" subtitle={item.piece.title} />
-      <PieceForm
+      <PieceFormWorkspace
         initialValues={toPieceFormValues(item)}
         labels={EDIT_PIECE_FORM_LABELS}
         onSave={savePiece}

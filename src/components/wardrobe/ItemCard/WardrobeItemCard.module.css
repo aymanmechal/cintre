@@ -12,32 +12,30 @@
   background: var(--piece-type-color, var(--color-surface));
 }
 
+.card[data-editing='true'] .media {
+  outline: 3px dashed var(--color-ink-muted);
+  outline-offset: 3px;
+}
+
 .badgePosition {
   position: absolute;
   top: var(--space-3);
   left: var(--space-3);
 }
 
-.actionsPosition {
-  display: flex;
-  gap: var(--space-1);
-  position: absolute;
-  top: var(--space-3);
-  right: var(--space-3);
-}
-
-.pickerPosition {
-  position: absolute;
-  right: var(--space-3);
-  bottom: var(--space-3);
-}
-
 .body {
   display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: var(--space-1);
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
   padding: 0 var(--space-1);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 .brand {
@@ -49,17 +47,9 @@
 }
 
 .price {
+  flex-shrink: 0;
   font-family: var(--font-heading);
+  font-size: 1.125rem;
   font-stretch: var(--font-stretch-condensed);
   font-weight: 800;
-}
-
-.footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-  margin-top: auto;
-  padding-top: var(--space-3);
 }
