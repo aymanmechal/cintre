@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 .shots
+
+playwright-report
+test-results

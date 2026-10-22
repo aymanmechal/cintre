@@ -57,7 +57,7 @@ function replaceItem(items: readonly WardrobeItem[], updatedItem: WardrobeItem):
 }
 
 function markPiecesWorn(
-  items: readonly WardrobeItem[],
+  items: WardrobeItem[],
   pieceIds: readonly number[],
   date: string,
 ): WardrobeItem[] {
@@ -68,7 +68,7 @@ function markPiecesWorn(
       ? { ...item, lastWornOn: date }
       : item,
   );
-  return updatedItems.some((item, index) => item !== items[index]) ? updatedItems : [...items];
+  return updatedItems.some((item, index) => item !== items[index]) ? updatedItems : items;
 }
 
 export function wardrobeReducer(items: WardrobeItem[], action: WardrobeAction): WardrobeItem[] {
