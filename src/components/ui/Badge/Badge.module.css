@@ -2,8 +2,13 @@
   display: inline-block;
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-pill);
-  background: var(--color-badge);
-  color: var(--color-on-badge);
+  background: var(--color-ink);
+  color: var(--color-bg);
+  font-family: var(--font-heading);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-stretch: var(--font-stretch-condensed);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transform: rotate(var(--sticker-tilt));
 }

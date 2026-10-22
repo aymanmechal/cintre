@@ -1,0 +1,31 @@
+[data-piece-type='chemises'] {
+  --piece-type-color: var(--candy-blue);
+}
+
+[data-piece-type='hauts'] {
+  --piece-type-color: var(--candy-orange);
+}
+
+[data-piece-type='robes'] {
+  --piece-type-color: var(--candy-pink);
+}
+
+[data-piece-type='chaussures'] {
+  --piece-type-color: var(--candy-green);
+}
+
+[data-piece-type='sacs'] {
+  --piece-type-color: var(--candy-yellow);
+}
+
+[data-piece-type='montres'] {
+  --piece-type-color: var(--candy-sky);
+}
+
+[data-piece-type='bijoux'] {
+  --piece-type-color: var(--candy-violet);
+}
+
+[data-piece-type='lunettes'] {
+  --piece-type-color: var(--candy-lime);
+}

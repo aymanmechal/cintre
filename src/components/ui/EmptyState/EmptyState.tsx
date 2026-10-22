@@ -11,7 +11,7 @@ export function EmptyState({ title, message, action }: EmptyStateProps) {
   return (
     <div className={styles.empty}>
       <h2 className={styles.title}>{title}</h2>
-      <p>{message}</p>
+      <p className={styles.message}>{message}</p>
       {action}
     </div>
   );

@@ -12,7 +12,7 @@ interface PieceDetailViewProps {
 
 export function PieceDetailView({ piece }: PieceDetailViewProps) {
   return (
-    <article className={styles.layout}>
+    <article className={styles.layout} data-piece-type={piece.pieceType}>
       <title>{formatPageTitle(piece.title)}</title>
       <PieceGallery key={piece.id} images={piece.images} title={piece.title} />
       <div>

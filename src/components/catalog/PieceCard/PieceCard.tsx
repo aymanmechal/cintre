@@ -14,7 +14,7 @@ interface PieceCardProps {
 
 export function PieceCard({ piece }: PieceCardProps) {
   return (
-    <article className={styles.card}>
+    <article className={styles.card} data-piece-type={piece.pieceType}>
       <PieceCardMedia
         imageUrl={piece.thumbnail}
         categoryLabel={PIECE_TYPE_LABELS[piece.pieceType]}

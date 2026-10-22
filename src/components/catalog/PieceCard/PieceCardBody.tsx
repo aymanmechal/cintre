@@ -11,12 +11,14 @@ interface PieceCardBodyProps {
 export function PieceCardBody({ brand, title, price, detailUrl }: PieceCardBodyProps) {
   return (
     <div className={styles.body}>
-      <p className={styles.brand}>{brand}</p>
-      <h2 className={styles.title}>
-        <Link className={styles.stretchedLink} to={detailUrl}>
-          {title}
-        </Link>
-      </h2>
+      <div className={styles.text}>
+        <p className={styles.brand}>{brand}</p>
+        <h2 className={styles.title}>
+          <Link className={styles.stretchedLink} to={detailUrl}>
+            {title}
+          </Link>
+        </h2>
+      </div>
       <p className={styles.price}>{price}</p>
     </div>
   );

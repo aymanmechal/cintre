@@ -1,17 +1,28 @@
 .body {
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 0 var(--space-1);
+}
+
+.text {
+  display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-3) var(--space-4) var(--space-4);
+  gap: 2px;
 }
 
 .brand {
   color: var(--color-ink-muted);
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .title {
-  font-size: 1.0625rem;
+  font-size: 1.125rem;
+  line-height: 1.15;
 }
 
 .stretchedLink {
@@ -22,9 +33,13 @@
   content: '';
   position: absolute;
   inset: 0;
+  border-radius: var(--radius-card);
 }
 
 .price {
-  margin-top: var(--space-2);
-  font-weight: 600;
+  flex-shrink: 0;
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-stretch: var(--font-stretch-condensed);
+  font-weight: 800;
 }

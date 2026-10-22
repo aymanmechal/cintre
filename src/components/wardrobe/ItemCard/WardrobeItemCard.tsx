@@ -19,7 +19,7 @@ export function WardrobeItemCard({ item }: WardrobeItemCardProps) {
   const { piece } = item;
 
   return (
-    <article className={styles.card}>
+    <article className={styles.card} data-piece-type={piece.pieceType}>
       <div className={styles.media}>
         <WardrobeItemImage imageUrl={piece.thumbnail} />
         <div className={styles.badgePosition}>

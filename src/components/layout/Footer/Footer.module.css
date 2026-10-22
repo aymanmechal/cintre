@@ -1,14 +1,30 @@
 .footer {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: var(--space-6) auto 0;
+  padding: 0 var(--space-4) var(--space-4);
+  overflow: hidden;
+  font-size: 0.875rem;
+}
+
+.wordmark {
+  color: var(--color-primary);
+  font-family: var(--font-heading);
+  font-size: clamp(6rem, 30vw, 23rem);
+  font-stretch: var(--font-stretch-condensed);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.01em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.meta {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: var(--space-2);
-  width: 100%;
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: var(--space-4);
-  border-top: 1px solid var(--color-border);
-  font-size: 0.875rem;
+  padding-top: var(--space-3);
 }
 
 .source {

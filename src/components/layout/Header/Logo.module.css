@@ -3,7 +3,10 @@
   align-items: center;
   gap: var(--space-2);
   font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.75rem;
+  font-stretch: var(--font-stretch-condensed);
+  font-weight: 800;
+  letter-spacing: -0.01em;
   text-decoration: none;
+  text-transform: uppercase;
 }

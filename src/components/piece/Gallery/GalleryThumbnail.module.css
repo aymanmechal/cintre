@@ -4,7 +4,7 @@
   padding: var(--space-1);
   border: 2px solid var(--color-border);
   border-radius: var(--radius-block);
-  background: var(--color-surface);
+  background: var(--piece-type-color, var(--color-surface));
 }
 
 .thumbnail img {
@@ -18,5 +18,5 @@
 }
 
 .thumbnail[aria-pressed='true'] {
-  border-color: var(--color-primary);
+  border-color: var(--color-ink);
 }
