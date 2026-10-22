@@ -27,7 +27,7 @@ export function OwnershipPicker({
   }
 
   return (
-    <div className={`${styles.picker} ${styles[size]}`} role="group" aria-label="Ma garde-robe">
+    <div className={`${styles.picker} ${styles[size]}`} role="group" aria-label="Ma garde - robe">
       {OWNERSHIP_STATUSES.map((status) => (
         <OwnershipStatusButton
           key={status}

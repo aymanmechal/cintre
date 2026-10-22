@@ -31,6 +31,17 @@ export function countForgottenItems(items: readonly WardrobeItem[], now: Date): 
   return items.filter((item) => isForgotten(item, now)).length;
 }
 
+export function selectMostForgottenItems(
+  items: readonly WardrobeItem[],
+  today: Date,
+  limit: number,
+): WardrobeItem[] {
+  return items
+    .filter((item) => isForgotten(item, today))
+    .toSorted(compareByLeastRecentlyWorn)
+    .slice(0, limit);
+}
+
 export function compareByLeastRecentlyWorn(first: WardrobeItem, second: WardrobeItem): number {
   return (first.lastWornOn ?? '').localeCompare(second.lastWornOn ?? '');
 }

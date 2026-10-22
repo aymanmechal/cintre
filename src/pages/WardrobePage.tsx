@@ -12,7 +12,7 @@ export function WardrobePage() {
 
   return (
     <section>
-      <title>{formatPageTitle('Ma garde - robe')}</title>
+      <title>{formatPageTitle('Ma garde-robe')}</title>
       <WardrobeHeader />
       {items.length === 0 ? (
         <EmptyWardrobe />
