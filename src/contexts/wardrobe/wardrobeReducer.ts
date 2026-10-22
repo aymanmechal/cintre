@@ -6,6 +6,7 @@ import {
 import type { Piece } from '../../types/piece';
 import type { WardrobeItem } from '../../types/wardrobe';
 import { findWardrobeItem, toPieceSnapshot } from '../../utils/wardrobe';
+import { isNewerWornDate } from '../../utils/wornDates';
 
 export enum WardrobeActionType {
   PieceSaved = 'pieceSaved',
@@ -13,7 +14,7 @@ export enum WardrobeActionType {
   ItemUpdated = 'itemUpdated',
   PieceRemoved = 'pieceRemoved',
   LocationChanged = 'locationChanged',
-  PieceWorn = 'pieceWorn',
+  PiecesWorn = 'piecesWorn',
 }
 
 export type WardrobeAction =
@@ -22,7 +23,7 @@ export type WardrobeAction =
   | { type: WardrobeActionType.ItemUpdated; item: WardrobeItem }
   | { type: WardrobeActionType.PieceRemoved; pieceId: number }
   | { type: WardrobeActionType.LocationChanged; pieceId: number; location: StorageLocation }
-  | { type: WardrobeActionType.PieceWorn; pieceId: number; date: string };
+  | { type: WardrobeActionType.PiecesWorn; pieceIds: readonly number[]; date: string };
 
 type WardrobeItemChanges = Partial<Pick<WardrobeItem, 'status' | 'location' | 'lastWornOn'>>;
 
@@ -61,6 +62,20 @@ function replaceItem(items: readonly WardrobeItem[], updatedItem: WardrobeItem):
   return items.map((item) => (item.piece.id === updatedItem.piece.id ? updatedItem : item));
 }
 
+function markPiecesWorn(
+  items: readonly WardrobeItem[],
+  pieceIds: readonly number[],
+  date: string,
+): WardrobeItem[] {
+  return items.map((item) =>
+    pieceIds.includes(item.piece.id) &&
+    item.status === OwnershipStatus.Owned &&
+    isNewerWornDate(date, item.lastWornOn)
+      ? { ...item, lastWornOn: date }
+      : item,
+  );
+}
+
 export function wardrobeReducer(items: WardrobeItem[], action: WardrobeAction): WardrobeItem[] {
   switch (action.type) {
     case WardrobeActionType.PieceSaved:
@@ -73,7 +88,7 @@ export function wardrobeReducer(items: WardrobeItem[], action: WardrobeAction): 
       return items.filter((item) => item.piece.id !== action.pieceId);
     case WardrobeActionType.LocationChanged:
       return changeItem(items, action.pieceId, { location: action.location });
-    case WardrobeActionType.PieceWorn:
-      return changeItem(items, action.pieceId, { lastWornOn: action.date });
+    case WardrobeActionType.PiecesWorn:
+      return markPiecesWorn(items, action.pieceIds, action.date);
   }
 }

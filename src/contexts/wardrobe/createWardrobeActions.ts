@@ -10,7 +10,13 @@ export function createWardrobeActions(dispatch: Dispatch<WardrobeAction>): Wardr
     updateItem: (item) => dispatch({ type: WardrobeActionType.ItemUpdated, item }),
     removePiece: (pieceId) => dispatch({ type: WardrobeActionType.PieceRemoved, pieceId }),
     markWorn: (pieceId) =>
-      dispatch({ type: WardrobeActionType.PieceWorn, pieceId, date: toIsoDate(new Date()) }),
+      dispatch({
+        type: WardrobeActionType.PiecesWorn,
+        pieceIds: [pieceId],
+        date: toIsoDate(new Date()),
+      }),
+    markPiecesWorn: (pieceIds, date) =>
+      dispatch({ type: WardrobeActionType.PiecesWorn, pieceIds, date }),
     changeLocation: (pieceId, location) =>
       dispatch({ type: WardrobeActionType.LocationChanged, pieceId, location }),
   };

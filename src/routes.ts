@@ -6,6 +6,7 @@ export const ROUTES = {
   addPiece: '/ajouter',
   editPiece: '/garde-robe/:id/modifier',
   outfits: '/tenues',
+  calendar: '/calendrier',
 } as const;
 
 export function buildPieceUrl(pieceId: number | string): string {

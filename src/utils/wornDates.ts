@@ -15,16 +15,31 @@ export function countDaysSince(isoDate: string, now: Date): number {
 }
 
 export function formatLastWorn(lastWornOn: string | null, now: Date): string {
-  if (lastWornOn === null) return 'Jamais port\u00e9e';
+  if (lastWornOn === null) return 'Jamais portée';
   const days = countDaysSince(lastWornOn, now);
-  if (days <= 0) return "Port\u00e9e aujourd'hui";
-  if (days === 1) return 'Port\u00e9e hier';
-  return `Port\u00e9e il y a ${days} jours`;
+  if (days <= 0) return "Portée aujourd'hui";
+  if (days === 1) return 'Portée hier';
+  return `Portée il y a ${days} jours`;
 }
 
 export function isForgotten(item: WardrobeItem, now: Date): boolean {
   if (item.status !== OwnershipStatus.Owned) return false;
   return item.lastWornOn === null || countDaysSince(item.lastWornOn, now) > FORGOTTEN_AFTER_DAYS;
+}
+
+export function isNewerWornDate(date: string, currentLastWornOn: string | null): boolean {
+  return currentLastWornOn === null || date > currentLastWornOn;
+}
+
+export function formatCalendarDate(isoDate: string, today: Date): string {
+  const days = countDaysSince(isoDate, today);
+  if (days === 0) return "Aujourd'hui";
+  if (days === 1) return 'Hier';
+  return new Date(`${isoDate}T00:00:00`).toLocaleDateString('fr-FR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  });
 }
 
 export function countForgottenItems(items: readonly WardrobeItem[], now: Date): number {

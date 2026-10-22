@@ -6,6 +6,7 @@ const NAV_ITEMS = [
   { to: ROUTES.catalog, label: 'Catalogue' },
   { to: ROUTES.wardrobe, label: 'Ma garde-robe' },
   { to: ROUTES.outfits, label: 'Mes tenues' },
+  { to: ROUTES.calendar, label: 'Mon calendrier' },
 ] as const;
 
 export function MainNav() {
