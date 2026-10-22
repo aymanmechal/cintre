@@ -1,0 +1,23 @@
+.missing {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: auto;
+  padding: var(--space-3);
+  border-radius: var(--radius-block);
+  background: var(--color-bg);
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.list {
+  padding: 0;
+  list-style: none;
+  color: var(--color-ink-muted);
+  font-size: 0.875rem;
+}

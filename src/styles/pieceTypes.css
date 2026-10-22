@@ -29,3 +29,7 @@
 [data-piece-type='lunettes'] {
   --piece-type-color: var(--candy-lime);
 }
+
+[data-piece-type='bas'] {
+  --piece-type-color: var(--candy-mint);
+}

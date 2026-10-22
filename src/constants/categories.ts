@@ -1,6 +1,7 @@
 export enum PieceType {
   Shirts = 'chemises',
   Tops = 'hauts',
+  Bottoms = 'bas',
   Dresses = 'robes',
   Shoes = 'chaussures',
   Bags = 'sacs',
@@ -12,6 +13,7 @@ export enum PieceType {
 export const PIECE_TYPE_LABELS: Record<PieceType, string> = {
   [PieceType.Shirts]: 'Chemises',
   [PieceType.Tops]: 'Hauts',
+  [PieceType.Bottoms]: 'Bas',
   [PieceType.Dresses]: 'Robes',
   [PieceType.Shoes]: 'Chaussures',
   [PieceType.Bags]: 'Sacs',

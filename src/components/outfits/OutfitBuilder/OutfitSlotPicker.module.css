@@ -1,0 +1,12 @@
+.options {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.empty {
+  color: var(--color-ink-muted);
+  font-size: 0.875rem;
+}

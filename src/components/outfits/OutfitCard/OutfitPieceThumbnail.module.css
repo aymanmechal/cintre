@@ -1,0 +1,25 @@
+.thumbnail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 96px;
+}
+
+.media {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-block);
+  background: var(--piece-type-color, var(--color-bg));
+}
+
+.thumbnail[data-status='wanted'] .media {
+  outline: 2px dashed var(--color-wanted);
+  outline-offset: 2px;
+}
+
+.caption {
+  overflow: hidden;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

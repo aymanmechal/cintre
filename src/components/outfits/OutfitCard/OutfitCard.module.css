@@ -1,0 +1,32 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  height: 100%;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.name {
+  flex: 1;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-stretch: var(--font-stretch-condensed);
+  font-weight: 800;
+}
+
+.pieces {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
