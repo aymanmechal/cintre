@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
-import { Layout } from './components/layout/Layout';
+import { Layout } from './components/layout/Layout/Layout';
 import { CatalogFiltersProvider } from './contexts/catalogFilters/CatalogFiltersProvider';
 import { HomePage } from './pages/HomePage';
 import { CatalogPage } from './pages/CatalogPage';

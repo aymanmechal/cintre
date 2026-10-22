@@ -1,7 +1,7 @@
 import { useParams } from 'react-router';
-import { BackToCatalogLink } from '../components/piece/BackToCatalogLink';
-import { PieceDetailLoader } from '../components/piece/PieceDetailLoader';
-import { PieceNotFound } from '../components/piece/PieceNotFound';
+import { BackToCatalogLink } from '../components/piece/PieceDetail/BackToCatalogLink';
+import { PieceDetailLoader } from '../components/piece/PieceDetail/PieceDetailLoader';
+import { PieceNotFound } from '../components/piece/PieceDetail/PieceNotFound';
 import { parsePieceId } from '../utils/pieceId';
 
 export function PieceDetailPage() {

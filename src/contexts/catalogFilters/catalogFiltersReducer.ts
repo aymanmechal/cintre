@@ -11,11 +11,18 @@ export interface CatalogFilters {
   page: number;
 }
 
+export enum CatalogFiltersActionType {
+  QueryChanged = 'queryChanged',
+  PieceTypeChanged = 'pieceTypeChanged',
+  PageChanged = 'pageChanged',
+  FiltersReset = 'filtersReset',
+}
+
 export type CatalogFiltersAction =
-  | { type: 'queryChanged'; query: string }
-  | { type: 'pieceTypeChanged'; pieceType: PieceTypeFilter }
-  | { type: 'pageChanged'; page: number }
-  | { type: 'filtersReset' };
+  | { type: CatalogFiltersActionType.QueryChanged; query: string }
+  | { type: CatalogFiltersActionType.PieceTypeChanged; pieceType: PieceTypeFilter }
+  | { type: CatalogFiltersActionType.PageChanged; page: number }
+  | { type: CatalogFiltersActionType.FiltersReset };
 
 export const INITIAL_CATALOG_FILTERS: CatalogFilters = {
   query: '',
@@ -28,13 +35,13 @@ export function catalogFiltersReducer(
   action: CatalogFiltersAction,
 ): CatalogFilters {
   switch (action.type) {
-    case 'queryChanged':
+    case CatalogFiltersActionType.QueryChanged:
       return { ...filters, query: action.query, page: FIRST_PAGE };
-    case 'pieceTypeChanged':
+    case CatalogFiltersActionType.PieceTypeChanged:
       return { ...filters, pieceType: action.pieceType, page: FIRST_PAGE };
-    case 'pageChanged':
+    case CatalogFiltersActionType.PageChanged:
       return { ...filters, page: action.page };
-    case 'filtersReset':
+    case CatalogFiltersActionType.FiltersReset:
       return INITIAL_CATALOG_FILTERS;
   }
 }

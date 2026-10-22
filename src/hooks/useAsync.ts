@@ -1,15 +1,31 @@
 import { useCallback, useEffect, useState } from 'react';
+import { AsyncStatus } from './asyncStatus';
 
-export type AsyncState<T> =
-  | { status: 'loading'; data: null; error: null }
-  | { status: 'success'; data: T; error: null }
-  | { status: 'error'; data: null; error: Error };
+interface LoadingState {
+  status: AsyncStatus.Loading;
+  data: null;
+  error: null;
+}
+
+interface SuccessState<T> {
+  status: AsyncStatus.Success;
+  data: T;
+  error: null;
+}
+
+interface ErrorState {
+  status: AsyncStatus.Error;
+  data: null;
+  error: Error;
+}
+
+type CompletedState<T> = SuccessState<T> | ErrorState;
+
+export type AsyncState<T> = LoadingState | CompletedState<T>;
 
 export type AsyncResult<T> = AsyncState<T> & { retry: () => void };
 
 export type AsyncLoader<T> = (signal: AbortSignal) => Promise<T>;
-
-type CompletedState<T> = Exclude<AsyncState<T>, { status: 'loading' }>;
 
 interface CompletedRequest<T> {
   state: CompletedState<T>;
@@ -17,18 +33,18 @@ interface CompletedRequest<T> {
   attempt: number;
 }
 
-const LOADING_STATE = { status: 'loading', data: null, error: null } as const;
+const LOADING_STATE: LoadingState = { status: AsyncStatus.Loading, data: null, error: null };
 
 function toError(value: unknown): Error {
   return value instanceof Error ? value : new Error(String(value));
 }
 
 function successState<T>(data: T): CompletedState<T> {
-  return { status: 'success', data, error: null };
+  return { status: AsyncStatus.Success, data, error: null };
 }
 
 function errorState<T>(error: unknown): CompletedState<T> {
-  return { status: 'error', data: null, error: toError(error) };
+  return { status: AsyncStatus.Error, data: null, error: toError(error) };
 }
 
 function isSameRequest<T>(

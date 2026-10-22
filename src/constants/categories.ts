@@ -1,15 +1,26 @@
-export const PIECE_TYPES = [
-  { id: 'chemises', label: 'Chemises' },
-  { id: 'hauts', label: 'Hauts' },
-  { id: 'robes', label: 'Robes' },
-  { id: 'chaussures', label: 'Chaussures' },
-  { id: 'sacs', label: 'Sacs' },
-  { id: 'montres', label: 'Montres' },
-  { id: 'bijoux', label: 'Bijoux' },
-  { id: 'lunettes', label: 'Lunettes de soleil' },
-] as const;
+export enum PieceType {
+  Shirts = 'chemises',
+  Tops = 'hauts',
+  Dresses = 'robes',
+  Shoes = 'chaussures',
+  Bags = 'sacs',
+  Watches = 'montres',
+  Jewellery = 'bijoux',
+  Sunglasses = 'lunettes',
+}
 
-export type PieceType = (typeof PIECE_TYPES)[number]['id'];
+export const PIECE_TYPE_LABELS: Record<PieceType, string> = {
+  [PieceType.Shirts]: 'Chemises',
+  [PieceType.Tops]: 'Hauts',
+  [PieceType.Dresses]: 'Robes',
+  [PieceType.Shoes]: 'Chaussures',
+  [PieceType.Bags]: 'Sacs',
+  [PieceType.Watches]: 'Montres',
+  [PieceType.Jewellery]: 'Bijoux',
+  [PieceType.Sunglasses]: 'Lunettes de soleil',
+};
+
+export const PIECE_TYPES = Object.values(PieceType);
 
 export interface ClothingCategory {
   slug: string;
@@ -17,14 +28,14 @@ export interface ClothingCategory {
 }
 
 export const CLOTHING_CATEGORIES: readonly ClothingCategory[] = [
-  { slug: 'mens-shirts', pieceType: 'chemises' },
-  { slug: 'mens-shoes', pieceType: 'chaussures' },
-  { slug: 'mens-watches', pieceType: 'montres' },
-  { slug: 'tops', pieceType: 'hauts' },
-  { slug: 'womens-dresses', pieceType: 'robes' },
-  { slug: 'womens-shoes', pieceType: 'chaussures' },
-  { slug: 'womens-bags', pieceType: 'sacs' },
-  { slug: 'womens-watches', pieceType: 'montres' },
-  { slug: 'womens-jewellery', pieceType: 'bijoux' },
-  { slug: 'sunglasses', pieceType: 'lunettes' },
+  { slug: 'mens-shirts', pieceType: PieceType.Shirts },
+  { slug: 'mens-shoes', pieceType: PieceType.Shoes },
+  { slug: 'mens-watches', pieceType: PieceType.Watches },
+  { slug: 'tops', pieceType: PieceType.Tops },
+  { slug: 'womens-dresses', pieceType: PieceType.Dresses },
+  { slug: 'womens-shoes', pieceType: PieceType.Shoes },
+  { slug: 'womens-bags', pieceType: PieceType.Bags },
+  { slug: 'womens-watches', pieceType: PieceType.Watches },
+  { slug: 'womens-jewellery', pieceType: PieceType.Jewellery },
+  { slug: 'sunglasses', pieceType: PieceType.Sunglasses },
 ];
