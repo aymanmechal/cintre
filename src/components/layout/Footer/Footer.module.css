@@ -1,8 +1,9 @@
 .footer {
-  width: 100%;
-  max-width: var(--container-max);
+  width: calc(100% - 2 * var(--space-4));
+  max-width: calc(var(--container-max) - 2 * var(--space-4));
   margin: var(--space-6) auto 0;
-  padding: 0 var(--space-4) var(--space-4);
+  padding: var(--space-4) 0;
+  border-top: 2px solid var(--color-ink);
   overflow: hidden;
   font-size: 0.875rem;
 }
@@ -10,12 +11,11 @@
 .wordmark {
   color: var(--color-primary);
   font-family: var(--font-heading);
-  font-size: clamp(6rem, 30vw, 23rem);
+  font-size: clamp(3rem, 9vw, 7rem);
   font-stretch: var(--font-stretch-condensed);
   font-weight: 800;
   line-height: 0.8;
   letter-spacing: -0.01em;
-  text-align: center;
   text-transform: uppercase;
 }
 

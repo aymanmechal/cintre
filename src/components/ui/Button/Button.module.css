@@ -33,14 +33,15 @@
   transform: rotate(-2deg) scale(1.04);
 }
 
-.text {
-  padding: 0;
-  background: none;
-  color: var(--color-primary);
-  font-family: var(--font-body);
-  font-stretch: normal;
-  font-weight: 600;
-  letter-spacing: 0;
-  text-decoration: underline;
-  text-transform: none;
+.ghost {
+  padding: var(--space-1) var(--space-3);
+  border: 2px solid var(--color-border);
+  background: transparent;
+  color: var(--color-ink);
+  font-size: 0.875rem;
+  transition: border-color 0.15s;
+}
+
+.ghost:hover {
+  border-color: var(--color-ink);
 }

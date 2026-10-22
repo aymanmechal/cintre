@@ -11,6 +11,7 @@ export function ResetFiltersButton({ variant }: ResetFiltersButtonProps) {
 
   return (
     <Button variant={variant} onClick={resetFilters}>
+      <span aria-hidden="true">✕</span>
       Effacer les filtres
     </Button>
   );

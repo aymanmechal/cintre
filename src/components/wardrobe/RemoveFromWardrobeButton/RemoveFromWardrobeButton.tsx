@@ -1,6 +1,7 @@
 import { useWardrobe } from '../../../contexts/wardrobe/useWardrobe';
-import { Button } from '../../ui/Button/Button';
-import { ButtonVariant } from '../../ui/Button/buttonVariant';
+import { IconButton } from '../../ui/IconButton/IconButton';
+
+const REMOVE_ICON = '✕';
 
 interface RemoveFromWardrobeButtonProps {
   pieceId: number;
@@ -11,12 +12,10 @@ export function RemoveFromWardrobeButton({ pieceId, pieceTitle }: RemoveFromWard
   const { removePiece } = useWardrobe();
 
   return (
-    <Button
-      variant={ButtonVariant.Text}
-      aria-label={`Retirer ${pieceTitle} de ma garde-robe`}
+    <IconButton
+      icon={REMOVE_ICON}
+      label={`Retirer ${pieceTitle} de ma garde-robe`}
       onClick={() => removePiece(pieceId)}
-    >
-      Retirer
-    </Button>
+    />
   );
 }

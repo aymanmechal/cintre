@@ -15,7 +15,7 @@ export function ResultsSummary({ matchingCount }: ResultsSummaryProps) {
   return (
     <div className={styles.summary}>
       <p aria-live="polite">{formatFoundPiecesCount(matchingCount)}</p>
-      {hasActiveFilters(filters) && <ResetFiltersButton variant={ButtonVariant.Text} />}
+      {hasActiveFilters(filters) && <ResetFiltersButton variant={ButtonVariant.Ghost} />}
     </div>
   );
 }

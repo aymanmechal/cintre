@@ -25,6 +25,9 @@ export function WardrobeItemCard({ item }: WardrobeItemCardProps) {
         <div className={styles.badgePosition}>
           <Badge label={PIECE_TYPE_LABELS[piece.pieceType]} />
         </div>
+        <div className={styles.removePosition}>
+          <RemoveFromWardrobeButton pieceId={piece.id} pieceTitle={piece.title} />
+        </div>
         <div className={styles.pickerPosition}>
           <OwnershipPicker piece={piece} size={OwnershipPickerSize.Compact} />
         </div>
@@ -33,10 +36,11 @@ export function WardrobeItemCard({ item }: WardrobeItemCardProps) {
         <p className={styles.brand}>{formatBrand(piece.brand)}</p>
         <WardrobeItemTitle piece={piece} />
         <p className={styles.price}>{formatPrice(piece.price)}</p>
-        <div className={styles.footer}>
-          {item.status === OwnershipStatus.Owned && <LocationSelect item={item} />}
-          <RemoveFromWardrobeButton pieceId={piece.id} pieceTitle={piece.title} />
-        </div>
+        {item.status === OwnershipStatus.Owned && (
+          <div className={styles.footer}>
+            <LocationSelect item={item} />
+          </div>
+        )}
       </div>
     </article>
   );

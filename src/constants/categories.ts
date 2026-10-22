@@ -17,7 +17,7 @@ export const PIECE_TYPE_LABELS: Record<PieceType, string> = {
   [PieceType.Bags]: 'Sacs',
   [PieceType.Watches]: 'Montres',
   [PieceType.Jewellery]: 'Bijoux',
-  [PieceType.Sunglasses]: 'Lunettes de soleil',
+  [PieceType.Sunglasses]: 'Lunettes',
 };
 
 export const PIECE_TYPES = Object.values(PieceType);
