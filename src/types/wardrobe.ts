@@ -5,4 +5,5 @@ export interface WardrobeItem {
   piece: Piece;
   status: OwnershipStatus;
   location: StorageLocation;
+  lastWornOn: string | null;
 }

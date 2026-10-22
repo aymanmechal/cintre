@@ -13,6 +13,7 @@ export enum WardrobeActionType {
   ItemUpdated = 'itemUpdated',
   PieceRemoved = 'pieceRemoved',
   LocationChanged = 'locationChanged',
+  PieceWorn = 'pieceWorn',
 }
 
 export type WardrobeAction =
@@ -20,9 +21,10 @@ export type WardrobeAction =
   | { type: WardrobeActionType.ItemAdded; item: WardrobeItem }
   | { type: WardrobeActionType.ItemUpdated; item: WardrobeItem }
   | { type: WardrobeActionType.PieceRemoved; pieceId: number }
-  | { type: WardrobeActionType.LocationChanged; pieceId: number; location: StorageLocation };
+  | { type: WardrobeActionType.LocationChanged; pieceId: number; location: StorageLocation }
+  | { type: WardrobeActionType.PieceWorn; pieceId: number; date: string };
 
-type WardrobeItemChanges = Partial<Pick<WardrobeItem, 'status' | 'location'>>;
+type WardrobeItemChanges = Partial<Pick<WardrobeItem, 'status' | 'location' | 'lastWornOn'>>;
 
 function changeItem(
   items: readonly WardrobeItem[],
@@ -33,7 +35,12 @@ function changeItem(
 }
 
 function createItem(piece: Piece, status: OwnershipStatus): WardrobeItem {
-  return { piece: toPieceSnapshot(piece), status, location: DEFAULT_STORAGE_LOCATION };
+  return {
+    piece: toPieceSnapshot(piece),
+    status,
+    location: DEFAULT_STORAGE_LOCATION,
+    lastWornOn: null,
+  };
 }
 
 function savePiece(
@@ -66,5 +73,7 @@ export function wardrobeReducer(items: WardrobeItem[], action: WardrobeAction): 
       return items.filter((item) => item.piece.id !== action.pieceId);
     case WardrobeActionType.LocationChanged:
       return changeItem(items, action.pieceId, { location: action.location });
+    case WardrobeActionType.PieceWorn:
+      return changeItem(items, action.pieceId, { lastWornOn: action.date });
   }
 }

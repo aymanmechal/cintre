@@ -5,6 +5,7 @@ import { formatBrand, formatPrice } from '../../../utils/format';
 import { Badge } from '../../ui/Badge/Badge';
 import { OwnershipPicker } from '../OwnershipPicker/OwnershipPicker';
 import { OwnershipPickerSize } from '../OwnershipPicker/ownershipPickerSize';
+import { WornStatus } from '../WornStatus/WornStatus';
 import { EditPieceLink } from '../EditPieceLink/EditPieceLink';
 import { RemoveFromWardrobeButton } from '../RemoveFromWardrobeButton/RemoveFromWardrobeButton';
 import { LocationSelect } from './LocationSelect';
@@ -39,9 +40,12 @@ export function WardrobeItemCard({ item }: WardrobeItemCardProps) {
         <WardrobeItemTitle piece={piece} />
         <p className={styles.price}>{formatPrice(piece.price)}</p>
         {item.status === OwnershipStatus.Owned && (
-          <div className={styles.footer}>
-            <LocationSelect item={item} />
-          </div>
+          <>
+            <WornStatus item={item} />
+            <div className={styles.footer}>
+              <LocationSelect item={item} />
+            </div>
+          </>
         )}
       </div>
     </article>

@@ -14,7 +14,7 @@ export function useEditPiece(item: WardrobeItem): (values: PieceFormValues) => P
     const savedPiece = updatedProduct
       ? mergeSavedProduct(editedPiece, updatedProduct)
       : editedPiece;
-    updateItem(buildWardrobeItem(savedPiece, values));
+    updateItem(buildWardrobeItem(savedPiece, values, item.lastWornOn));
     return { piece: savedPiece, apiProductId: updatedProduct?.id ?? null };
   };
 }

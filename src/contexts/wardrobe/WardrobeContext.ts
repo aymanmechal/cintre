@@ -8,6 +8,7 @@ export interface WardrobeActions {
   addItem: (item: WardrobeItem) => void;
   updateItem: (item: WardrobeItem) => void;
   removePiece: (pieceId: number) => void;
+  markWorn: (pieceId: number) => void;
   changeLocation: (pieceId: number, location: StorageLocation) => void;
 }
 

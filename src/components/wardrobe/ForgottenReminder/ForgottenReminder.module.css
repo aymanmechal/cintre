@@ -1,0 +1,19 @@
+.reminder {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-card);
+  background: var(--candy-yellow);
+  color: var(--color-on-candy);
+}
+
+.message {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-stretch: var(--font-stretch-condensed);
+  font-weight: 800;
+}

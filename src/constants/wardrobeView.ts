@@ -7,6 +7,7 @@ export enum WardrobeSortOrder {
   NameAscending = 'nom',
   PriceAscending = 'prix-croissant',
   PriceDescending = 'prix-decroissant',
+  LeastRecentlyWorn = 'oubliees',
 }
 
 export const WARDROBE_SORT_ORDER_LABELS: Record<WardrobeSortOrder, string> = {
@@ -14,6 +15,7 @@ export const WARDROBE_SORT_ORDER_LABELS: Record<WardrobeSortOrder, string> = {
   [WardrobeSortOrder.NameAscending]: 'Nom (A → Z)',
   [WardrobeSortOrder.PriceAscending]: 'Prix croissant',
   [WardrobeSortOrder.PriceDescending]: 'Prix décroissant',
+  [WardrobeSortOrder.LeastRecentlyWorn]: "Oubliées d'abord",
 };
 
 export const WARDROBE_SORT_ORDERS = Object.values(WardrobeSortOrder);

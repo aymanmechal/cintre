@@ -26,9 +26,13 @@ function isWardrobeItem(value: unknown): value is WardrobeItem {
   );
 }
 
+function withLastWornOn(item: WardrobeItem): WardrobeItem {
+  return { ...item, lastWornOn: typeof item.lastWornOn === 'string' ? item.lastWornOn : null };
+}
+
 export function loadStoredWardrobe(storageKey: string): WardrobeItem[] {
   const storedValue = readJsonFromStorage(storageKey);
-  return Array.isArray(storedValue) ? storedValue.filter(isWardrobeItem) : [];
+  return Array.isArray(storedValue) ? storedValue.filter(isWardrobeItem).map(withLastWornOn) : [];
 }
 
 export function saveWardrobe(storageKey: string, items: readonly WardrobeItem[]): void {

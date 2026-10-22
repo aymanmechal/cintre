@@ -42,4 +42,8 @@ export const STORAGE_LOCATIONS = Object.values(StorageLocation);
 
 export const DEFAULT_STORAGE_LOCATION = StorageLocation.Wardrobe;
 
+export const FORGOTTEN_AFTER_DAYS = 30;
+
+export const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
+
 export const WARDROBE_STORAGE_KEY = 'cintre.wardrobe';

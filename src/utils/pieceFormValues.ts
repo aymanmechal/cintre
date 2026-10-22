@@ -22,8 +22,12 @@ export function applyPieceFormValues(piece: Piece, values: PieceFormValues): Pie
   return { ...piece, ...toPieceFields(values) };
 }
 
-export function buildWardrobeItem(piece: Piece, values: PieceFormValues): WardrobeItem {
-  return { piece, status: values.status, location: values.location };
+export function buildWardrobeItem(
+  piece: Piece,
+  values: PieceFormValues,
+  lastWornOn: string | null = null,
+): WardrobeItem {
+  return { piece, status: values.status, location: values.location, lastWornOn };
 }
 
 export function toPieceFormValues(item: WardrobeItem): PieceFormValues {

@@ -19,6 +19,7 @@ import {
 import type { WardrobeItem } from '../types/wardrobe';
 import type { WardrobeGroup, WardrobeView } from '../types/wardrobeView';
 import { selectItemsByStatus } from './wardrobe';
+import { compareByLeastRecentlyWorn } from './wornDates';
 
 function compareByName(first: WardrobeItem, second: WardrobeItem): number {
   return first.piece.title.localeCompare(second.piece.title, 'fr');
@@ -45,6 +46,8 @@ function sortWardrobeItems(
       return items.toSorted(compareByPriceAscending);
     case WardrobeSortOrder.PriceDescending:
       return items.toSorted(compareByPriceDescending);
+    case WardrobeSortOrder.LeastRecentlyWorn:
+      return items.toSorted(compareByLeastRecentlyWorn);
   }
 }
 

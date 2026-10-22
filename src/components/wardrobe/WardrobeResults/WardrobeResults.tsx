@@ -1,5 +1,11 @@
 import { ALL_PIECE_TYPES } from '../../../contexts/catalogFilters/catalogFiltersReducer';
 import type { WardrobeViewState } from '../../../hooks/useWardrobeView';
+import { useToday } from '../../../hooks/useToday';
+import { useWardrobe } from '../../../contexts/wardrobe/useWardrobe';
+import { OwnershipStatus } from '../../../constants/wardrobe';
+import { WardrobeSortOrder } from '../../../constants/wardrobeView';
+import { countForgottenItems } from '../../../utils/wornDates';
+import { ForgottenReminder } from '../ForgottenReminder/ForgottenReminder';
 import { EmptyStatusTab } from '../EmptyWardrobe/EmptyStatusTab';
 import { NoMatchingWardrobeItems } from '../EmptyWardrobe/NoMatchingWardrobeItems';
 import { WardrobeGroupList } from '../Groups/WardrobeGroupList';
@@ -10,6 +16,13 @@ interface WardrobeResultsProps {
 
 export function WardrobeResults({ viewState }: WardrobeResultsProps) {
   const { view, groups } = viewState;
+  const { items } = useWardrobe();
+  const today = useToday();
+  const forgottenCount = countForgottenItems(items, today);
+  const shouldRemindForgotten =
+    view.status === OwnershipStatus.Owned &&
+    forgottenCount > 0 &&
+    view.sortOrder !== WardrobeSortOrder.LeastRecentlyWorn;
 
   if (viewState.countOfStatus(view.status) === 0) {
     return <EmptyStatusTab status={view.status} />;
@@ -21,5 +34,15 @@ export function WardrobeResults({ viewState }: WardrobeResultsProps) {
     );
   }
 
-  return <WardrobeGroupList groups={groups} />;
+  return (
+    <>
+      {shouldRemindForgotten && (
+        <ForgottenReminder
+          forgottenCount={forgottenCount}
+          onShowForgotten={viewState.changeSortOrder}
+        />
+      )}
+      <WardrobeGroupList groups={groups} />
+    </>
+  );
 }
