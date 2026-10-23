@@ -43,7 +43,7 @@ export function catalogFiltersReducer(
     case CatalogFiltersActionType.QueryChanged:
       return { ...filters, query: action.query, page: FIRST_PAGE };
     case CatalogFiltersActionType.PieceTypeChanged:
-      return { ...filters, pieceType: action.pieceType, page: FIRST_PAGE };
+      return { ...filters, pieceType: action.pieceType, brand: ALL_BRANDS, page: FIRST_PAGE };
     case CatalogFiltersActionType.BrandChanged:
       return { ...filters, brand: action.brand, page: FIRST_PAGE };
     case CatalogFiltersActionType.SortOrderChanged:

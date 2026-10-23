@@ -51,9 +51,18 @@ export const CLOTHING_CATEGORIES: readonly ClothingCategory[] = [
 export interface TitleKeywordRule {
   keywords: readonly string[];
   pieceType: PieceType;
+  categorySlugsToSearch: readonly string[];
 }
 
 export const TITLE_KEYWORD_RULES: readonly TitleKeywordRule[] = [
-  { keywords: ['tshirt', 't-shirt', 'tee'], pieceType: PieceType.Tops },
-  { keywords: ['dress', 'frock', 'gown'], pieceType: PieceType.Dresses },
+  {
+    keywords: ['tshirt', 't-shirt', 'tee'],
+    pieceType: PieceType.Tops,
+    categorySlugsToSearch: ['mens-shirts', 'tops'],
+  },
+  {
+    keywords: ['dress', 'frock', 'gown'],
+    pieceType: PieceType.Dresses,
+    categorySlugsToSearch: ['tops'],
+  },
 ];

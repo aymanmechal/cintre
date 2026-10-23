@@ -20,6 +20,16 @@ function findPieceTypeInTitle(title: string): PieceType | undefined {
   )?.pieceType;
 }
 
+export function listCategorySlugsOfPieceType(pieceType: PieceType): string[] {
+  const slugsOfCategories = CLOTHING_CATEGORIES.filter(
+    (category) => category.pieceType === pieceType,
+  ).map((category) => category.slug);
+  const slugsOfKeywordRules = TITLE_KEYWORD_RULES.filter(
+    (rule) => rule.pieceType === pieceType,
+  ).flatMap((rule) => rule.categorySlugsToSearch);
+  return [...new Set([...slugsOfCategories, ...slugsOfKeywordRules])];
+}
+
 export function classifyPieceType(title: string, categorySlug: string): PieceType | undefined {
   const categoryPieceType = findPieceTypeOfCategory(categorySlug);
   if (!categoryPieceType) return undefined;

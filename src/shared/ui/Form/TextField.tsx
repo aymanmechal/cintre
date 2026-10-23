@@ -33,6 +33,7 @@ export function TextField({
       </label>
       <input
         id={id}
+        data-testid={id}
         className={styles.input}
         type={type}
         value={value}

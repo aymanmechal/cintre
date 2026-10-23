@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { PieceType } from '../../../shared/pieces/constants/categories';
+import { ALL_BRANDS } from '../constants/catalog';
 import { PieceSortOrder } from '../constants/sorting';
 import {
   catalogFiltersReducer,
@@ -24,6 +25,15 @@ describe('catalogFiltersReducer', () => {
       pieceType: PieceType.Shoes,
     });
     expect(next).toMatchObject({ pieceType: PieceType.Shoes, page: 1 });
+  });
+
+  it('réinitialise la marque quand le type change', () => {
+    const withBrand = { ...ON_PAGE_THREE, brand: 'Norse' };
+    const next = catalogFiltersReducer(withBrand, {
+      type: CatalogFiltersActionType.PieceTypeChanged,
+      pieceType: PieceType.Shoes,
+    });
+    expect(next.brand).toBe(ALL_BRANDS);
   });
 
   it('change la marque et revient à la page 1', () => {

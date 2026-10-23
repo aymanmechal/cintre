@@ -20,13 +20,22 @@ test.describe('Catalogue', () => {
 
   test('filtre par marque en même temps que le type et la recherche', async ({ page }) => {
     await page.goto('/catalogue');
-    await page.getByLabel('Marque', { exact: true }).selectOption('Tricker');
-    await expect(page.getByText('5 pièces trouvées')).toBeVisible();
-    await page.getByLabel('Type', { exact: true }).selectOption('chemises');
-    await expect(page.getByText('Aucune pièce ne correspond')).toBeVisible();
     await page.getByLabel('Type', { exact: true }).selectOption('chaussures');
+    await expect(page.getByText('5 pièces trouvées')).toBeVisible();
+    await page.getByLabel('Marque', { exact: true }).selectOption('Tricker');
     await page.getByRole('searchbox').fill('derby 12');
     await expect(page.getByText('1 pièce trouvée')).toBeVisible();
+  });
+
+  test('recharge le type choisi et réinitialise la marque', async ({ page, api }) => {
+    await page.goto('/catalogue');
+    await page.getByLabel('Marque', { exact: true }).selectOption('Tricker');
+    await page.getByLabel('Type', { exact: true }).selectOption('chemises');
+    await expect(page.getByText('9 pièces trouvées')).toBeVisible();
+    await expect(page.getByLabel('Marque', { exact: true })).toHaveValue('toutes');
+    expect(api.requests.some((request) => request.path === '/products/category/mens-shirts')).toBe(
+      true,
+    );
   });
 
   test('conserve les filtres après un aller-retour vers une fiche', async ({ page }) => {

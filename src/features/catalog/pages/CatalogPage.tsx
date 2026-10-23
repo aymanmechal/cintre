@@ -4,12 +4,14 @@ import { CatalogToolbar } from '../components/Filters/CatalogToolbar';
 import { ErrorMessage } from '../../../shared/ui/ErrorMessage/ErrorMessage';
 import { Loader } from '../../../shared/ui/Loader/Loader';
 import { AsyncStatus } from '../../../shared/hooks/asyncStatus';
+import { useCatalogFilters } from '../context/useCatalogFilters';
 import { useCatalog } from '../hooks/useCatalog';
 import { listBrands } from '../utils/filterPieces';
 import { formatPageTitle } from '../../../shared/utils/format';
 
 export function CatalogPage() {
-  const catalog = useCatalog();
+  const { filters } = useCatalogFilters();
+  const catalog = useCatalog(filters.pieceType);
   const brands = catalog.status === AsyncStatus.Success ? listBrands(catalog.data) : [];
 
   return (

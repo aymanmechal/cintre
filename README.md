@@ -63,7 +63,7 @@ Aucune variable d'environnement : l'API DummyJSON est publique et sans clé.
 - **react-router** : navigation entre les pages.
 - **prettier** et **oxlint** : formatage et lint.
 - **CSS Modules + tokens CSS** : pas de Tailwind ni de bibliothèque de composants.
-- **Recherche, filtre et pagination côté client** : DummyJSON ne permet pas de combiner recherche et filtre de catégorie sur plusieurs catégories. On charge donc tout le catalogue en une requête (`limit=0`), puis on filtre, trie et pagine localement, dans cet ordre.
+- **Chargement par type, puis filtre côté client** : DummyJSON ne sait pas filtrer plusieurs catégories ni la marque, et ne sépare pas les hauts des robes. Quand un type est choisi, on ne charge que ses catégories (`/products/category/{slug}`, `limit=0`). Pour « Tous les types », une seule requête charge tout. La recherche, la marque, le tri et la pagination se font ensuite localement, dans cet ordre.
 - **`useReducer` + Context** pour les filtres, la garde-robe, les tenues, le calendrier et le thème.
 - **`fetch` + hooks** (`useAsync`) plutôt que TanStack Query.
 - **Architecture par fonctionnalité** (voir plus bas) : composants atomiques, logique dans les hooks et `utils`, valeurs de choix dans des enums, aucun commentaire (noms explicites).

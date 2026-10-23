@@ -73,13 +73,20 @@ describe('Catalogue : recherche, filtre, tri', () => {
   it('combine recherche, type et marque : chaque résultat respecte tous les critères', async () => {
     const { user } = renderApp('/catalogue');
     await screen.findByText('14 pièces trouvées');
-    await user.selectOptions(screen.getByLabelText('Marque'), 'Norse');
-    await user.selectOptions(screen.getByLabelText('Type'), 'chaussures');
-    expect(await screen.findByText('Aucune pièce ne correspond')).toBeInTheDocument();
     await user.selectOptions(screen.getByLabelText('Type'), 'chemises');
     expect(await screen.findByText('9 pièces trouvées')).toBeInTheDocument();
+    await user.selectOptions(screen.getByLabelText('Marque'), 'Norse');
     await user.type(screen.getByRole('searchbox'), 'Chemise 3');
     expect(await screen.findByText('1 pièce trouvée')).toBeInTheDocument();
+  });
+
+  it('recharge le nouveau type et réinitialise la marque', async () => {
+    const { user } = renderApp('/catalogue');
+    await screen.findByText('14 pièces trouvées');
+    await user.selectOptions(screen.getByLabelText('Marque'), 'Norse');
+    await user.selectOptions(screen.getByLabelText('Type'), 'chaussures');
+    expect(await screen.findByText('5 pièces trouvées')).toBeInTheDocument();
+    expect(screen.getByLabelText('Marque')).toHaveValue('toutes');
   });
 
   it('revient à la page 1 quand on change de marque', async () => {

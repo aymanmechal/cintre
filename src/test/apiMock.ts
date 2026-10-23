@@ -76,6 +76,11 @@ export function mockDummyJson(products: readonly ApiProduct[] = makeCatalogProdu
     if (method === 'GET' && url.pathname === '/products') {
       return jsonResponse({ products, total: products.length, skip: 0, limit: 0 });
     }
+    if (method === 'GET' && url.pathname.startsWith('/products/category/')) {
+      const categorySlug = url.pathname.split('/').pop();
+      const inCategory = products.filter((product) => product.category === categorySlug);
+      return jsonResponse({ products: inCategory, total: inCategory.length, skip: 0, limit: 0 });
+    }
     if (method === 'GET') {
       const product = products.find((candidate) => candidate.id === productId);
       return product ? jsonResponse(product) : jsonResponse({}, HTTP_NOT_FOUND);

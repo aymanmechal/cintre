@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { ALL_PIECE_TYPES, PieceType } from '../constants/categories';
-import { classifyPieceType, toPieceType, toPieceTypeFilter } from './categories';
+import {
+  classifyPieceType,
+  listCategorySlugsOfPieceType,
+  toPieceType,
+  toPieceTypeFilter,
+} from './categories';
 
 describe('classifyPieceType', () => {
   it('utilise la catégorie DummyJSON par défaut', () => {
@@ -17,6 +22,24 @@ describe('classifyPieceType', () => {
 
   it('ignore les produits qui ne sont pas des vêtements', () => {
     expect(classifyPieceType('Gaming Laptop', 'laptops')).toBeUndefined();
+  });
+});
+
+describe('listCategorySlugsOfPieceType', () => {
+  it('renvoie la catégorie unique des chemises', () => {
+    expect(listCategorySlugsOfPieceType(PieceType.Shirts)).toEqual(['mens-shirts']);
+  });
+
+  it('inclut les catégories où se cachent les t-shirts pour les hauts', () => {
+    expect(listCategorySlugsOfPieceType(PieceType.Tops)).toEqual(['mens-shirts', 'tops']);
+  });
+
+  it('renvoie chaque catégorie une seule fois pour les robes', () => {
+    expect(listCategorySlugsOfPieceType(PieceType.Dresses)).toEqual(['tops', 'womens-dresses']);
+  });
+
+  it('renvoie les deux catégories des chaussures', () => {
+    expect(listCategorySlugsOfPieceType(PieceType.Shoes)).toEqual(['mens-shoes', 'womens-shoes']);
   });
 });
 

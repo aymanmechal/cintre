@@ -26,6 +26,7 @@ export function SelectField({
       </label>
       <select
         id={id}
+        data-testid={id}
         className={styles.select}
         value={value}
         onChange={(event) => onChange(event.target.value)}

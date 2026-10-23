@@ -90,6 +90,12 @@ export async function mockDummyJson(page: Page): Promise<MockedApi> {
     if (method === 'GET' && pathname === '/products') {
       return json(route, { products: PRODUCTS, total: PRODUCTS.length, skip: 0, limit: 0 });
     }
+    if (method === 'GET' && pathname.startsWith('/products/category/')) {
+      const inCategory = PRODUCTS.filter(
+        (product) => product.category === pathname.split('/').pop(),
+      );
+      return json(route, { products: inCategory, total: inCategory.length, skip: 0, limit: 0 });
+    }
     if (method === 'GET') {
       const product = PRODUCTS.find((candidate) => candidate.id === productId);
       return product ? json(route, product) : json(route, {}, 404);

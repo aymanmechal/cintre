@@ -37,6 +37,26 @@ describe('fetchCatalog', () => {
     await fetchCatalog();
     expect(String(fetchMock.mock.calls[0][0])).toContain('limit=0');
   });
+
+  it('ne demande que les catégories du type choisi', async () => {
+    const fetchMock = mockFetchJson({ products: [SHIRT], total: 1, skip: 0, limit: 0 });
+    await fetchCatalog(PieceType.Shirts);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(String(fetchMock.mock.calls[0][0])).toContain('/products/category/mens-shirts');
+  });
+
+  it('fusionne les catégories et ne garde que le type choisi', async () => {
+    const tshirt = { ...SHIRT, id: 3, title: 'Cotton Tshirt' };
+    const respond = (products: unknown[]) =>
+      new Response(JSON.stringify({ products, total: products.length, skip: 0, limit: 0 }));
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(respond([SHIRT, tshirt]))
+      .mockResolvedValueOnce(respond([]));
+    vi.stubGlobal('fetch', fetchMock);
+    const pieces = await fetchCatalog(PieceType.Tops);
+    expect(pieces.map((piece) => piece.id)).toEqual([3]);
+  });
 });
 
 describe('fetchPieceById', () => {
