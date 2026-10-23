@@ -2,7 +2,7 @@
 
 Application de garde-robe numérique : on y retrouve les vêtements qu'on possède (et où ils sont rangés), on garde ceux qui font envie, et on ajoute ses propres pièces. Le catalogue vient de l'API publique [DummyJSON](https://dummyjson.com/), filtré pour ne garder que les vêtements et accessoires.
 
-Application en ligne : https://cintre-one.vercel.app/
+Application en ligne : https://aymanmechal.github.io/cintre/
 
 ## Prérequis
 
@@ -55,7 +55,7 @@ Aucune variable d'environnement : l'API DummyJSON est publique et sans clé.
 - Mode sombre via un contexte, sauvegardé dans le `localStorage`.
 - Recherche avec délai de 300 ms (`useDebouncedValue`).
 - TypeScript.
-- Déploiement sur Vercel (`vercel.json` : réécriture vers `index.html` pour que le rechargement d'une URL fonctionne).
+- Déploiement automatique sur GitHub Pages à chaque push sur `main` (voir « Déploiement »). Le projet reste aussi compatible Vercel (`vercel.json`).
 
 ## Choix techniques
 
@@ -67,6 +67,19 @@ Aucune variable d'environnement : l'API DummyJSON est publique et sans clé.
 - **`useReducer` + Context** pour les filtres, la garde-robe, les tenues, le calendrier et le thème.
 - **`fetch` + hooks** (`useAsync`) plutôt que TanStack Query.
 - **Architecture par fonctionnalité** (voir plus bas) : composants atomiques, logique dans les hooks et `utils`, valeurs de choix dans des enums, aucun commentaire (noms explicites).
+
+## Déploiement
+
+Le site est publié sur **GitHub Pages** par GitHub Actions (`.github/workflows/deploy.yml`) à chaque push sur `main` :
+
+1. **verify** : lint, formatage, types et tests (Vitest). Si une étape échoue, rien n'est publié.
+2. **build** : `npm run build:pages` construit le site avec la base `/cintre/` (variable `VITE_BASE_PATH`), puis copie `index.html` en `404.html`.
+3. **deploy** : publication du dossier `dist`.
+
+Deux points propres à GitHub Pages :
+
+- Le site est servi dans un sous-dossier (`/cintre/`). Vite reçoit donc une `base`, et le routeur reçoit un `basename` (`src/shared/utils/basePath.ts`). En développement et sur Vercel, la base reste `/`.
+- GitHub Pages ne sait pas réécrire les URL vers `index.html`. Quand on recharge une page interne comme `/cintre/tenues`, il renvoie `404.html`, qui est une copie de `index.html` : l'application démarre et affiche la bonne page.
 
 ## Architecture
 
