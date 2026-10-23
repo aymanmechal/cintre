@@ -27,13 +27,21 @@ test.describe('Garde-robe', () => {
     await expect(page.getByRole('link', { name: 'Modifier Chemise lin' })).toHaveCount(0);
   });
 
-  test('marque une pièce portée et supprime le rappel', async ({ page }) => {
+  test('le rappel disparait quand on note une tenue au calendrier', async ({ page }) => {
+    await seedStorage(page, {
+      'cintre.outfits': [{ id: 'o1', name: 'Sortie', pieceIds: [1, 2] }],
+    });
     await page.goto('/garde-robe');
-    await page.getByRole('button', { name: 'Modifier', exact: true }).click();
-    const card = page.getByRole('article').filter({ hasText: 'Chemise lin' });
-    await card.getByRole('button', { name: /Portée aujourd'hui/ }).click();
-    await expect(card.getByText("Portée aujourd'hui").first()).toBeVisible();
+    await expect(page.getByText(/1 pièce dort dans ta garde-robe/)).toBeVisible();
+
+    await page.getByRole('link', { name: 'Mon calendrier' }).click();
+    await page.getByRole('button', { name: 'Ajouter au calendrier' }).click();
+    await page.getByRole('link', { name: 'Ma garde-robe' }).click();
+
     await expect(page.getByText(/dort dans ta garde-robe/)).toHaveCount(0);
+    await expect(page.getByRole('article').filter({ hasText: 'Chemise lin' })).toContainText(
+      "Portée aujourd'hui",
+    );
   });
 
   test('retire une pièce de la garde-robe', async ({ page }) => {

@@ -33,7 +33,7 @@ export function WardrobeItemCard({ item, isEditing }: WardrobeItemCardProps) {
         </div>
         <p className={styles.price}>{formatPrice(piece.price)}</p>
       </div>
-      {item.status === OwnershipStatus.Owned && <WornStatus item={item} isEditing={isEditing} />}
+      {item.status === OwnershipStatus.Owned && <WornStatus item={item} />}
     </article>
   );
 }

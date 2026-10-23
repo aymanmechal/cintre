@@ -99,11 +99,31 @@ describe('Garde-robe : pièces oubliées', () => {
   });
 });
 
+describe('Garde-robe : dernier port', () => {
+  it('ne propose aucun bouton pour marquer une pièce comme portée, même en mode Modifier', async () => {
+    const { user } = renderApp('/garde-robe', { wardrobe: ITEMS });
+    await user.click(screen.getByRole('button', { name: 'Modifier' }));
+    expect(screen.queryByRole('button', { name: /Portée aujourd'hui/ })).not.toBeInTheDocument();
+  });
+
+  it('affiche la date mise à jour par une tenue notée au calendrier', () => {
+    renderApp('/garde-robe', {
+      wardrobe: ITEMS,
+      outfits: [{ id: 'o1', name: 'Sortie', pieceIds: [1, 2] }],
+      wornLog: [{ id: 'e1', date: isoDaysAgo(1), outfitId: 'o1' }],
+    });
+    expect(within(cardOf('Chemise lin')).getByText('Portée hier')).toBeInTheDocument();
+    expect(screen.queryByText(/dort dans ta garde-robe/)).not.toBeInTheDocument();
+  });
+});
+
 describe('Garde-robe : mode Modifier', () => {
   it("cache les boutons d'édition par défaut", () => {
     renderApp('/garde-robe', { wardrobe: ITEMS });
     expect(screen.queryByRole('link', { name: 'Modifier Chemise lin' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /Portée aujourd'hui/ })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Retirer Chemise lin de ma garde-robe' }),
+    ).not.toBeInTheDocument();
   });
 
   it('les montre avec « Modifier » et les cache avec « Terminer »', async () => {
@@ -112,19 +132,6 @@ describe('Garde-robe : mode Modifier', () => {
     expect(screen.getByRole('link', { name: 'Modifier Chemise lin' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Terminer' }));
     expect(screen.queryByRole('link', { name: 'Modifier Chemise lin' })).not.toBeInTheDocument();
-  });
-
-  it("marque une pièce comme portée aujourd'hui et fait disparaître le rappel", async () => {
-    const { user } = renderApp('/garde-robe', { wardrobe: ITEMS });
-    await user.click(screen.getByRole('button', { name: 'Modifier' }));
-    await user.click(
-      within(cardOf('Chemise lin')).getByRole('button', { name: /Portée aujourd'hui/ }),
-    );
-    expect(
-      within(cardOf('Chemise lin')).getByText("Portée aujourd'hui", { selector: 'p' }),
-    ).toBeInTheDocument();
-    expect(screen.queryByText(/dort dans ta garde-robe/)).not.toBeInTheDocument();
-    expect(readStoredWardrobe()[0].lastWornOn).toBe('2026-03-15');
   });
 
   it('retire une pièce de la garde-robe', async () => {

@@ -2,15 +2,13 @@ import { useToday } from '../../../../shared/hooks/useToday';
 import type { WardrobeItem } from '../../types/wardrobe';
 import { isForgotten } from '../../utils/wornDates';
 import { LastWornText } from './LastWornText';
-import { MarkWornButton } from './MarkWornButton';
 import styles from './WornStatus.module.css';
 
 interface WornStatusProps {
   item: WardrobeItem;
-  isEditing: boolean;
 }
 
-export function WornStatus({ item, isEditing }: WornStatusProps) {
+export function WornStatus({ item }: WornStatusProps) {
   const today = useToday();
 
   return (
@@ -20,7 +18,6 @@ export function WornStatus({ item, isEditing }: WornStatusProps) {
         isForgotten={isForgotten(item, today)}
         today={today}
       />
-      {isEditing && <MarkWornButton pieceId={item.piece.id} />}
     </div>
   );
 }
