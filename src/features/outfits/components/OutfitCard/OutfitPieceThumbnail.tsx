@@ -16,7 +16,7 @@ export function OutfitPieceThumbnail({ item }: OutfitPieceThumbnailProps) {
       data-status={item.status}
     >
       <span className={styles.media}>
-        <PieceImage imageUrl={piece.thumbnail} />
+        <PieceImage imageUrl={piece.thumbnail} photoId={piece.photoId} />
       </span>
       <figcaption className={styles.caption}>{piece.title}</figcaption>
     </figure>

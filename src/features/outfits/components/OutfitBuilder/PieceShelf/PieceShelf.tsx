@@ -2,7 +2,7 @@ import { OUTFIT_SLOT_PROMPTS, type OutfitSlot } from '../../../constants/outfits
 import type { WardrobeItem } from '../../../../wardrobe/types/wardrobe';
 import { selectItemsForSlot, selectShelfItems } from '../../../utils/outfits';
 import { EmptyShelf } from './EmptyShelf';
-import { PieceOptionGrid } from './PieceOptionGrid';
+import { PieceOptions } from './PieceOptions';
 import { SlotTabs } from './SlotTabs';
 import styles from './PieceShelf.module.css';
 
@@ -36,7 +36,8 @@ export function PieceShelf({
       {shelfItems.length === 0 ? (
         <EmptyShelf slot={activeSlot} />
       ) : (
-        <PieceOptionGrid
+        <PieceOptions
+          key={activeSlot}
           items={shelfItems}
           selectedPieceIds={selectedPieceIds}
           onToggle={onToggle}

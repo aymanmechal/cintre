@@ -1,6 +1,0 @@
-.pageNumbers {
-  display: flex;
-  gap: var(--space-1);
-  padding: 0;
-  list-style: none;
-}

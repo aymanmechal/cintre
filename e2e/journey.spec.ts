@@ -1,9 +1,17 @@
+import type { Page } from '@playwright/test';
 import { expect, test } from './support/test';
 
-test('parcours complet : du catalogue à la tenue portée', async ({ page }) => {
-  await page.goto('/catalogue');
-  await page.getByRole('button', { name: /Marquer Chemise 1 comme .*Je l'ai/ }).click();
-  await page.getByRole('button', { name: /Marquer Derby 10 comme .*Je l'ai/ }).click();
+async function addPiece(page: Page, title: string, pieceType: string): Promise<void> {
+  await page.getByTestId('piece-title').fill(title);
+  await page.getByTestId('piece-type').selectOption(pieceType);
+  await page.getByRole('button', { name: 'Ajouter la pièce' }).click();
+  await expect(page.getByText('Pièce ajoutée')).toBeVisible();
+}
+
+test('parcours complet : de l’ajout des pièces à la tenue portée', async ({ page }) => {
+  await page.goto('/ajouter');
+  await addPiece(page, 'Chemise 1', 'chemises');
+  await addPiece(page, 'Derby 10', 'chaussures');
 
   await page.getByRole('link', { name: 'Mes tenues' }).click();
   const shelf = page.getByRole('region', { name: /^Choisis/ });
@@ -17,7 +25,7 @@ test('parcours complet : du catalogue à la tenue portée', async ({ page }) => 
   await page.getByRole('button', { name: 'Créer la tenue' }).click();
   await expect(page.getByRole('heading', { name: 'Sortie du samedi' })).toBeVisible();
 
-  await page.getByRole('link', { name: 'Mon calendrier' }).click();
+  await page.getByRole('link', { name: 'Calendrier' }).click();
   await page.getByRole('button', { name: 'Ajouter au calendrier' }).click();
   await expect(page.getByText('Ajouté au calendrier.')).toBeVisible();
 

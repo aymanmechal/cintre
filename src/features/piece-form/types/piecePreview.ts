@@ -6,5 +6,6 @@ export interface PiecePreviewData {
   brand: string;
   price: string;
   imageUrl: string;
+  photoId: string | null;
   pieceType: PieceType;
 }

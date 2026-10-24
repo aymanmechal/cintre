@@ -1,6 +1,11 @@
 import type { PieceType } from '../../../shared/pieces/constants/categories';
-import type { OwnershipStatus, StorageLocation } from '../../wardrobe/constants/wardrobe';
-import type { Piece } from '../../../shared/pieces/types/piece';
+import type { PieceColor } from '../../../shared/pieces/constants/colors';
+import type { Season } from '../../../shared/pieces/constants/seasons';
+import type {
+  Availability,
+  OwnershipStatus,
+  StorageLocation,
+} from '../../wardrobe/constants/wardrobe';
 
 export interface PieceFormValues {
   title: string;
@@ -8,8 +13,18 @@ export interface PieceFormValues {
   pieceType: PieceType;
   price: string;
   imageUrl: string;
+  photoId: string | null;
+  extraPhotoIds: string[];
   status: OwnershipStatus;
   location: StorageLocation;
+  availability: Availability;
+  color: PieceColor | null;
+  season: Season | null;
+  size: string;
+  material: string;
+  boughtOn: string;
+  productUrl: string;
+  tags: string;
 }
 
 export type PieceFormErrors = Partial<Record<keyof PieceFormValues, string>>;
@@ -24,9 +39,4 @@ export interface PieceFormLabels {
   submitting: string;
   success: string;
   error: string;
-}
-
-export interface SavedPiece {
-  piece: Piece;
-  apiProductId: number | null;
 }

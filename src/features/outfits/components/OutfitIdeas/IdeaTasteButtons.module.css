@@ -1,0 +1,21 @@
+.taste {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-bg);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.taste:hover {
+  transform: scale(1.08);
+}
+
+.taste[aria-pressed='true'] {
+  border-color: var(--color-ink);
+  background: var(--candy-lime);
+}

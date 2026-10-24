@@ -1,0 +1,7 @@
+.search {
+  max-width: 360px;
+}
+
+.empty {
+  color: var(--color-ink-muted);
+}

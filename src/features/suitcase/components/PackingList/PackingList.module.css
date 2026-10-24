@@ -1,0 +1,33 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-stretch: var(--font-stretch-condensed);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.rule {
+  color: var(--color-ink-muted);
+}
+
+.pieces {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.progress {
+  font-weight: 800;
+}

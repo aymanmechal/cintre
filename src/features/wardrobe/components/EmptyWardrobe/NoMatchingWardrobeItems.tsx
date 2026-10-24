@@ -2,15 +2,15 @@ import { Button } from '../../../../shared/ui/Button/Button';
 import { EmptyState } from '../../../../shared/ui/EmptyState/EmptyState';
 
 interface NoMatchingWardrobeItemsProps {
-  onShowAllTypes: () => void;
+  onResetFilters: () => void;
 }
 
-export function NoMatchingWardrobeItems({ onShowAllTypes }: NoMatchingWardrobeItemsProps) {
+export function NoMatchingWardrobeItems({ onResetFilters }: NoMatchingWardrobeItemsProps) {
   return (
     <EmptyState
-      title="Aucune pièce de ce type"
-      message="Change de type pour retrouver tes autres pièces."
-      action={<Button onClick={onShowAllTypes}>Afficher tous les types</Button>}
+      title="Aucune pièce trouvée"
+      message="Aucune pièce ne correspond à ta recherche ou à tes filtres."
+      action={<Button onClick={onResetFilters}>Effacer les filtres</Button>}
     />
   );
 }

@@ -1,0 +1,33 @@
+.harmony {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+}
+
+.badge {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  color: var(--color-on-candy);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.badge[data-harmony='neutre'] {
+  background: var(--candy-mint);
+}
+
+.badge[data-harmony='touche'] {
+  background: var(--candy-yellow);
+}
+
+.badge[data-harmony='audacieux'] {
+  background: var(--candy-pink);
+}
+
+.explanation {
+  color: var(--color-ink-muted);
+  font-size: 0.875rem;
+}

@@ -1,9 +1,6 @@
+import { isRecord } from '../../../shared/utils/isRecord';
 import type { WornEntry } from '../types/wornLog';
 import { readJsonFromStorage, writeJsonToStorage } from '../../../shared/utils/storage';
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null;
-}
 
 function isWornEntry(value: unknown): value is WornEntry {
   return (
@@ -14,9 +11,12 @@ function isWornEntry(value: unknown): value is WornEntry {
   );
 }
 
+export function parseWornLog(value: unknown): WornEntry[] {
+  return Array.isArray(value) ? value.filter(isWornEntry) : [];
+}
+
 export function loadStoredWornLog(storageKey: string): WornEntry[] {
-  const storedValue = readJsonFromStorage(storageKey);
-  return Array.isArray(storedValue) ? storedValue.filter(isWornEntry) : [];
+  return parseWornLog(readJsonFromStorage(storageKey));
 }
 
 export function saveWornLog(storageKey: string, entries: readonly WornEntry[]): void {

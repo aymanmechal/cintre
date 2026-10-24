@@ -1,18 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { mockDummyJson, type MockedApi } from '../../../test/apiMock';
+import { describe, expect, it } from 'vitest';
 import { makeWardrobeItem } from '../../../test/factories';
 import { readStoredWardrobe, renderApp } from '../../../test/renderApp';
-
-let api: MockedApi;
-
-beforeEach(() => {
-  api = mockDummyJson();
-});
-
-afterEach(() => {
-  vi.unstubAllGlobals();
-});
 
 function sidebar(): HTMLElement {
   return screen.getByRole('complementary', { name: 'Aperçu et résultat' });
@@ -40,18 +29,18 @@ describe('Ajouter une pièce : formulaire', () => {
     expect(sidebar().querySelector('[data-piece-type="chaussures"]')).not.toBeNull();
   });
 
-  it("refuse un nom vide, sans appeler l'API", async () => {
+  it('refuse un nom vide, sans rien enregistrer', async () => {
     const { user } = renderApp('/ajouter');
     await user.click(screen.getByRole('button', { name: 'Ajouter la pièce' }));
     expect(screen.getByText(/Le nom doit faire au moins 2/)).toBeInTheDocument();
-    expect(api.requests).toHaveLength(0);
+    expect(readStoredWardrobe()).toEqual([]);
   });
 
   it('refuse un prix négatif et un lien de photo invalide', async () => {
     const { user } = renderApp('/ajouter');
     await user.type(nameField(), 'Veste');
     await user.type(screen.getByLabelText(/^Prix/), '-5');
-    await user.type(screen.getByLabelText('Lien de la photo'), 'pas un lien');
+    await user.type(screen.getByLabelText('Ou lien d’une photo'), 'pas un lien');
     await user.click(screen.getByRole('button', { name: 'Ajouter la pièce' }));
     expect(screen.getByText(/Le prix doit être un nombre/)).toBeInTheDocument();
     expect(screen.getByText(/doit commencer par http/)).toBeInTheDocument();
@@ -66,19 +55,16 @@ describe('Ajouter une pièce : formulaire', () => {
 });
 
 describe('Ajouter une pièce : enregistrement', () => {
-  it('envoie un POST, range la pièce en local et affiche la confirmation à droite', async () => {
+  it('range la pièce en local et affiche la confirmation à droite', async () => {
     const { user } = renderApp('/ajouter');
     await user.type(nameField(), 'Veste en jean');
     await user.type(screen.getByLabelText('Marque'), 'Levi');
     await user.click(screen.getByRole('button', { name: 'Ajouter la pièce' }));
 
     expect(await within(sidebar()).findByText('Pièce ajoutée')).toBeInTheDocument();
-    const post = api.requests.find((request) => request.method === 'POST');
-    expect(post?.url).toBe('/products/add');
-    expect(post?.body).toMatchObject({ title: 'Veste en jean', brand: 'Levi' });
-
     const [item] = readStoredWardrobe();
     expect(item.piece.title).toBe('Veste en jean');
+    expect(item.piece.brand).toBe('Levi');
     expect(item.piece.id).toBeLessThan(0);
   });
 
@@ -98,34 +84,10 @@ describe('Ajouter une pièce : enregistrement', () => {
       await within(sidebar()).findByRole('link', { name: 'Voir ma garde-robe' }),
     ).toBeInTheDocument();
   });
-
-  it("garde les valeurs saisies quand l'API échoue", async () => {
-    api.setWriteStatus(500);
-    const { user } = renderApp('/ajouter');
-    await user.type(nameField(), 'Veste en jean');
-    await user.click(screen.getByRole('button', { name: 'Ajouter la pièce' }));
-
-    expect(await within(sidebar()).findByRole('alert')).toHaveTextContent(/Impossible d.ajouter/);
-    expect(nameField()).toHaveValue('Veste en jean');
-    expect(readStoredWardrobe()).toEqual([]);
-  });
-
-  it('permet de réessayer après une erreur', async () => {
-    api.setWriteStatus(500);
-    const { user } = renderApp('/ajouter');
-    await user.type(nameField(), 'Veste en jean');
-    await user.click(screen.getByRole('button', { name: 'Ajouter la pièce' }));
-    await within(sidebar()).findByRole('alert');
-
-    api.setWriteStatus(200);
-    await user.click(screen.getByRole('button', { name: 'Ajouter la pièce' }));
-    expect(await within(sidebar()).findByText('Pièce ajoutée')).toBeInTheDocument();
-  });
 });
 
 describe('Modifier une pièce', () => {
   const CUSTOM = makeWardrobeItem({ id: -5, title: 'Veste perso', thumbnail: '' });
-  const CATALOG = makeWardrobeItem({ id: 7, title: 'Chemise 7', thumbnail: '' });
 
   it('pré-remplit le formulaire avec la pièce', () => {
     renderApp('/garde-robe/-5/modifier', { wardrobe: [CUSTOM] });
@@ -137,7 +99,7 @@ describe('Modifier une pièce', () => {
     expect(screen.getByText('Pièce introuvable')).toBeInTheDocument();
   });
 
-  it("enregistre une pièce perso sans appeler l'API", async () => {
+  it('enregistre les modifications en local', async () => {
     const { user } = renderApp('/garde-robe/-5/modifier', { wardrobe: [CUSTOM] });
     await user.clear(nameField());
     await user.type(nameField(), 'Veste rénovée');
@@ -145,18 +107,6 @@ describe('Modifier une pièce', () => {
 
     expect(await within(sidebar()).findByText('Modifications enregistrées')).toBeInTheDocument();
     expect(readStoredWardrobe()[0].piece.title).toBe('Veste rénovée');
-    expect(api.requests).toHaveLength(0);
-  });
-
-  it('envoie un PATCH pour une pièce du catalogue', async () => {
-    const { user } = renderApp('/garde-robe/7/modifier', { wardrobe: [CATALOG] });
-    await user.clear(nameField());
-    await user.type(nameField(), 'Chemise modifiée');
-    await user.click(screen.getByRole('button', { name: 'Enregistrer' }));
-
-    await within(sidebar()).findByText('Modifications enregistrées');
-    const patch = api.requests.find((request) => request.method === 'PATCH');
-    expect(patch?.url).toBe('/products/7');
   });
 
   it('conserve la date de dernier port après une modification', async () => {
@@ -184,22 +134,12 @@ describe('Supprimer une pièce', () => {
     expect(readStoredWardrobe()).toHaveLength(1);
   });
 
-  it('supprime côté API et côté garde-robe, puis revient à la garde-robe', async () => {
+  it('supprime la pièce de la garde-robe, puis revient à la garde-robe', async () => {
     const { user } = renderApp('/garde-robe/7/modifier', { wardrobe: [CATALOG] });
     await user.click(screen.getByRole('button', { name: 'Supprimer' }));
     await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Supprimer' }));
 
     await waitFor(() => expect(readStoredWardrobe()).toEqual([]));
-    expect(api.requests.some((request) => request.method === 'DELETE')).toBe(true);
     expect(await screen.findByText('Ta garde-robe est vide')).toBeInTheDocument();
-  });
-
-  it("garde la pièce quand l'API échoue", async () => {
-    api.setWriteStatus(500);
-    const { user } = renderApp('/garde-robe/7/modifier', { wardrobe: [CATALOG] });
-    await user.click(screen.getByRole('button', { name: 'Supprimer' }));
-    await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Supprimer' }));
-    expect(await screen.findByText(/Impossible de supprimer/)).toBeInTheDocument();
-    expect(readStoredWardrobe()).toHaveLength(1);
   });
 });

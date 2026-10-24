@@ -1,14 +1,16 @@
 import type { WardrobeGroup } from '../../types/wardrobeView';
 import { formatPieceCount } from '../../../../shared/utils/format';
+import type { WardrobeSelection } from '../../hooks/useWardrobeSelection';
 import { WardrobeItemGrid } from '../ItemCard/WardrobeItemGrid';
 import styles from './WardrobeGroupBlock.module.css';
 
 interface WardrobeGroupBlockProps {
   group: WardrobeGroup;
   isEditing: boolean;
+  selection: WardrobeSelection;
 }
 
-export function WardrobeGroupBlock({ group, isEditing }: WardrobeGroupBlockProps) {
+export function WardrobeGroupBlock({ group, isEditing, selection }: WardrobeGroupBlockProps) {
   return (
     <section className={styles.group}>
       {group.title && (
@@ -17,7 +19,7 @@ export function WardrobeGroupBlock({ group, isEditing }: WardrobeGroupBlockProps
           <span className={styles.count}>{formatPieceCount(group.items.length)}</span>
         </div>
       )}
-      <WardrobeItemGrid items={group.items} isEditing={isEditing} />
+      <WardrobeItemGrid items={group.items} isEditing={isEditing} selection={selection} />
     </section>
   );
 }

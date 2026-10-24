@@ -41,9 +41,22 @@ export const GROUPINGS_BY_STATUS: Record<OwnershipStatus, readonly WardrobeGroup
 
 export const UNGROUPED_ID = 'toutes';
 
+export const NO_FILTERS: Pick<
+  WardrobeView,
+  'search' | 'pieceType' | 'color' | 'season' | 'tag' | 'onlyFavorites' | 'onlyAvailable'
+> = {
+  search: '',
+  pieceType: ALL_PIECE_TYPES,
+  color: null,
+  season: null,
+  tag: null,
+  onlyFavorites: false,
+  onlyAvailable: false,
+};
+
 export const INITIAL_WARDROBE_VIEW: WardrobeView = {
   status: OwnershipStatus.Owned,
-  pieceType: ALL_PIECE_TYPES,
+  ...NO_FILTERS,
   sortOrder: WardrobeSortOrder.Recent,
   grouping: WardrobeGrouping.Location,
 };

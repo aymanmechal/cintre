@@ -19,14 +19,52 @@
   text-transform: uppercase;
 }
 
-.meta {
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+}
+
+.pill,
+.installButton {
+  padding: var(--space-2) var(--space-3);
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.pill:hover {
+  background: var(--color-ink);
+  color: var(--color-bg);
+}
+
+.installButton {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-bg);
+}
+
+.status {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: var(--space-2);
   padding-top: var(--space-3);
+  color: var(--color-ink-muted);
 }
 
-.source {
+.saveOk {
   color: var(--color-ink-muted);
+}
+
+.saveFailed {
+  color: var(--color-danger);
+  font-weight: 700;
 }

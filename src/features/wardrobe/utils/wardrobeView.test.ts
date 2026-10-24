@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
+import { PieceColor } from '../../../shared/pieces/constants/colors';
+import { Season } from '../../../shared/pieces/constants/seasons';
 import { ALL_PIECE_TYPES, PieceType } from '../../../shared/pieces/constants/categories';
 import { makeWardrobeItem } from '../../../test/factories';
-import { OwnershipStatus, StorageLocation } from '../constants/wardrobe';
+import { Availability, OwnershipStatus, StorageLocation } from '../constants/wardrobe';
 import {
   INITIAL_WARDROBE_VIEW,
   UNGROUPED_ID,
@@ -11,6 +13,7 @@ import {
 import type { WardrobeView } from '../types/wardrobeView';
 import {
   buildWardrobeGroups,
+  hasActiveFilters,
   resolveGrouping,
   toWardrobeGrouping,
   toWardrobeSortOrder,
@@ -132,5 +135,62 @@ describe('conversion de valeurs de select', () => {
     expect(toWardrobeSortOrder('?')).toBe(WardrobeSortOrder.Recent);
     expect(toWardrobeGrouping('type')).toBe(WardrobeGrouping.PieceType);
     expect(toWardrobeGrouping('?')).toBe(WardrobeGrouping.None);
+  });
+});
+
+describe('buildWardrobeGroups : recherche et filtres', () => {
+  const RED_SCARF = makeWardrobeItem({
+    id: 10,
+    title: 'Écharpe',
+    brand: 'Zara',
+    color: PieceColor.Red,
+    season: Season.Winter,
+    tags: ['noel'],
+    isFavorite: true,
+  });
+  const BLUE_TEE = makeWardrobeItem({
+    id: 11,
+    title: 'T-shirt',
+    color: PieceColor.Blue,
+    season: Season.Summer,
+  });
+  const PIECES = [RED_SCARF, BLUE_TEE];
+
+  function titlesOf(changes: Partial<WardrobeView>): string[] {
+    return buildWardrobeGroups(PIECES, view(changes)).flatMap((group) =>
+      group.items.map((item) => item.piece.title),
+    );
+  }
+
+  it('cherche dans le nom, la marque et les tags sans tenir compte des accents', () => {
+    expect(titlesOf({ search: 'echarpe' })).toEqual(['Écharpe']);
+    expect(titlesOf({ search: 'zara' })).toEqual(['Écharpe']);
+    expect(titlesOf({ search: 'NOEL' })).toEqual(['Écharpe']);
+    expect(titlesOf({ search: 'introuvable' })).toEqual([]);
+  });
+
+  it('filtre par couleur, saison, tag et favoris', () => {
+    expect(titlesOf({ color: PieceColor.Blue })).toEqual(['T-shirt']);
+    expect(titlesOf({ season: Season.Winter })).toEqual(['Écharpe']);
+    expect(titlesOf({ tag: 'noel' })).toEqual(['Écharpe']);
+    expect(titlesOf({ onlyFavorites: true })).toEqual(['Écharpe']);
+  });
+
+  it('ne garde que les pièces disponibles', () => {
+    const dirty = makeWardrobeItem({ id: 12, title: 'Sale' }, { availability: Availability.Dirty });
+    const groups = buildWardrobeGroups([dirty, BLUE_TEE], view({ onlyAvailable: true }));
+    expect(groups.flatMap((group) => group.items.map((item) => item.piece.title))).toEqual([
+      'T-shirt',
+    ]);
+  });
+
+  it('combine plusieurs filtres', () => {
+    expect(titlesOf({ color: PieceColor.Blue, onlyFavorites: true })).toEqual([]);
+  });
+
+  it('sait si un filtre est actif', () => {
+    expect(hasActiveFilters(INITIAL_WARDROBE_VIEW)).toBe(false);
+    expect(hasActiveFilters({ ...INITIAL_WARDROBE_VIEW, search: ' a ' })).toBe(true);
+    expect(hasActiveFilters({ ...INITIAL_WARDROBE_VIEW, onlyFavorites: true })).toBe(true);
   });
 });

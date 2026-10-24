@@ -26,7 +26,7 @@ export function OutfitSlotRow({ slot, item, isActive, onSelect, onClear }: Outfi
       >
         <span className={styles.media}>
           {item ? (
-            <PieceImage imageUrl={item.piece.thumbnail} />
+            <PieceImage imageUrl={item.piece.thumbnail} photoId={item.piece.photoId} />
           ) : (
             <span className={styles.plus} aria-hidden="true">
               +

@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useReducer, type ReactNode } from 'react';
-import { WARDROBE_STORAGE_KEY } from '../constants/wardrobe';
-import { loadStoredWardrobe, saveWardrobe } from '../utils/wardrobeStorage';
+import {
+  ARCHIVE_STORAGE_KEY,
+  TRASH_STORAGE_KEY,
+  WARDROBE_STORAGE_KEY,
+} from '../constants/wardrobe';
+import { loadWardrobeState } from '../utils/wardrobeState';
+import { saveArchive, saveTrash, saveWardrobe } from '../utils/wardrobeStorage';
 import { createWardrobeActions } from './createWardrobeActions';
 import { WardrobeContext } from './WardrobeContext';
 import { wardrobeReducer } from './wardrobeReducer';
@@ -10,14 +15,24 @@ interface WardrobeProviderProps {
 }
 
 export function WardrobeProvider({ children }: WardrobeProviderProps) {
-  const [items, dispatch] = useReducer(wardrobeReducer, WARDROBE_STORAGE_KEY, loadStoredWardrobe);
+  const [state, dispatch] = useReducer(wardrobeReducer, undefined, () =>
+    loadWardrobeState(new Date()),
+  );
 
   useEffect(() => {
-    saveWardrobe(WARDROBE_STORAGE_KEY, items);
-  }, [items]);
+    saveWardrobe(WARDROBE_STORAGE_KEY, state.items);
+  }, [state.items]);
+
+  useEffect(() => {
+    saveArchive(ARCHIVE_STORAGE_KEY, state.archive);
+  }, [state.archive]);
+
+  useEffect(() => {
+    saveTrash(TRASH_STORAGE_KEY, state.trash);
+  }, [state.trash]);
 
   const actions = useMemo(() => createWardrobeActions(dispatch), []);
-  const value = useMemo(() => ({ items, ...actions }), [items, actions]);
+  const value = useMemo(() => ({ ...state, ...actions }), [state, actions]);
 
   return <WardrobeContext value={value}>{children}</WardrobeContext>;
 }

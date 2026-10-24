@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PieceType } from '../../../shared/pieces/constants/categories';
-import { makeWardrobeItem } from '../../../test/factories';
+import { makeOutfit, makeWardrobeItem } from '../../../test/factories';
 import { readStoredWardrobe, renderApp } from '../../../test/renderApp';
 import { OwnershipStatus, StorageLocation } from '../constants/wardrobe';
 import { toIsoDate } from '../utils/wornDates';
@@ -37,7 +37,7 @@ afterEach(() => {
 });
 
 describe('Garde-robe : affichage', () => {
-  it('invite à parcourir le catalogue quand elle est vide', () => {
+  it('invite à ajouter une pièce quand elle est vide', () => {
     renderApp('/garde-robe');
     expect(screen.getByText('Ta garde-robe est vide')).toBeInTheDocument();
   });
@@ -109,7 +109,7 @@ describe('Garde-robe : dernier port', () => {
   it('affiche la date mise à jour par une tenue notée au calendrier', () => {
     renderApp('/garde-robe', {
       wardrobe: ITEMS,
-      outfits: [{ id: 'o1', name: 'Sortie', pieceIds: [1, 2] }],
+      outfits: [makeOutfit({ id: 'o1', name: 'Sortie', pieceIds: [1, 2] })],
       wornLog: [{ id: 'e1', date: isoDaysAgo(1), outfitId: 'o1' }],
     });
     expect(within(cardOf('Chemise lin')).getByText('Portée hier')).toBeInTheDocument();
@@ -140,6 +140,28 @@ describe('Garde-robe : mode Modifier', () => {
     await user.click(screen.getByRole('button', { name: 'Retirer Chemise lin de ma garde-robe' }));
     expect(screen.queryByText('Chemise lin')).not.toBeInTheDocument();
     expect(readStoredWardrobe().map((item) => item.piece.id)).toEqual([2, 3]);
+  });
+});
+
+describe('Garde-robe : ouvrir une pièce', () => {
+  it('ouvre la fiche de modification en cliquant sur la carte', async () => {
+    const { user } = renderApp('/garde-robe', { wardrobe: ITEMS });
+    await user.click(screen.getByRole('link', { name: 'Chemise lin' }));
+    expect(screen.getByRole('button', { name: 'Enregistrer' })).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Chemise lin')).toBeInTheDocument();
+  });
+
+  it('ne fait pas de lien pendant la sélection', async () => {
+    const { user } = renderApp('/garde-robe', { wardrobe: ITEMS });
+    await user.click(screen.getByRole('button', { name: 'Sélectionner' }));
+    expect(screen.queryByRole('link', { name: 'Chemise lin' })).not.toBeInTheDocument();
+  });
+
+  it('garde le bouton favori indépendant du lien', async () => {
+    const { user } = renderApp('/garde-robe', { wardrobe: ITEMS });
+    await user.click(screen.getByRole('button', { name: 'Ajouter Chemise lin aux favoris' }));
+    expect(readStoredWardrobe()[0].piece.isFavorite).toBe(true);
+    expect(screen.getByRole('link', { name: 'Chemise lin' })).toBeInTheDocument();
   });
 });
 

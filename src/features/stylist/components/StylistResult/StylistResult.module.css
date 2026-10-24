@@ -1,0 +1,10 @@
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.explanation {
+  font-size: 1.0625rem;
+}

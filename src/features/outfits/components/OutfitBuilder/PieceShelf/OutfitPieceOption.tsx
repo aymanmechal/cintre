@@ -21,7 +21,7 @@ export function OutfitPieceOption({ item, isSelected, onToggle }: OutfitPieceOpt
       onClick={() => onToggle(piece.id)}
     >
       <span className={styles.media}>
-        <PieceImage imageUrl={piece.thumbnail} />
+        <PieceImage imageUrl={piece.thumbnail} photoId={piece.photoId} />
         <span className={styles.tag}>
           <OwnershipTag status={item.status} />
         </span>

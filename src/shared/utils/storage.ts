@@ -1,3 +1,6 @@
+import { SaveStatus } from '../save/constants/save';
+import { reportSaveStatus } from '../save/utils/saveStatusStore';
+
 export function readJsonFromStorage(key: string): unknown {
   try {
     const storedValue = localStorage.getItem(key);
@@ -8,5 +11,10 @@ export function readJsonFromStorage(key: string): unknown {
 }
 
 export function writeJsonToStorage(key: string, value: unknown): void {
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    reportSaveStatus(SaveStatus.Saved);
+  } catch {
+    reportSaveStatus(SaveStatus.Failed);
+  }
 }

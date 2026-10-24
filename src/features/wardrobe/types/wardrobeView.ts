@@ -1,11 +1,19 @@
 import type { OwnershipStatus } from '../constants/wardrobe';
 import type { WardrobeGrouping, WardrobeSortOrder } from '../constants/wardrobeView';
 import type { PieceTypeFilter } from '../../../shared/pieces/constants/categories';
+import type { PieceColor } from '../../../shared/pieces/constants/colors';
+import type { Season } from '../../../shared/pieces/constants/seasons';
 import type { WardrobeItem } from './wardrobe';
 
 export interface WardrobeView {
   status: OwnershipStatus;
+  search: string;
   pieceType: PieceTypeFilter;
+  color: PieceColor | null;
+  season: Season | null;
+  tag: string | null;
+  onlyFavorites: boolean;
+  onlyAvailable: boolean;
   sortOrder: WardrobeSortOrder;
   grouping: WardrobeGrouping;
 }

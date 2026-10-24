@@ -1,4 +1,5 @@
 import { PIECE_TYPE_OPTIONS } from '../../../../shared/pieces/constants/pieceTypeOptions';
+import type { PhotoRecognition } from '../../types/photoRecognition';
 import type { PieceFormErrors, PieceFormValues, ChangePieceFormField } from '../../types/pieceForm';
 import { toPieceType } from '../../../../shared/pieces/utils/categories';
 import { FieldLayout } from '../../../../shared/ui/Form/fieldLayout';
@@ -6,14 +7,22 @@ import { FormSection } from '../../../../shared/ui/Form/FormSection';
 import { SelectField } from '../../../../shared/ui/Form/SelectField';
 import { TextField } from '../../../../shared/ui/Form/TextField';
 import { TextFieldType } from '../../../../shared/ui/Form/textFieldType';
+import { PhotoCrop } from '../PhotoCrop/PhotoCrop';
+import { PhotoField } from '../PhotoField/PhotoField';
 
 interface PieceIdentityFieldsProps {
   values: PieceFormValues;
   errors: PieceFormErrors;
   onChange: ChangePieceFormField;
+  onRecognized: (recognition: PhotoRecognition) => void;
 }
 
-export function PieceIdentityFields({ values, errors, onChange }: PieceIdentityFieldsProps) {
+export function PieceIdentityFields({
+  values,
+  errors,
+  onChange,
+  onRecognized,
+}: PieceIdentityFieldsProps) {
   return (
     <FormSection legend="La pièce">
       <TextField
@@ -49,15 +58,28 @@ export function PieceIdentityFields({ values, errors, onChange }: PieceIdentityF
         error={errors.price}
         onChange={(value) => onChange('price', value)}
       />
+      <PhotoField
+        photoId={values.photoId}
+        onChange={(photoId) => onChange('photoId', photoId)}
+        onRecognized={onRecognized}
+      />
       <TextField
         id="piece-image-url"
-        label="Lien de la photo"
+        label="Ou lien d’une photo"
         type={TextFieldType.Url}
         placeholder="https://…"
         value={values.imageUrl}
         error={errors.imageUrl}
         onChange={(value) => onChange('imageUrl', value)}
       />
+      {(values.photoId || values.imageUrl.trim()) && (
+        <PhotoCrop
+          key={values.photoId ?? values.imageUrl}
+          photoId={values.photoId}
+          imageUrl={values.imageUrl.trim()}
+          onCropped={(photoId) => onChange('photoId', photoId)}
+        />
+      )}
     </FormSection>
   );
 }

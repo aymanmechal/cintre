@@ -6,5 +6,6 @@ export function createWornLogActions(dispatch: Dispatch<WornLogAction>): WornLog
   return {
     addEntry: (entry) => dispatch({ type: WornLogActionType.EntryAdded, entry }),
     deleteEntry: (entryId) => dispatch({ type: WornLogActionType.EntryDeleted, entryId }),
+    replaceEntries: (entries) => dispatch({ type: WornLogActionType.EntriesReplaced, entries }),
   };
 }

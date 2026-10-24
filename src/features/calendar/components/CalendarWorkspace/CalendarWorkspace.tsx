@@ -2,6 +2,7 @@ import { useOutfits } from '../../../outfits/context/useOutfits';
 import { useCalendar } from '../../hooks/useCalendar';
 import { CalendarGrid } from '../CalendarGrid/CalendarGrid';
 import { DayPanel } from '../DayPanel/DayPanel';
+import { TomorrowCard } from '../TomorrowCard/TomorrowCard';
 import { MonthNavigation } from '../MonthNavigation/MonthNavigation';
 import { NoOutfitsToLog } from '../NoOutfitsToLog/NoOutfitsToLog';
 import styles from './CalendarWorkspace.module.css';
@@ -13,12 +14,15 @@ export function CalendarWorkspace() {
   if (outfits.length === 0) return <NoOutfitsToLog />;
 
   return (
-    <div className={styles.workspace}>
-      <div className={styles.month}>
-        <MonthNavigation calendar={calendar} />
-        <CalendarGrid calendar={calendar} />
+    <>
+      <TomorrowCard calendar={calendar} />
+      <div className={styles.workspace}>
+        <div className={styles.month}>
+          <MonthNavigation calendar={calendar} />
+          <CalendarGrid calendar={calendar} />
+        </div>
+        <DayPanel calendar={calendar} />
       </div>
-      <DayPanel calendar={calendar} />
-    </div>
+    </>
   );
 }

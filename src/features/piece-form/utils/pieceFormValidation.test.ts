@@ -43,6 +43,15 @@ describe('validatePieceForm', () => {
   });
 });
 
+describe('validatePieceForm : lien de l’article', () => {
+  it('est facultatif mais doit être une adresse web', () => {
+    expect(validatePieceForm(makeFormValues({ productUrl: '' })).productUrl).toBeUndefined();
+    expect(validatePieceForm(makeFormValues({ productUrl: 'zara' })).productUrl).toBe(
+      VALIDATION_MESSAGES.invalidProductUrl,
+    );
+  });
+});
+
 describe('isWebUrl', () => {
   it('accepte http et https seulement', () => {
     expect(isWebUrl('https://site.test')).toBe(true);

@@ -15,6 +15,24 @@ describe('outfitStorage', () => {
     expect(loadStoredOutfits(KEY)).toEqual([]);
   });
 
+  it('complète les anciennes tenues sans note ni score', () => {
+    localStorage.setItem(KEY, JSON.stringify([{ id: 'a', name: 'Ancienne', pieceIds: [1, 2] }]));
+    expect(loadStoredOutfits(KEY)).toEqual([
+      { id: 'a', name: 'Ancienne', pieceIds: [1, 2], note: '', score: 0, occasion: null },
+    ]);
+  });
+
+  it("garde l'occasion valide et ignore une occasion inconnue", () => {
+    localStorage.setItem(
+      KEY,
+      JSON.stringify([
+        { id: 'a', name: 'A', pieceIds: [1], occasion: 'mariage' },
+        { id: 'b', name: 'B', pieceIds: [1], occasion: 'bal' },
+      ]),
+    );
+    expect(loadStoredOutfits(KEY).map((outfit) => outfit.occasion)).toEqual(['mariage', null]);
+  });
+
   it('ignore les tenues mal formées', () => {
     localStorage.setItem(
       KEY,

@@ -1,0 +1,46 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: 48rem;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4);
+  text-align: center;
+}
+
+.brand {
+  align-self: center;
+  color: var(--color-ink);
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
+  font-stretch: var(--font-stretch-condensed);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.question {
+  color: var(--color-ink-muted);
+}
+
+.thanks {
+  font-weight: 700;
+}
+
+.cta {
+  align-self: center;
+  margin-top: auto;
+  padding: var(--space-2) var(--space-4);
+  border-radius: 999px;
+  background: var(--color-ink);
+  color: var(--color-bg);
+  font-weight: 700;
+  text-decoration: none;
+}

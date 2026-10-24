@@ -1,0 +1,22 @@
+.logo {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  overflow: hidden;
+  background: var(--color-on-candy);
+  border-radius: var(--radius-pill);
+  color: var(--shop-color);
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.image {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}

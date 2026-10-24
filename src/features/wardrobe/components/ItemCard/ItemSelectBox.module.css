@@ -1,0 +1,14 @@
+.box {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  padding: var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  font-size: 0;
+}
+
+.box input {
+  width: 28px;
+  height: 28px;
+}

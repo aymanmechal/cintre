@@ -1,0 +1,37 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / -1;
+  gap: var(--space-2);
+}
+
+.label {
+  color: var(--color-ink-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.swatch {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.swatch:hover {
+  transform: scale(1.1);
+}
+
+.swatch[aria-pressed='true'] {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 2px;
+  transform: scale(1.1);
+}

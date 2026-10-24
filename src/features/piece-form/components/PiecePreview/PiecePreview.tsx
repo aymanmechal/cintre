@@ -15,7 +15,7 @@ export function PiecePreview({ values }: PiecePreviewProps) {
   return (
     <figure className={styles.preview} data-piece-type={preview.pieceType}>
       <div className={styles.media}>
-        <PieceImage imageUrl={preview.imageUrl} />
+        <PieceImage imageUrl={preview.imageUrl} photoId={preview.photoId} />
         <div className={styles.badgePosition}>
           <Badge label={PIECE_TYPE_LABELS[preview.pieceType]} />
         </div>

@@ -1,6 +1,11 @@
-import { DEFAULT_STORAGE_LOCATION, OwnershipStatus } from '../constants/wardrobe';
+import {
+  Availability,
+  DEFAULT_STORAGE_LOCATION,
+  OwnershipStatus,
+  type ArchiveReason,
+} from '../constants/wardrobe';
 import type { Piece } from '../../../shared/pieces/types/piece';
-import type { WardrobeItem } from '../types/wardrobe';
+import type { TrashedItem, WardrobeItem, WardrobeState } from '../types/wardrobe';
 import { findWardrobeItem, toPieceSnapshot } from '../utils/wardrobe';
 import { isNewerWornDate } from '../utils/wornDates';
 
@@ -9,15 +14,30 @@ export enum WardrobeActionType {
   ItemAdded = 'itemAdded',
   ItemUpdated = 'itemUpdated',
   PieceRemoved = 'pieceRemoved',
+  PieceRestored = 'pieceRestored',
+  PieceArchived = 'pieceArchived',
+  PieceUnarchived = 'pieceUnarchived',
+  TrashEmptied = 'trashEmptied',
   PiecesWorn = 'piecesWorn',
+  StateReplaced = 'stateReplaced',
 }
 
 export type WardrobeAction =
   | { type: WardrobeActionType.PieceSaved; piece: Piece; status: OwnershipStatus }
   | { type: WardrobeActionType.ItemAdded; item: WardrobeItem }
   | { type: WardrobeActionType.ItemUpdated; item: WardrobeItem }
-  | { type: WardrobeActionType.PieceRemoved; pieceId: number }
-  | { type: WardrobeActionType.PiecesWorn; pieceIds: readonly number[]; date: string };
+  | { type: WardrobeActionType.PieceRemoved; pieceId: number; date: string }
+  | { type: WardrobeActionType.PieceRestored; pieceId: number }
+  | {
+      type: WardrobeActionType.PieceArchived;
+      pieceId: number;
+      reason: ArchiveReason;
+      date: string;
+    }
+  | { type: WardrobeActionType.PieceUnarchived; pieceId: number }
+  | { type: WardrobeActionType.TrashEmptied }
+  | { type: WardrobeActionType.PiecesWorn; pieceIds: readonly number[]; date: string }
+  | { type: WardrobeActionType.StateReplaced; state: WardrobeState };
 
 type WardrobeItemChanges = Partial<Pick<WardrobeItem, 'status'>>;
 
@@ -34,6 +54,7 @@ function createItem(piece: Piece, status: OwnershipStatus): WardrobeItem {
     piece: toPieceSnapshot(piece),
     status,
     location: DEFAULT_STORAGE_LOCATION,
+    availability: Availability.Available,
     lastWornOn: null,
   };
 }
@@ -56,6 +77,52 @@ function replaceItem(items: readonly WardrobeItem[], updatedItem: WardrobeItem):
   return items.map((item) => (item.piece.id === updatedItem.piece.id ? updatedItem : item));
 }
 
+function moveToTrash(state: WardrobeState, pieceId: number, date: string): WardrobeState {
+  const item = findWardrobeItem(state.items, pieceId);
+  if (!item) return state;
+  const trashedItem: TrashedItem = { item, deletedOn: date };
+  return {
+    ...state,
+    items: state.items.filter((existing) => existing !== item),
+    trash: [trashedItem, ...state.trash],
+  };
+}
+
+function restoreFromTrash(state: WardrobeState, pieceId: number): WardrobeState {
+  const trashedItem = state.trash.find(({ item }) => item.piece.id === pieceId);
+  if (!trashedItem) return state;
+  return {
+    ...state,
+    items: addItem(state.items, trashedItem.item),
+    trash: state.trash.filter((existing) => existing !== trashedItem),
+  };
+}
+
+function archivePiece(
+  state: WardrobeState,
+  pieceId: number,
+  reason: ArchiveReason,
+  date: string,
+): WardrobeState {
+  const item = findWardrobeItem(state.items, pieceId);
+  if (!item) return state;
+  return {
+    ...state,
+    items: state.items.filter((existing) => existing !== item),
+    archive: [{ item, reason, archivedOn: date }, ...state.archive],
+  };
+}
+
+function unarchivePiece(state: WardrobeState, pieceId: number): WardrobeState {
+  const archivedItem = state.archive.find(({ item }) => item.piece.id === pieceId);
+  if (!archivedItem) return state;
+  return {
+    ...state,
+    items: addItem(state.items, archivedItem.item),
+    archive: state.archive.filter((existing) => existing !== archivedItem),
+  };
+}
+
 function markPiecesWorn(
   items: WardrobeItem[],
   pieceIds: readonly number[],
@@ -71,17 +138,31 @@ function markPiecesWorn(
   return updatedItems.some((item, index) => item !== items[index]) ? updatedItems : items;
 }
 
-export function wardrobeReducer(items: WardrobeItem[], action: WardrobeAction): WardrobeItem[] {
+function withItems(state: WardrobeState, items: WardrobeItem[]): WardrobeState {
+  return items === state.items ? state : { ...state, items };
+}
+
+export function wardrobeReducer(state: WardrobeState, action: WardrobeAction): WardrobeState {
   switch (action.type) {
     case WardrobeActionType.PieceSaved:
-      return savePiece(items, action.piece, action.status);
+      return withItems(state, savePiece(state.items, action.piece, action.status));
     case WardrobeActionType.ItemAdded:
-      return addItem(items, action.item);
+      return withItems(state, addItem(state.items, action.item));
     case WardrobeActionType.ItemUpdated:
-      return replaceItem(items, action.item);
+      return withItems(state, replaceItem(state.items, action.item));
     case WardrobeActionType.PieceRemoved:
-      return items.filter((item) => item.piece.id !== action.pieceId);
+      return moveToTrash(state, action.pieceId, action.date);
+    case WardrobeActionType.PieceRestored:
+      return restoreFromTrash(state, action.pieceId);
+    case WardrobeActionType.PieceArchived:
+      return archivePiece(state, action.pieceId, action.reason, action.date);
+    case WardrobeActionType.PieceUnarchived:
+      return unarchivePiece(state, action.pieceId);
+    case WardrobeActionType.TrashEmptied:
+      return { ...state, trash: [] };
     case WardrobeActionType.PiecesWorn:
-      return markPiecesWorn(items, action.pieceIds, action.date);
+      return withItems(state, markPiecesWorn(state.items, action.pieceIds, action.date));
+    case WardrobeActionType.StateReplaced:
+      return action.state;
   }
 }

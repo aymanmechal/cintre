@@ -16,7 +16,7 @@ export function ForgottenPieceCard({ item, today, to }: ForgottenPieceCardProps)
   return (
     <Link className={styles.card} to={to} data-piece-type={piece.pieceType}>
       <span className={styles.media}>
-        <PieceImage imageUrl={piece.thumbnail} />
+        <PieceImage imageUrl={piece.thumbnail} photoId={piece.photoId} />
       </span>
       <span className={styles.title}>{piece.title}</span>
       <span className={styles.worn}>{formatLastWorn(item.lastWornOn, today)}</span>

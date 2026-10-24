@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router';
 import { useSyncWornOutfits } from '../../../features/calendar/hooks/useSyncWornOutfits';
+import { usePurgeOrphanPhotos } from '../../../features/wardrobe/hooks/usePurgeOrphanPhotos';
 import { Footer } from '../Footer/Footer';
 import { Header } from '../Header/Header';
 import { SkipLink } from './SkipLink';
@@ -9,6 +10,7 @@ const MAIN_CONTENT_ID = 'contenu';
 
 export function Layout() {
   useSyncWornOutfits();
+  usePurgeOrphanPhotos();
 
   return (
     <div className={styles.layout}>

@@ -1,10 +1,15 @@
 import {
+  AVAILABILITY_OPTIONS,
   OWNERSHIP_STATUS_OPTIONS,
   STORAGE_LOCATION_OPTIONS,
 } from '../../../wardrobe/constants/selectOptions';
 import { OwnershipStatus } from '../../../wardrobe/constants/wardrobe';
 import type { PieceFormValues, ChangePieceFormField } from '../../types/pieceForm';
-import { toOwnershipStatus, toStorageLocation } from '../../../wardrobe/utils/wardrobe';
+import {
+  toAvailability,
+  toOwnershipStatus,
+  toStorageLocation,
+} from '../../../wardrobe/utils/wardrobe';
 import { FieldLayout } from '../../../../shared/ui/Form/fieldLayout';
 import { FormSection } from '../../../../shared/ui/Form/FormSection';
 import { SelectField } from '../../../../shared/ui/Form/SelectField';
@@ -25,6 +30,16 @@ export function PieceStorageFields({ values, onChange }: PieceStorageFieldsProps
         options={OWNERSHIP_STATUS_OPTIONS}
         onChange={(value) => onChange('status', toOwnershipStatus(value))}
       />
+      {values.status === OwnershipStatus.Owned && (
+        <SelectField
+          id="piece-availability"
+          label="Disponibilité"
+          layout={FieldLayout.Stacked}
+          value={values.availability}
+          options={AVAILABILITY_OPTIONS}
+          onChange={(value) => onChange('availability', toAvailability(value))}
+        />
+      )}
       {values.status === OwnershipStatus.Owned && (
         <SelectField
           id="piece-location"

@@ -27,6 +27,15 @@ test.describe('Garde-robe', () => {
     await expect(page.getByRole('link', { name: 'Modifier Chemise lin' })).toHaveCount(0);
   });
 
+  test('ouvre la fiche en touchant la carte, sans gêner le favori', async ({ page }) => {
+    await page.goto('/garde-robe');
+    await page.getByRole('button', { name: 'Ajouter Chemise lin aux favoris' }).click();
+    await expect(page).toHaveURL(/\/garde-robe$/);
+    await page.getByRole('link', { name: 'Chemise lin', exact: true }).click();
+    await expect(page).toHaveURL(/\/garde-robe\/1\/modifier$/);
+    await expect(page.getByRole('button', { name: 'Enregistrer' })).toBeVisible();
+  });
+
   test('le rappel disparait quand on note une tenue au calendrier', async ({ page }) => {
     await seedStorage(page, {
       'cintre.outfits': [{ id: 'o1', name: 'Sortie', pieceIds: [1, 2] }],
@@ -34,7 +43,7 @@ test.describe('Garde-robe', () => {
     await page.goto('/garde-robe');
     await expect(page.getByText(/1 pièce dort dans ta garde-robe/)).toBeVisible();
 
-    await page.getByRole('link', { name: 'Mon calendrier' }).click();
+    await page.getByRole('link', { name: 'Calendrier' }).click();
     await page.getByRole('button', { name: 'Ajouter au calendrier' }).click();
     await page.getByRole('link', { name: 'Ma garde-robe' }).click();
 
@@ -44,11 +53,25 @@ test.describe('Garde-robe', () => {
     );
   });
 
-  test('retire une pièce de la garde-robe', async ({ page }) => {
+  test('retire une pièce puis la restaure depuis la corbeille', async ({ page }) => {
     await page.goto('/garde-robe');
     await page.getByRole('button', { name: 'Modifier', exact: true }).click();
     await page.getByRole('button', { name: 'Retirer Chemise lin de ma garde-robe' }).click();
     await expect(page.getByRole('heading', { name: 'Chemise lin' })).toHaveCount(0);
+
+    await page.getByRole('link', { name: /Corbeille \(1\)/ }).click();
+    await page.getByRole('button', { name: 'Restaurer' }).click();
+    await expect(page.getByText('Corbeille vide')).toBeVisible();
+    await page.getByRole('link', { name: 'Retour à ma garde-robe' }).click();
+    await expect(page.getByRole('heading', { name: 'Chemise lin' })).toBeVisible();
+  });
+
+  test('cherche une pièce et la met en favori', async ({ page }) => {
+    await page.goto('/garde-robe');
+    await page.getByLabel('Rechercher').fill('baskets');
+    await expect(page.getByRole('heading', { name: 'Chemise lin' })).toHaveCount(0);
+    await page.getByRole('button', { name: 'Ajouter Baskets aux favoris' }).click();
+    await expect(page.getByRole('button', { name: 'Retirer Baskets des favoris' })).toBeVisible();
   });
 
   test('regroupe par type à la demande', async ({ page }) => {

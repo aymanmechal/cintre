@@ -1,8 +1,9 @@
+import { formatTags, parseTags } from '../../../shared/pieces/utils/tags';
 import type { PieceFormValues } from '../types/pieceForm';
 import type { Piece } from '../../../shared/pieces/types/piece';
 import type { WardrobeItem } from '../../wardrobe/types/wardrobe';
 
-type PieceFormFields = Pick<Piece, 'title' | 'brand' | 'pieceType' | 'price' | 'thumbnail'>;
+type PieceFormFields = Omit<Piece, 'id' | 'isFavorite'>;
 
 function parseOptionalPrice(price: string): number {
   return price.trim() === '' ? 0 : Number(price);
@@ -15,6 +16,15 @@ export function toPieceFields(values: PieceFormValues): PieceFormFields {
     pieceType: values.pieceType,
     price: parseOptionalPrice(values.price),
     thumbnail: values.imageUrl.trim(),
+    photoId: values.photoId,
+    extraPhotoIds: values.extraPhotoIds,
+    color: values.color,
+    season: values.season,
+    size: values.size.trim(),
+    material: values.material.trim(),
+    boughtOn: values.boughtOn || null,
+    productUrl: values.productUrl.trim(),
+    tags: parseTags(values.tags),
   };
 }
 
@@ -27,7 +37,13 @@ export function buildWardrobeItem(
   values: PieceFormValues,
   lastWornOn: string | null = null,
 ): WardrobeItem {
-  return { piece, status: values.status, location: values.location, lastWornOn };
+  return {
+    piece,
+    status: values.status,
+    location: values.location,
+    availability: values.availability,
+    lastWornOn,
+  };
 }
 
 export function toPieceFormValues(item: WardrobeItem): PieceFormValues {
@@ -38,7 +54,17 @@ export function toPieceFormValues(item: WardrobeItem): PieceFormValues {
     pieceType: piece.pieceType,
     price: String(piece.price),
     imageUrl: piece.thumbnail,
+    photoId: piece.photoId,
+    extraPhotoIds: piece.extraPhotoIds,
     status: item.status,
     location: item.location,
+    availability: item.availability,
+    color: piece.color,
+    season: piece.season,
+    size: piece.size,
+    material: piece.material,
+    boughtOn: piece.boughtOn ?? '',
+    productUrl: piece.productUrl,
+    tags: formatTags(piece.tags),
   };
 }

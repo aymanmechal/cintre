@@ -41,11 +41,6 @@
   font-weight: 600;
 }
 
-.apiId {
-  font-size: 0.8125rem;
-  opacity: 0.75;
-}
-
 .card a {
   border-color: var(--color-on-candy);
   color: var(--color-on-candy);

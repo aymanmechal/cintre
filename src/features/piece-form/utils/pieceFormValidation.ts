@@ -32,16 +32,17 @@ export function isWebUrl(value: string): boolean {
   }
 }
 
-function validateImageUrl(imageUrl: string): string | undefined {
-  if (imageUrl.trim() === '') return undefined;
-  return isWebUrl(imageUrl.trim()) ? undefined : VALIDATION_MESSAGES.invalidImageUrl;
+function validateOptionalUrl(url: string, message: string): string | undefined {
+  if (url.trim() === '') return undefined;
+  return isWebUrl(url.trim()) ? undefined : message;
 }
 
 export function validatePieceForm(values: PieceFormValues): PieceFormErrors {
   return {
     title: validateTitle(values.title),
     price: validatePrice(values.price),
-    imageUrl: validateImageUrl(values.imageUrl),
+    imageUrl: validateOptionalUrl(values.imageUrl, VALIDATION_MESSAGES.invalidImageUrl),
+    productUrl: validateOptionalUrl(values.productUrl, VALIDATION_MESSAGES.invalidProductUrl),
   };
 }
 

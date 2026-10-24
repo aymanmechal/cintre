@@ -1,0 +1,35 @@
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+}
+
+.card {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  border-radius: var(--radius-card);
+  background: var(--candy-lime);
+  color: var(--color-on-candy);
+}
+
+.card:nth-child(2) {
+  background: var(--candy-sky);
+}
+
+.card:nth-child(3) {
+  background: var(--candy-pink);
+}
+
+.value {
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  font-stretch: var(--font-stretch-condensed);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.label {
+  font-weight: 600;
+}

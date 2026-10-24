@@ -15,7 +15,7 @@ export function HomeHero() {
         <ButtonLink to={ROUTES.wardrobe} variant={ButtonVariant.Action}>
           Ma garde-robe
         </ButtonLink>
-        <ButtonLink to={ROUTES.catalog}>Parcourir le catalogue</ButtonLink>
+        <ButtonLink to={ROUTES.addPiece}>Ajouter une pièce</ButtonLink>
       </div>
     </header>
   );

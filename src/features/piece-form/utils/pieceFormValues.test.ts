@@ -22,13 +22,25 @@ describe('toPieceFields', () => {
   it('met le prix à 0 quand il est vide', () => {
     expect(toPieceFields(makeFormValues({ price: '' })).price).toBe(0);
   });
+
+  it('transforme les tags du formulaire en liste', () => {
+    expect(toPieceFields(makeFormValues({ tags: 'Soirée, vacances' })).tags).toEqual([
+      'soiree',
+      'vacances',
+    ]);
+  });
+
+  it("met la date d'achat à null quand elle est vide", () => {
+    expect(toPieceFields(makeFormValues({ boughtOn: '' })).boughtOn).toBeNull();
+    expect(toPieceFields(makeFormValues({ boughtOn: '2025-01-10' })).boughtOn).toBe('2025-01-10');
+  });
 });
 
 describe('applyPieceFormValues', () => {
-  it("garde l'id, la note et le stock de la pièce", () => {
-    const piece = makePiece({ id: 12, rating: 4.2, stock: 9 });
+  it("garde l'id de la pièce", () => {
+    const piece = makePiece({ id: 12 });
     const edited = applyPieceFormValues(piece, makeFormValues({ title: 'Autre nom' }));
-    expect(edited).toMatchObject({ id: 12, rating: 4.2, stock: 9, title: 'Autre nom' });
+    expect(edited).toMatchObject({ id: 12, title: 'Autre nom' });
   });
 });
 

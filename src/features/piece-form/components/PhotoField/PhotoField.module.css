@@ -1,0 +1,49 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / -1;
+  gap: var(--space-1);
+}
+
+.label {
+  color: var(--color-ink-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.pickButton {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.pickButton:focus-within {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.pickButton[data-disabled='true'] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}

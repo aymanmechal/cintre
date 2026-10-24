@@ -1,16 +1,14 @@
 import { useState, type FormEvent } from 'react';
-import { SubmitStatus } from '../constants/pieceForm';
-import type {
-  ChangePieceFormField,
-  PieceFormErrors,
-  PieceFormValues,
-  SavedPiece,
-} from '../types/pieceForm';
+import { INITIAL_PIECE_FORM_VALUES, SubmitStatus } from '../constants/pieceForm';
+import type { Piece } from '../../../shared/pieces/types/piece';
+import type { ChangePieceFormField, PieceFormErrors, PieceFormValues } from '../types/pieceForm';
+import type { PhotoRecognition } from '../types/photoRecognition';
+import { toRecognizedValues } from '../utils/photoRecognition';
 import { hasErrors, validatePieceForm } from '../utils/pieceFormValidation';
 
 const NO_ERRORS: PieceFormErrors = {};
 
-export type SavePieceForm = (values: PieceFormValues) => Promise<SavedPiece>;
+export type SavePieceForm = (values: PieceFormValues) => Promise<Piece>;
 
 interface PieceFormOptions {
   initialValues: PieceFormValues;
@@ -22,8 +20,9 @@ export interface PieceFormState {
   values: PieceFormValues;
   errors: PieceFormErrors;
   submitStatus: SubmitStatus;
-  savedPiece: SavedPiece | null;
+  savedPiece: Piece | null;
   changeField: ChangePieceFormField;
+  applyRecognition: (recognition: PhotoRecognition) => void;
   submit: (event: FormEvent<HTMLFormElement>) => void;
 }
 
@@ -35,7 +34,7 @@ export function usePieceForm({
   const [values, setValues] = useState(initialValues);
   const [hasTriedToSubmit, setHasTriedToSubmit] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(SubmitStatus.Idle);
-  const [savedPiece, setSavedPiece] = useState<SavedPiece | null>(null);
+  const [savedPiece, setSavedPiece] = useState<Piece | null>(null);
 
   const errors = hasTriedToSubmit ? validatePieceForm(values) : NO_ERRORS;
 
@@ -43,8 +42,15 @@ export function usePieceForm({
     setValues((currentValues) => ({ ...currentValues, [field]: value }));
   };
 
+  function applyRecognition(recognition: PhotoRecognition) {
+    setValues((currentValues) => ({
+      ...currentValues,
+      ...toRecognizedValues(currentValues, recognition),
+    }));
+  }
+
   function resetForm() {
-    setValues(initialValues);
+    setValues(INITIAL_PIECE_FORM_VALUES);
     setHasTriedToSubmit(false);
   }
 
@@ -66,5 +72,5 @@ export function usePieceForm({
     void sendPiece();
   }
 
-  return { values, errors, submitStatus, savedPiece, changeField, submit };
+  return { values, errors, submitStatus, savedPiece, changeField, applyRecognition, submit };
 }

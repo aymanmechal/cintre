@@ -1,7 +1,7 @@
 import { expect, test } from './support/test';
 
 test.describe('Ajouter, modifier, supprimer une pièce', () => {
-  test('affiche la confirmation à droite, visible sans défiler', async ({ page, api }) => {
+  test('affiche la confirmation à droite, visible sans défiler', async ({ page }) => {
     await page.goto('/ajouter');
     await page.getByTestId('piece-title').fill('Veste en jean');
     await page.getByTestId('piece-brand').fill('Levi');
@@ -14,7 +14,6 @@ test.describe('Ajouter, modifier, supprimer une pièce', () => {
     const confirmation = sidebar.getByText('Pièce ajoutée');
     await expect(confirmation).toBeVisible();
     await expect(confirmation).toBeInViewport();
-    expect(api.requests.some((request) => request.method === 'POST')).toBe(true);
     await expect(page.getByTestId('piece-title')).toHaveValue('');
   });
 
@@ -23,15 +22,6 @@ test.describe('Ajouter, modifier, supprimer une pièce', () => {
     await page.getByRole('button', { name: 'Ajouter la pièce' }).click();
     await expect(page.getByText(/Le nom doit faire au moins 2/)).toBeVisible();
     await expect(page.getByTestId('piece-title')).toHaveAttribute('aria-invalid', 'true');
-  });
-
-  test("montre une erreur quand l'API échoue et garde les valeurs", async ({ page, api }) => {
-    api.failWrites();
-    await page.goto('/ajouter');
-    await page.getByTestId('piece-title').fill('Veste en jean');
-    await page.getByRole('button', { name: 'Ajouter la pièce' }).click();
-    await expect(page.getByRole('alert')).toContainText(/Impossible d.ajouter/);
-    await expect(page.getByTestId('piece-title')).toHaveValue('Veste en jean');
   });
 
   test('ajoute, modifie puis supprime une pièce perso', async ({ page }) => {

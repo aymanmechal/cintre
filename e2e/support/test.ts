@@ -1,20 +1,6 @@
-import { test as base, expect, type Page } from '@playwright/test';
-import { mockDummyJson, type MockedApi } from './mockApi';
+import { expect, test, type Page } from '@playwright/test';
 
-interface Fixtures {
-  api: MockedApi;
-}
-
-export const test = base.extend<Fixtures>({
-  api: [
-    async ({ page }, use) => {
-      await use(await mockDummyJson(page));
-    },
-    { auto: true },
-  ],
-});
-
-export { expect };
+export { expect, test };
 
 export async function seedStorage(page: Page, entries: Record<string, unknown>): Promise<void> {
   await page.addInitScript((storedEntries) => {
@@ -31,7 +17,7 @@ export function wardrobeItem(
   lastWornOn: string | null = null,
 ) {
   return {
-    piece: { id, title, brand: 'Marque', pieceType, price: 50, rating: 4, stock: 3, thumbnail: '' },
+    piece: { id, title, brand: 'Marque', pieceType, price: 50, thumbnail: '' },
     status: 'owned',
     location: 'armoire',
     lastWornOn,

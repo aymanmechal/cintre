@@ -1,0 +1,73 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 170px;
+  padding: var(--space-4);
+  overflow: hidden;
+  background: var(--shop-color);
+  border-radius: var(--radius-card);
+  color: var(--color-on-candy);
+  text-decoration: none;
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease;
+}
+
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-4px) rotate(var(--sticker-tilt));
+  box-shadow: var(--shadow-soft);
+}
+
+.initial {
+  position: absolute;
+  top: -0.15em;
+  right: -0.05em;
+  font-family: var(--font-heading);
+  font-size: 9rem;
+  font-stretch: var(--font-stretch-condensed);
+  font-weight: 800;
+  line-height: 1;
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.name {
+  position: relative;
+  padding-right: 44px;
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-stretch: var(--font-stretch-condensed);
+  font-weight: 800;
+  line-height: 0.95;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.open {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  background: var(--color-on-candy);
+  border-radius: var(--radius-pill);
+  color: var(--shop-color);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+@media (max-width: 720px) {
+  .card {
+    min-height: 140px;
+    padding: var(--space-3);
+  }
+
+  .initial {
+    font-size: 7rem;
+  }
+}

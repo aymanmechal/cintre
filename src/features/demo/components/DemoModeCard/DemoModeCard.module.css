@@ -1,0 +1,14 @@
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 2px dashed var(--color-ink);
+  border-radius: var(--radius-card);
+}
+
+.text {
+  font-weight: 600;
+}

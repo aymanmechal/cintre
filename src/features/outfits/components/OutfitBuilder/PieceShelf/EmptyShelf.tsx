@@ -12,8 +12,8 @@ export function EmptyShelf({ slot }: EmptyShelfProps) {
   return (
     <div className={styles.empty}>
       <p className={styles.message}>Rien dans « {OUTFIT_SLOT_LABELS[slot]} » pour l’instant.</p>
-      <ButtonLink to={ROUTES.catalog} variant={ButtonVariant.Ghost}>
-        Trouver une pièce
+      <ButtonLink to={ROUTES.addPiece} variant={ButtonVariant.Ghost}>
+        Ajouter une pièce
       </ButtonLink>
     </div>
   );

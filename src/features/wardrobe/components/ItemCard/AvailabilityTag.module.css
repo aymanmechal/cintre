@@ -1,0 +1,10 @@
+.tag {
+  width: fit-content;
+  margin: 0 var(--space-1);
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--candy-orange);
+  color: var(--color-on-candy);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}

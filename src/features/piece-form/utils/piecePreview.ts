@@ -19,6 +19,7 @@ export function buildPiecePreview(values: PieceFormValues): PiecePreviewData {
     brand: formatBrand(values.brand.trim() || null),
     price: formatPrice(parsePreviewPrice(values.price)),
     imageUrl: isWebUrl(imageUrl) ? imageUrl : '',
+    photoId: values.photoId,
     pieceType: values.pieceType,
   };
 }

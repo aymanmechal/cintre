@@ -1,14 +1,17 @@
 import {
   MIN_PIECES_PER_OUTFIT,
+  NO_SCORE,
   OUTFIT_SLOT_BY_PIECE_TYPE,
   OUTFIT_SLOT_CAPACITY,
   OUTFIT_SLOTS,
   OutfitReadiness,
   OutfitSlot,
+  VARIANT_NAME_SUFFIX,
 } from '../constants/outfits';
 import { OwnershipStatus } from '../../wardrobe/constants/wardrobe';
 import type { Outfit, OutfitSelection } from '../types/outfit';
 import type { WardrobeItem } from '../../wardrobe/types/wardrobe';
+import { isWearable } from './combinations';
 import { findWardrobeItem } from '../../wardrobe/utils/wardrobe';
 
 export function createEmptySelection(): OutfitSelection {
@@ -33,6 +36,14 @@ export function toPieceIds(selection: OutfitSelection): number[] {
 
 export function formatPieceCount(count: number): string {
   return `${count} pièce${count > 1 ? 's' : ''}`;
+}
+
+export function formatOutfitCount(count: number): string {
+  return `${count} tenue${count > 1 ? 's' : ''}`;
+}
+
+export function formatIdeaCount(count: number): string {
+  return `${count} idée${count > 1 ? 's' : ''}`;
 }
 
 export function countMissingPieces(selection: OutfitSelection): number {
@@ -135,10 +146,48 @@ export function sumPrices(outfitItems: readonly WardrobeItem[]): number {
   return outfitItems.reduce((total, item) => total + item.piece.price, 0);
 }
 
+export function createOutfitCopy(outfit: Outfit, id: string): Outfit {
+  return { ...outfit, id, name: `${outfit.name}${VARIANT_NAME_SUFFIX}`, note: '', score: NO_SCORE };
+}
+
+export function selectionFromItems(items: readonly WardrobeItem[]): OutfitSelection {
+  return items.reduce(
+    (selection, item) =>
+      togglePieceInSlot(selection, OUTFIT_SLOT_BY_PIECE_TYPE[item.piece.pieceType], item.piece.id),
+    createEmptySelection(),
+  );
+}
+
+export function findReplacementPiece(
+  outfit: Outfit,
+  pieceId: number,
+  items: readonly WardrobeItem[],
+): WardrobeItem | undefined {
+  const current = findWardrobeItem(items, pieceId);
+  if (!current) return undefined;
+  const slot = OUTFIT_SLOT_BY_PIECE_TYPE[current.piece.pieceType];
+  const sameSlotItems = selectItemsForSlot(items, slot);
+  const currentIndex = sameSlotItems.indexOf(current);
+  const others = [
+    ...sameSlotItems.slice(currentIndex + 1),
+    ...sameSlotItems.slice(0, currentIndex),
+  ];
+  return others.find((item) => isWearable(item) && !outfit.pieceIds.includes(item.piece.id));
+}
+
+export function replacePieceInOutfit(outfit: Outfit, pieceId: number, newPieceId: number): Outfit {
+  const pieceIds = outfit.pieceIds.map((id) => (id === pieceId ? newPieceId : id));
+  return { ...outfit, pieceIds };
+}
+
 export function createOutfitId(): string {
   return crypto.randomUUID();
 }
 
 export function buildDefaultOutfitName(outfitCount: number): string {
   return `Tenue n°${outfitCount + 1}`;
+}
+
+export function formatAnchorTitles(anchors: readonly WardrobeItem[]): string {
+  return anchors.map((anchor) => `« ${anchor.piece.title} »`).join(' + ');
 }

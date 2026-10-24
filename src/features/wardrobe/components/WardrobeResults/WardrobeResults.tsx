@@ -1,6 +1,6 @@
-import { ALL_PIECE_TYPES } from '../../../../shared/pieces/constants/categories';
 import type { WardrobeViewState } from '../../hooks/useWardrobeView';
 import { useToday } from '../../../../shared/hooks/useToday';
+import type { WardrobeSelection } from '../../hooks/useWardrobeSelection';
 import { useWardrobe } from '../../context/useWardrobe';
 import { OwnershipStatus } from '../../constants/wardrobe';
 import { WardrobeSortOrder } from '../../constants/wardrobeView';
@@ -12,9 +12,10 @@ import { WardrobeGroupList } from '../Groups/WardrobeGroupList';
 
 interface WardrobeResultsProps {
   viewState: WardrobeViewState;
+  selection: WardrobeSelection;
 }
 
-export function WardrobeResults({ viewState }: WardrobeResultsProps) {
+export function WardrobeResults({ viewState, selection }: WardrobeResultsProps) {
   const { view, groups } = viewState;
   const { items } = useWardrobe();
   const today = useToday();
@@ -29,9 +30,7 @@ export function WardrobeResults({ viewState }: WardrobeResultsProps) {
   }
 
   if (groups.length === 0) {
-    return (
-      <NoMatchingWardrobeItems onShowAllTypes={() => viewState.changePieceType(ALL_PIECE_TYPES)} />
-    );
+    return <NoMatchingWardrobeItems onResetFilters={viewState.resetFilters} />;
   }
 
   return (
@@ -42,7 +41,7 @@ export function WardrobeResults({ viewState }: WardrobeResultsProps) {
           onShowForgotten={viewState.changeSortOrder}
         />
       )}
-      <WardrobeGroupList groups={groups} isEditing={viewState.isEditing} />
+      <WardrobeGroupList groups={groups} isEditing={viewState.isEditing} selection={selection} />
     </>
   );
 }

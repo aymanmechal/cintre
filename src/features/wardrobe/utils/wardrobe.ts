@@ -1,4 +1,6 @@
 import {
+  AVAILABILITIES,
+  Availability,
   DEFAULT_STORAGE_LOCATION,
   OWNERSHIP_STATUSES,
   OwnershipStatus,
@@ -9,8 +11,42 @@ import type { Piece } from '../../../shared/pieces/types/piece';
 import type { WardrobeItem } from '../types/wardrobe';
 
 export function toPieceSnapshot(piece: Piece): Piece {
-  const { id, title, brand, pieceType, price, rating, stock, thumbnail } = piece;
-  return { id, title, brand, pieceType, price, rating, stock, thumbnail };
+  const { id, title, brand, pieceType, price, thumbnail } = piece;
+  const {
+    photoId,
+    extraPhotoIds,
+    color,
+    season,
+    size,
+    material,
+    boughtOn,
+    productUrl,
+    isFavorite,
+    tags,
+  } = piece;
+  return {
+    id,
+    title,
+    brand,
+    pieceType,
+    price,
+    thumbnail,
+    photoId,
+    extraPhotoIds,
+    color,
+    season,
+    size,
+    material,
+    boughtOn,
+    productUrl,
+    isFavorite,
+    tags,
+  };
+}
+
+export function collectTags(items: readonly WardrobeItem[]): string[] {
+  const tags = new Set(items.flatMap((item) => item.piece.tags));
+  return [...tags].toSorted((first, second) => first.localeCompare(second, 'fr'));
 }
 
 export function findWardrobeItem(
@@ -36,6 +72,10 @@ export function selectItemsByStatus(
 
 export function toOwnershipStatus(value: string): OwnershipStatus {
   return OWNERSHIP_STATUSES.find((status) => status === value) ?? OwnershipStatus.Owned;
+}
+
+export function toAvailability(value: string): Availability {
+  return AVAILABILITIES.find((availability) => availability === value) ?? Availability.Available;
 }
 
 export function toStorageLocation(value: string): StorageLocation {

@@ -1,6 +1,9 @@
+import 'fake-indexeddb/auto';
 import '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
-import { afterEach } from 'vitest';
+import { afterEach, vi } from 'vitest';
+
+vi.mock('../shared/supabase/supabaseClient', () => ({ supabase: null }));
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

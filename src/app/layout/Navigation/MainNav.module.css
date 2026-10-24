@@ -5,3 +5,21 @@
   padding: 0;
   list-style: none;
 }
+
+@media (max-width: 720px) {
+  .nav {
+    order: 1;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .navList {
+    flex-wrap: nowrap;
+    width: max-content;
+  }
+}

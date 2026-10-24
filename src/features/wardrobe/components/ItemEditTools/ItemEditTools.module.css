@@ -1,6 +1,7 @@
 .actionsPosition {
   position: absolute;
   top: var(--space-3);
+  z-index: 1;
   right: var(--space-3);
   display: flex;
   gap: var(--space-1);
@@ -8,6 +9,7 @@
 
 .pickerPosition {
   position: absolute;
+  z-index: 1;
   right: var(--space-3);
   bottom: var(--space-3);
 }

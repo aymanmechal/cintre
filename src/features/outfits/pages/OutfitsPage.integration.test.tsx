@@ -81,10 +81,10 @@ describe('Tenues : démarrage', () => {
     expect(slotTab(/^Accessoire\s*3/)).toBeInTheDocument();
   });
 
-  it('propose le catalogue quand un emplacement est vide', async () => {
+  it('propose d’ajouter une pièce quand un emplacement est vide', async () => {
     const { user } = renderApp('/tenues', { wardrobe: [SHIRT] });
     await user.click(slotTab(/^Bas/));
-    expect(screen.getByRole('link', { name: 'Trouver une pièce' })).toBeInTheDocument();
+    expect(within(shelf()).getByRole('link', { name: 'Ajouter une pièce' })).toBeInTheDocument();
   });
 });
 

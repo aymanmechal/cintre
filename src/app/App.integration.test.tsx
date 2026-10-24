@@ -1,16 +1,7 @@
 import { screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { mockDummyJson } from '../test/apiMock';
+import { describe, expect, it } from 'vitest';
 import { makeOutfit, makeWardrobeItem } from '../test/factories';
 import { renderApp } from '../test/renderApp';
-
-beforeEach(() => {
-  mockDummyJson();
-});
-
-afterEach(() => {
-  vi.unstubAllGlobals();
-});
 
 describe('Navigation', () => {
   it('navigue entre les pages avec le menu', async () => {
@@ -21,8 +12,8 @@ describe('Navigation', () => {
     ).toBeInTheDocument();
     await user.click(screen.getByRole('link', { name: 'Mes tenues' }));
     expect(screen.getByRole('heading', { level: 1, name: /Mes tenues/i })).toBeInTheDocument();
-    await user.click(screen.getByRole('link', { name: 'Mon calendrier' }));
-    expect(screen.getByRole('heading', { level: 1, name: /Mon calendrier/i })).toBeInTheDocument();
+    await user.click(screen.getByRole('link', { name: 'Calendrier' }));
+    expect(screen.getByRole('heading', { level: 1, name: /Calendrier/i })).toBeInTheDocument();
   });
 
   it('affiche une page « introuvable » pour une adresse inconnue', () => {

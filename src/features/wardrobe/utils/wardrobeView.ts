@@ -4,7 +4,9 @@ import {
   ALL_PIECE_TYPES,
   type PieceTypeFilter,
 } from '../../../shared/pieces/constants/categories';
+import { normalizeForSearch } from '../../../shared/utils/text';
 import {
+  Availability,
   STORAGE_LOCATION_LABELS,
   STORAGE_LOCATIONS,
   type OwnershipStatus,
@@ -52,13 +54,39 @@ function sortWardrobeItems(
   }
 }
 
-function filterByPieceType(
-  items: readonly WardrobeItem[],
-  pieceType: PieceTypeFilter,
-): WardrobeItem[] {
-  return pieceType === ALL_PIECE_TYPES
-    ? [...items]
-    : items.filter((item) => item.piece.pieceType === pieceType);
+function matchesPieceType(item: WardrobeItem, pieceType: PieceTypeFilter): boolean {
+  return pieceType === ALL_PIECE_TYPES || item.piece.pieceType === pieceType;
+}
+
+export function matchesSearch(item: WardrobeItem, search: string): boolean {
+  const { title, brand, size, tags } = item.piece;
+  const words = [title, brand ?? '', size, ...tags].join(' ');
+  return normalizeForSearch(words).includes(normalizeForSearch(search));
+}
+
+function matchesView(item: WardrobeItem, view: WardrobeView): boolean {
+  const { piece } = item;
+  return (
+    matchesPieceType(item, view.pieceType) &&
+    matchesSearch(item, view.search) &&
+    (view.color === null || piece.color === view.color) &&
+    (view.season === null || piece.season === view.season) &&
+    (view.tag === null || piece.tags.includes(view.tag)) &&
+    (!view.onlyFavorites || piece.isFavorite) &&
+    (!view.onlyAvailable || item.availability === Availability.Available)
+  );
+}
+
+export function hasActiveFilters(view: WardrobeView): boolean {
+  return (
+    view.search.trim() !== '' ||
+    view.pieceType !== ALL_PIECE_TYPES ||
+    view.color !== null ||
+    view.season !== null ||
+    view.tag !== null ||
+    view.onlyFavorites ||
+    view.onlyAvailable
+  );
 }
 
 function buildGroups<Key extends string>(
@@ -108,7 +136,7 @@ export function buildWardrobeGroups(
   view: WardrobeView,
 ): WardrobeGroup[] {
   const itemsOfStatus = selectItemsByStatus(items, view.status);
-  const matchingItems = filterByPieceType(itemsOfStatus, view.pieceType);
+  const matchingItems = itemsOfStatus.filter((item) => matchesView(item, view));
   const sortedItems = sortWardrobeItems(matchingItems, view.sortOrder);
   return groupWardrobeItems(sortedItems, resolveGrouping(view.status, view.grouping));
 }

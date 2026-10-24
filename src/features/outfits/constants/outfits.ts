@@ -1,4 +1,6 @@
 import { PieceType } from '../../../shared/pieces/constants/categories';
+import { PieceColor } from '../../../shared/pieces/constants/colors';
+import { Season } from '../../../shared/pieces/constants/seasons';
 
 export enum OutfitSlot {
   Top = 'haut',
@@ -58,4 +60,51 @@ export const OUTFIT_READINESS_LABELS: Record<OutfitReadiness, string> = {
 
 export const MIN_PIECES_PER_OUTFIT = 2;
 
+export const NO_SCORE = 0;
+
+export const MAX_OUTFIT_SCORE = 5;
+
+export const SCORE_VALUES = [1, 2, 3, 4, 5];
+
+export const VARIANT_NAME_SUFFIX = ' (variante)';
+
 export const OUTFITS_STORAGE_KEY = 'cintre.outfits';
+
+export const IDEA_SLOTS = [OutfitSlot.Top, OutfitSlot.Bottom, OutfitSlot.Shoes];
+
+export const OUTFIT_IDEAS_PAGE_SIZE = 6;
+
+export const OUTFIT_LIST_PAGE_SIZE = 4;
+
+export const PIECE_SHELF_PAGE_SIZE = 6;
+
+export const MIN_COMPARED_OUTFITS = 2;
+
+export const MAX_COMPARED_OUTFITS = 3;
+
+export const NEUTRAL_COLORS: readonly PieceColor[] = [
+  PieceColor.Black,
+  PieceColor.White,
+  PieceColor.Grey,
+  PieceColor.Beige,
+  PieceColor.Brown,
+];
+
+export const OPPOSITE_SEASON: Record<Season, Season | null> = {
+  [Season.Summer]: Season.Winter,
+  [Season.Winter]: Season.Summer,
+  [Season.MidSeason]: null,
+  [Season.AllYear]: null,
+};
+
+export enum ColorHarmony {
+  Neutral = 'neutre',
+  Accent = 'touche',
+  Bold = 'audacieux',
+}
+
+export const COLOR_HARMONY_LABELS: Record<ColorHarmony, string> = {
+  [ColorHarmony.Neutral]: 'Tout en neutres',
+  [ColorHarmony.Accent]: 'Une touche de couleur',
+  [ColorHarmony.Bold]: 'Audacieux',
+};

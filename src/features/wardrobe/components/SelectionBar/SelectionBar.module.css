@@ -1,0 +1,25 @@
+.bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+.summary,
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.count {
+  flex: 1;
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-weight: 800;
+}

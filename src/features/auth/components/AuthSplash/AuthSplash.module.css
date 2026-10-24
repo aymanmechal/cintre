@@ -1,0 +1,11 @@
+.splash {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  color: var(--color-primary);
+  font-family: var(--font-heading);
+  font-size: clamp(3.5rem, 14vw, 6rem);
+  font-stretch: var(--font-stretch-condensed);
+  font-weight: 800;
+  text-transform: uppercase;
+}
