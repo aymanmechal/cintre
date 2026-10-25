@@ -30,6 +30,16 @@ describe('pullOrUploadContent', () => {
     expect(pushCloudContent).not.toHaveBeenCalled();
   });
 
+  it('garde les données locales si la sauvegarde en ligne est vide', async () => {
+    vi.mocked(fetchCloudContent).mockResolvedValue(
+      buildCloudContent({ ...LOCAL, wardrobe: [] }, '2025-03-10'),
+    );
+    const apply = vi.fn();
+    await pullOrUploadContent('user-1', LOCAL, apply);
+    expect(apply).not.toHaveBeenCalled();
+    expect(pushCloudContent).toHaveBeenCalled();
+  });
+
   it('envoie les données locales s’il n’y a rien en ligne', async () => {
     vi.mocked(fetchCloudContent).mockResolvedValue(null);
     const apply = vi.fn();

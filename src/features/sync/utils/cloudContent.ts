@@ -6,6 +6,10 @@ export function buildCloudContent(content: CloudContent, savedOn: string): Backu
   return buildBackup({ ...content, photos: {} }, savedOn);
 }
 
+export function isEmptyContent(content: CloudContent): boolean {
+  return content.wardrobe.length === 0 && content.outfits.length === 0;
+}
+
 export function parseCloudContent(value: unknown): CloudContent | null {
   const backup = parseBackupValue(value);
   if (!backup) return null;

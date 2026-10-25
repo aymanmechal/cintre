@@ -2,7 +2,7 @@ import { toIsoDate } from '../../wardrobe/utils/wornDates';
 import { collectWardrobePhotoIds } from '../../wardrobe/utils/wardrobePhotos';
 import { fetchCloudContent, fetchCloudUpdatedAt, pushCloudContent } from '../api/cloudApi';
 import type { CloudContent } from '../types/sync';
-import { buildCloudContent, parseCloudContent } from './cloudContent';
+import { buildCloudContent, isEmptyContent, parseCloudContent } from './cloudContent';
 import { syncPhotos } from './photoSync';
 
 function collectContentPhotoIds(content: CloudContent): string[] {
@@ -33,7 +33,8 @@ export async function pullOrUploadContent(
   applyCloudContent: (content: CloudContent) => void,
 ): Promise<void> {
   const cloudContent = parseCloudContent(await fetchCloudContent(userId));
-  if (!cloudContent) return uploadLocalContent(userId, local);
+  const keepsLocal = !cloudContent || (isEmptyContent(cloudContent) && !isEmptyContent(local));
+  if (keepsLocal) return uploadLocalContent(userId, local);
   applyCloudContent(cloudContent);
   await syncPhotos(userId, collectContentPhotoIds(cloudContent));
 }
