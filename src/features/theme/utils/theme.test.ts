@@ -19,10 +19,8 @@ describe('loadStoredTheme', () => {
     expect(loadStoredTheme(KEY)).toBe(Theme.Dark);
   });
 
-  it("suit le système quand rien n'est sauvegardé", () => {
+  it("reste en clair quand rien n'est sauvegardé, même si l'appareil est en sombre", () => {
     mockSystemPrefersDark(true);
-    expect(loadStoredTheme(KEY)).toBe(Theme.Dark);
-    mockSystemPrefersDark(false);
     expect(loadStoredTheme(KEY)).toBe(Theme.Light);
   });
 

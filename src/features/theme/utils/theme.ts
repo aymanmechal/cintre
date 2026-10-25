@@ -1,17 +1,13 @@
-import { DARK_COLOR_SCHEME_QUERY, Theme, THEMES } from '../constants/theme';
+import { DEFAULT_THEME, Theme, THEMES } from '../constants/theme';
 import { readJsonFromStorage, writeJsonToStorage } from '../../../shared/utils/storage';
 
 function isTheme(value: unknown): value is Theme {
   return THEMES.some((theme) => theme === value);
 }
 
-function getSystemTheme(): Theme {
-  return window.matchMedia(DARK_COLOR_SCHEME_QUERY).matches ? Theme.Dark : Theme.Light;
-}
-
 export function loadStoredTheme(storageKey: string): Theme {
   const storedTheme = readJsonFromStorage(storageKey);
-  return isTheme(storedTheme) ? storedTheme : getSystemTheme();
+  return isTheme(storedTheme) ? storedTheme : DEFAULT_THEME;
 }
 
 export function saveTheme(storageKey: string, theme: Theme): void {

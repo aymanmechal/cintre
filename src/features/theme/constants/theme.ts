@@ -7,7 +7,7 @@ export const THEMES = Object.values(Theme);
 
 export const THEME_STORAGE_KEY = 'cintre.theme';
 
-export const DARK_COLOR_SCHEME_QUERY = '(prefers-color-scheme: dark)';
+export const DEFAULT_THEME = Theme.Light;
 
 export const THEME_SWITCH_LABELS: Record<Theme, string> = {
   [Theme.Light]: 'Passer en mode sombre',
