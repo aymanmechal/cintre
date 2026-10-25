@@ -1,4 +1,6 @@
 import { Route, Routes } from 'react-router';
+import { AppFeature } from '../shared/constants/features';
+import { FeatureRoute } from './FeatureRoute';
 import { AccountPage } from '../features/auth/pages/AccountPage';
 import { ArchivePage } from '../features/archive/pages/ArchivePage';
 import { BackupPage } from '../features/backup/pages/BackupPage';
@@ -40,13 +42,41 @@ export function AppRoutes() {
         <Route path={ROUTES.calendar} element={<CalendarPage />} />
         <Route path={ROUTES.archive} element={<ArchivePage />} />
         <Route path={ROUTES.trash} element={<TrashPage />} />
-        <Route path={ROUTES.backup} element={<BackupPage />} />
+        <Route
+          path={ROUTES.backup}
+          element={
+            <FeatureRoute feature={AppFeature.Backup}>
+              <BackupPage />
+            </FeatureRoute>
+          }
+        />
         <Route path={ROUTES.stats} element={<StatsPage />} />
-        <Route path={ROUTES.suitcase} element={<SuitcasePage />} />
+        <Route
+          path={ROUTES.suitcase}
+          element={
+            <FeatureRoute feature={AppFeature.Suitcase}>
+              <SuitcasePage />
+            </FeatureRoute>
+          }
+        />
         <Route path={ROUTES.wrapped} element={<WrappedPage />} />
         <Route path={ROUTES.lookbook} element={<LookbookPage />} />
-        <Route path={ROUTES.compatibility} element={<CompatibilityPage />} />
-        <Route path={ROUTES.stylist} element={<StylistPage />} />
+        <Route
+          path={ROUTES.compatibility}
+          element={
+            <FeatureRoute feature={AppFeature.Compatibility}>
+              <CompatibilityPage />
+            </FeatureRoute>
+          }
+        />
+        <Route
+          path={ROUTES.stylist}
+          element={
+            <FeatureRoute feature={AppFeature.Stylist}>
+              <StylistPage />
+            </FeatureRoute>
+          }
+        />
         <Route path={ROUTES.styleProfile} element={<StyleProfilePage />} />
         <Route path={ROUTES.account} element={<AccountPage />} />
         <Route path="*" element={<NotFoundPage />} />

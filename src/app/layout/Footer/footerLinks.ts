@@ -1,17 +1,24 @@
+import { AppFeature } from '../../../shared/constants/features';
 import { ROUTES } from '../../../shared/routes';
+import { isFeatureVisible } from '../../../shared/utils/featureFlags';
 
 export interface FooterLink {
+  feature: AppFeature;
   to: string;
   label: string;
 }
 
-export const FOOTER_LINKS: readonly FooterLink[] = [
-  { to: ROUTES.stylist, label: '🪄 Mon styliste' },
-  { to: ROUTES.styleProfile, label: '🎭 Mon profil de style' },
-  { to: ROUTES.stats, label: '📊 Mes chiffres' },
-  { to: ROUTES.wrapped, label: '🎁 Mon bilan' },
-  { to: ROUTES.lookbook, label: '📖 Mon lookbook' },
-  { to: ROUTES.compatibility, label: '🔗 Mes associations' },
-  { to: ROUTES.account, label: '☁️ Mon compte' },
-  { to: ROUTES.backup, label: '💾 Sauvegarder mes données' },
+const ALL_FOOTER_LINKS: readonly FooterLink[] = [
+  { feature: AppFeature.Stylist, to: ROUTES.stylist, label: '🪄 Mon styliste' },
+  { feature: AppFeature.StyleProfile, to: ROUTES.styleProfile, label: '🎭 Mon profil de style' },
+  { feature: AppFeature.Stats, to: ROUTES.stats, label: '📊 Mes chiffres' },
+  { feature: AppFeature.Wrapped, to: ROUTES.wrapped, label: '🎁 Mon bilan' },
+  { feature: AppFeature.Lookbook, to: ROUTES.lookbook, label: '📖 Mon lookbook' },
+  { feature: AppFeature.Compatibility, to: ROUTES.compatibility, label: '🔗 Mes associations' },
+  { feature: AppFeature.Account, to: ROUTES.account, label: '☁️ Mon compte' },
+  { feature: AppFeature.Backup, to: ROUTES.backup, label: '💾 Sauvegarder mes données' },
 ];
+
+export const FOOTER_LINKS: readonly FooterLink[] = ALL_FOOTER_LINKS.filter((link) =>
+  isFeatureVisible(link.feature),
+);

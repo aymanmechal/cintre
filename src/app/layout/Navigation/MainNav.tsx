@@ -1,14 +1,16 @@
+import { AppFeature } from '../../../shared/constants/features';
 import { ROUTES } from '../../../shared/routes';
+import { isFeatureVisible } from '../../../shared/utils/featureFlags';
 import { NavItem } from './NavItem';
 import styles from './MainNav.module.css';
 
 const NAV_ITEMS = [
-  { to: ROUTES.catalog, label: 'Catalogue' },
-  { to: ROUTES.wardrobe, label: 'Ma garde-robe' },
-  { to: ROUTES.outfits, label: 'Mes tenues' },
-  { to: ROUTES.calendar, label: 'Calendrier' },
-  { to: ROUTES.suitcase, label: 'Valise' },
-] as const;
+  { feature: AppFeature.Catalog, to: ROUTES.catalog, label: 'Catalogue' },
+  { feature: AppFeature.Wardrobe, to: ROUTES.wardrobe, label: 'Ma garde-robe' },
+  { feature: AppFeature.Outfits, to: ROUTES.outfits, label: 'Mes tenues' },
+  { feature: AppFeature.Calendar, to: ROUTES.calendar, label: 'Calendrier' },
+  { feature: AppFeature.Suitcase, to: ROUTES.suitcase, label: 'Valise' },
+].filter((item) => isFeatureVisible(item.feature));
 
 export function MainNav() {
   return (
