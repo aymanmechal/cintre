@@ -38,11 +38,32 @@
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 0.1s,
+    background 0.15s,
+    color 0.15s;
 }
 
-.pill:hover {
+.pill:active,
+.installButton:active {
   background: var(--color-ink);
   color: var(--color-bg);
+  transform: scale(0.95);
+}
+
+.pill:focus-visible,
+.installButton:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .pill:hover {
+    background: var(--color-ink);
+    color: var(--color-bg);
+  }
 }
 
 .installButton {

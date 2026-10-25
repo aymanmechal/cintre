@@ -4,6 +4,7 @@ import { usePurgeOrphanPhotos } from '../../../features/wardrobe/hooks/usePurgeO
 import { Footer } from '../Footer/Footer';
 import { Header } from '../Header/Header';
 import { SkipLink } from './SkipLink';
+import { useScrollToTopOnNavigation } from './useScrollToTopOnNavigation';
 import styles from './Layout.module.css';
 
 const MAIN_CONTENT_ID = 'contenu';
@@ -11,6 +12,7 @@ const MAIN_CONTENT_ID = 'contenu';
 export function Layout() {
   useSyncWornOutfits();
   usePurgeOrphanPhotos();
+  useScrollToTopOnNavigation();
 
   return (
     <div className={styles.layout}>
