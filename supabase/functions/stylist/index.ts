@@ -1,5 +1,5 @@
 const GEMINI_URL =
-  'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+  'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent';
 const MAX_WISH_LENGTH = 300;
 const MAX_PIECES = 400;
 
@@ -62,7 +62,11 @@ async function askGemini(request: StylistRequest, apiKey: string): Promise<unkno
       generationConfig: { responseMimeType: 'application/json', responseSchema: RESPONSE_SCHEMA },
     }),
   });
-  if (!response.ok) throw new Error(`Gemini ${response.status}`);
+  if (!response.ok) {
+    const details = await response.text();
+    console.error(`Gemini ${response.status}: ${details}`);
+    throw new Error(`Gemini ${response.status}`);
+  }
   const data = await response.json();
   return JSON.parse(data.candidates[0].content.parts[0].text);
 }
@@ -75,7 +79,8 @@ Deno.serve(async (request) => {
   if (!isValidRequest(body)) return reply({ error: 'invalid_request' }, 400);
   try {
     return reply(await askGemini(body, apiKey));
-  } catch {
-    return reply({ error: 'ai_failed' }, 502);
+  } catch (error) {
+    console.error(error);
+    return reply({ error: 'ai_failed', detail: String(error) }, 502);
   }
 });
