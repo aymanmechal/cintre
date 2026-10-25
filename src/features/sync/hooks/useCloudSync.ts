@@ -3,7 +3,7 @@ import { useAuth } from '../../auth/context/useAuth';
 import { SYNC_DELAY_MS, SyncStatus } from '../constants/sync';
 import { fetchCloudUpdatedAt } from '../api/cloudApi';
 import { pullChangedContent, pullOrUploadContent, uploadLocalContent } from '../utils/cloudSync';
-import { reportSyncStatus } from '../utils/syncStatusStore';
+import { getSyncStatus, reportSyncStatus } from '../utils/syncStatusStore';
 import { EMPTY_CONTENT, useLocalContent } from './useLocalContent';
 
 function runSync(task: Promise<void>, onDone: () => void = () => {}): void {
@@ -40,7 +40,8 @@ export function useCloudSync(): void {
   useEffect(() => {
     readyUserIdRef.current = null;
     if (userId === null) {
-      if (signedInUserIdRef.current !== null) applyCloudContent(EMPTY_CONTENT);
+      const isSavedOnline = getSyncStatus() === SyncStatus.Synced;
+      if (signedInUserIdRef.current !== null && isSavedOnline) applyCloudContent(EMPTY_CONTENT);
       signedInUserIdRef.current = null;
       reportSyncStatus(SyncStatus.Off);
       return;

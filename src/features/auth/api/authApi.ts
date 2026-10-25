@@ -26,26 +26,34 @@ export function listenToUserChanges(onChange: (user: AuthUser | null) => void): 
 
 export async function signUp(values: AccountFormValues): Promise<AuthResponse> {
   if (!supabase) return FAILED;
-  const { data, error } = await supabase.auth.signUp({
-    email: values.email.trim(),
-    password: values.password,
-    options: { data: { nickname: values.nickname.trim() } },
-  });
-  if (error) return { outcome: toAuthOutcome(error.code), user: null };
-  if (!data.session) return { outcome: AuthOutcome.CheckInbox, user: null };
-  return { outcome: AuthOutcome.SignedIn, user: toAuthUser(data.user) };
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email: values.email.trim(),
+      password: values.password,
+      options: { data: { nickname: values.nickname.trim() } },
+    });
+    if (error) return { outcome: toAuthOutcome(error.code), user: null };
+    if (!data.session) return { outcome: AuthOutcome.CheckInbox, user: null };
+    return { outcome: AuthOutcome.SignedIn, user: toAuthUser(data.user) };
+  } catch {
+    return FAILED;
+  }
 }
 
 export async function signIn(values: AccountFormValues): Promise<AuthResponse> {
   if (!supabase) return FAILED;
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: values.email.trim(),
-    password: values.password,
-  });
-  if (error) return { outcome: toAuthOutcome(error.code), user: null };
-  return { outcome: AuthOutcome.SignedIn, user: toAuthUser(data.user) };
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: values.email.trim(),
+      password: values.password,
+    });
+    if (error) return { outcome: toAuthOutcome(error.code), user: null };
+    return { outcome: AuthOutcome.SignedIn, user: toAuthUser(data.user) };
+  } catch {
+    return FAILED;
+  }
 }
 
 export async function signOut(): Promise<void> {
-  await supabase?.auth.signOut();
+  await supabase?.auth.signOut({ scope: 'local' });
 }

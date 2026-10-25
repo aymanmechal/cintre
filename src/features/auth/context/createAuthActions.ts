@@ -15,8 +15,11 @@ export function createAuthActions(dispatch: Dispatch<AuthAction>): AuthActions {
     signUp: (values: AccountFormValues) => runAndRemember(authApi.signUp(values)),
     signIn: (values: AccountFormValues) => runAndRemember(authApi.signIn(values)),
     signOut: async () => {
-      await authApi.signOut();
-      dispatch({ type: AuthActionType.UserChanged, user: null });
+      try {
+        await authApi.signOut();
+      } finally {
+        dispatch({ type: AuthActionType.UserChanged, user: null });
+      }
     },
   };
 }
