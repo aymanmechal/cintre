@@ -44,39 +44,9 @@ export const SHOPS: readonly Shop[] = [
   { id: 'cos', name: 'COS', url: 'https://www.cos.com/fr-fr/', color: 'var(--candy-sky)' },
   { id: 'snipes', name: 'Snipes', url: 'https://www.snipes.fr/', color: 'var(--candy-pink)' },
   {
-    id: 'new-yorker',
-    name: 'New Yorker',
-    url: 'https://www.newyorker.de/fr/',
-    color: 'var(--candy-mint)',
-  },
-  {
     id: 'carhartt',
     name: 'Carhartt WIP',
     url: 'https://www.carhartt-wip.com/fr/',
     color: 'var(--candy-violet)',
-  },
-  {
-    id: 'scuffers',
-    name: 'Scuffers',
-    url: 'https://www.scuffers.com/',
-    color: 'var(--candy-green)',
-  },
-  {
-    id: 'human-with-attitude',
-    name: 'Human With Attitude',
-    url: 'https://www.humanwithattitude.com/',
-    color: 'var(--candy-orange)',
-  },
-  {
-    id: 'aelfric-eden',
-    name: 'Aelfric Eden',
-    url: 'https://www.aelfriceden.com/',
-    color: 'var(--candy-pink)',
-  },
-  {
-    id: 'weekday',
-    name: 'Weekday',
-    url: 'https://www.weekday.com/fr-fr/',
-    color: 'var(--candy-mint)',
   },
 ];
