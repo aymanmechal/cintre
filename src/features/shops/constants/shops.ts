@@ -42,12 +42,6 @@ export const SHOPS: readonly Shop[] = [
     color: 'var(--candy-lime)',
   },
   { id: 'cos', name: 'COS', url: 'https://www.cos.com/fr-fr/', color: 'var(--candy-sky)' },
-  {
-    id: 'massimo-dutti',
-    name: 'Massimo Dutti',
-    url: 'https://www.massimodutti.com/fr/',
-    color: 'var(--candy-orange)',
-  },
   { id: 'snipes', name: 'Snipes', url: 'https://www.snipes.fr/', color: 'var(--candy-pink)' },
   {
     id: 'new-yorker',
@@ -56,29 +50,16 @@ export const SHOPS: readonly Shop[] = [
     color: 'var(--candy-mint)',
   },
   {
-    id: 'citadium',
-    name: 'Citadium',
-    url: 'https://www.citadium.com/fr/fr/',
-    color: 'var(--candy-yellow)',
-  },
-  {
     id: 'carhartt',
     name: 'Carhartt WIP',
     url: 'https://www.carhartt-wip.com/fr/',
     color: 'var(--candy-violet)',
   },
-  { id: 'arket', name: 'Arket', url: 'https://www.arket.com/fr-fr/', color: 'var(--candy-lime)' },
   {
     id: 'scuffers',
     name: 'Scuffers',
     url: 'https://www.scuffers.com/',
     color: 'var(--candy-green)',
-  },
-  {
-    id: 'cold-culture',
-    name: 'Cold Culture',
-    url: 'https://coldculture.com/',
-    color: 'var(--candy-blue)',
   },
   {
     id: 'human-with-attitude',
