@@ -23,10 +23,13 @@ describe('outfitsReducer', () => {
   });
 
   it('supprime une tenue', () => {
-    const next = outfitsReducer([makeOutfit({ id: 'a', pieceIds: [1] }), makeOutfit({ id: 'b', pieceIds: [2] })], {
-      type: OutfitsActionType.OutfitDeleted,
-      outfitId: 'a',
-    });
+    const next = outfitsReducer(
+      [makeOutfit({ id: 'a', pieceIds: [1] }), makeOutfit({ id: 'b', pieceIds: [2] })],
+      {
+        type: OutfitsActionType.OutfitDeleted,
+        outfitId: 'a',
+      },
+    );
     expect(next.map((outfit) => outfit.id)).toEqual(['b']);
   });
 });

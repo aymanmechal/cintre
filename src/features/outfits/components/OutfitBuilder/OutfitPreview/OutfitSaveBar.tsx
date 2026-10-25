@@ -12,7 +12,11 @@ interface OutfitSaveBarProps {
   hasJustSaved: boolean;
 }
 
-export function OutfitSaveBar({ missingPieceCount, isDuplicate, hasJustSaved }: OutfitSaveBarProps) {
+export function OutfitSaveBar({
+  missingPieceCount,
+  isDuplicate,
+  hasJustSaved,
+}: OutfitSaveBarProps) {
   const isMissingPieces = missingPieceCount > 0;
 
   return (
