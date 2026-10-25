@@ -9,6 +9,7 @@
   border-radius: var(--radius-card);
   background: var(--candy-yellow);
   color: var(--color-on-candy);
+  --ghost-ink: var(--color-on-candy);
 }
 
 .message {

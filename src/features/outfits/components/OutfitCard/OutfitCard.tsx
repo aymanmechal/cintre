@@ -2,7 +2,6 @@ import type { Outfit } from '../../types/outfit';
 import type { WardrobeItem } from '../../../wardrobe/types/wardrobe';
 import { getOutfitReadiness, selectMissingItems } from '../../utils/outfits';
 import { DeleteOutfitButton } from './DeleteOutfitButton';
-import { DuplicateOutfitButton } from './DuplicateOutfitButton';
 import { MissingPiecesList } from './MissingPiecesList';
 import { CompareOutfitToggle } from './CompareOutfitToggle';
 import { OutfitImageButton } from './OutfitImageButton';
@@ -54,7 +53,6 @@ export function OutfitCard({
       {missingItems.length > 0 && <MissingPiecesList missingItems={missingItems} />}
       <OutfitNotes outfit={outfit} />
       <div className={styles.footer}>
-        <DuplicateOutfitButton outfit={outfit} />
         <OutfitImageButton outfit={outfit} outfitItems={outfitItems} />
         {canShare && (
           <ShareOutfitsButton

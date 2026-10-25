@@ -2,8 +2,8 @@
   display: inline-block;
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-pill);
-  background: var(--color-ink);
-  color: var(--color-bg);
+  background: var(--color-on-candy);
+  color: var(--color-cream);
   font-family: var(--font-heading);
   font-size: 0.75rem;
   font-stretch: var(--font-stretch-condensed);

@@ -4,6 +4,7 @@ import { makeOutfit, makeWardrobeItem } from '../../../test/factories';
 import { OwnershipStatus } from '../../wardrobe/constants/wardrobe';
 import { MAX_ACCESSORIES_PER_OUTFIT, OutfitReadiness, OutfitSlot } from '../constants/outfits';
 import {
+  hasSamePieces,
   buildDefaultOutfitName,
   buildMissingPiecesHint,
   canAddAnotherPiece,
@@ -194,5 +195,21 @@ describe('objectif ou prête', () => {
     expect(selectMissingItems([SHIRT, WISH_WATCH])).toEqual([WISH_WATCH]);
     expect(sumPrices([SHIRT, JEANS])).toBe(120);
     expect(sumPrices([])).toBe(0);
+  });
+});
+
+describe('hasSamePieces', () => {
+  const outfits = [makeOutfit({ id: 'a', pieceIds: [1, 2, 3] })];
+
+  it('reconnait les mêmes pièces, dans un autre ordre', () => {
+    expect(hasSamePieces(outfits, [3, 1, 2])).toBe(true);
+  });
+
+  it('accepte une tenue différente', () => {
+    expect(hasSamePieces(outfits, [1, 2, 4])).toBe(false);
+  });
+
+  it('ignore la tenue qu’on modifie', () => {
+    expect(hasSamePieces(outfits, [1, 2, 3], 'a')).toBe(false);
   });
 });

@@ -8,13 +8,15 @@
   border-radius: var(--radius-card);
   background: var(--candy-yellow);
   color: var(--color-on-candy);
+  --ghost-ink: var(--color-on-candy);
 }
 
 .occasion {
   padding: var(--space-1) var(--space-3);
-  border: 2px solid var(--color-ink);
+  border: 2px solid var(--color-on-candy);
   border-radius: var(--radius-pill);
-  background: var(--color-surface);
+  background: var(--color-white);
+  color: var(--color-on-candy);
   font-weight: 700;
 }
 

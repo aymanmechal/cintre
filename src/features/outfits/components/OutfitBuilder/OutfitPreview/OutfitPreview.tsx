@@ -69,6 +69,7 @@ export function OutfitPreview({ items, builder }: OutfitPreviewProps) {
       />
       <OutfitSaveBar
         missingPieceCount={builder.missingPieceCount}
+        isDuplicate={builder.isDuplicate}
         hasJustSaved={builder.hasJustSaved}
       />
     </aside>

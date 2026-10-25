@@ -1,12 +1,10 @@
 import {
   MIN_PIECES_PER_OUTFIT,
-  NO_SCORE,
   OUTFIT_SLOT_BY_PIECE_TYPE,
   OUTFIT_SLOT_CAPACITY,
   OUTFIT_SLOTS,
   OutfitReadiness,
   OutfitSlot,
-  VARIANT_NAME_SUFFIX,
 } from '../constants/outfits';
 import { OwnershipStatus } from '../../wardrobe/constants/wardrobe';
 import type { Outfit, OutfitSelection } from '../types/outfit';
@@ -146,8 +144,19 @@ export function sumPrices(outfitItems: readonly WardrobeItem[]): number {
   return outfitItems.reduce((total, item) => total + item.piece.price, 0);
 }
 
-export function createOutfitCopy(outfit: Outfit, id: string): Outfit {
-  return { ...outfit, id, name: `${outfit.name}${VARIANT_NAME_SUFFIX}`, note: '', score: NO_SCORE };
+export function hasSamePieces(
+  outfits: readonly Outfit[],
+  pieceIds: readonly number[],
+  ignoredOutfitId?: string,
+): boolean {
+  const key = toPiecesKey(pieceIds);
+  return outfits.some(
+    (outfit) => outfit.id !== ignoredOutfitId && toPiecesKey(outfit.pieceIds) === key,
+  );
+}
+
+function toPiecesKey(pieceIds: readonly number[]): string {
+  return [...pieceIds].sort((first, second) => first - second).join(',');
 }
 
 export function selectionFromItems(items: readonly WardrobeItem[]): OutfitSelection {

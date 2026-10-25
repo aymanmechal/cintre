@@ -3,6 +3,7 @@
   border-left: 4px solid;
   border-radius: var(--radius-block);
   background: var(--color-bg);
+  color: var(--color-ink);
 }
 
 .success {

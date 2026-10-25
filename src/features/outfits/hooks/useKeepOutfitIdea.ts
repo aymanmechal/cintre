@@ -3,7 +3,7 @@ import { NO_SCORE } from '../constants/outfits';
 import { useOutfits } from '../context/useOutfits';
 import type { OutfitIdea } from '../types/outfit';
 import { toIdeaPieceIds } from '../utils/combinations';
-import { buildDefaultOutfitName, createOutfitId } from '../utils/outfits';
+import { buildDefaultOutfitName, createOutfitId, hasSamePieces } from '../utils/outfits';
 
 export interface KeepOutfitIdeaState {
   keptOutfitName: string | null;
@@ -15,11 +15,13 @@ export function useKeepOutfitIdea(): KeepOutfitIdeaState {
   const [keptOutfitName, setKeptOutfitName] = useState<string | null>(null);
 
   function keepIdea(idea: OutfitIdea) {
+    const pieceIds = toIdeaPieceIds(idea);
+    if (hasSamePieces(outfits, pieceIds)) return;
     const name = buildDefaultOutfitName(outfits.length);
     createOutfit({
       id: createOutfitId(),
       name,
-      pieceIds: toIdeaPieceIds(idea),
+      pieceIds,
       note: '',
       score: NO_SCORE,
       occasion: null,

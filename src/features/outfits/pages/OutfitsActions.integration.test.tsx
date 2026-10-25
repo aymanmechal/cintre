@@ -24,15 +24,6 @@ function card(): HTMLElement {
 }
 
 describe('Tenues : actions sur une tenue', () => {
-  it('duplique une tenue en variante', async () => {
-    const { user } = renderApp('/tenues', { wardrobe: [SHIRT, JEANS], outfits: [OUTFIT] });
-    await user.click(screen.getByRole('button', { name: 'Dupliquer la tenue Sortie' }));
-    expect(readStoredOutfits().map((outfit) => outfit.name)).toEqual([
-      'Sortie (variante)',
-      'Sortie',
-    ]);
-  });
-
   it('remplace juste une pièce par une autre du même type', async () => {
     const { user } = renderApp('/tenues', { wardrobe: [SHIRT, JEANS, CHINO], outfits: [OUTFIT] });
     await user.click(within(card()).getByRole('button', { name: 'Remplacer Jean brut' }));

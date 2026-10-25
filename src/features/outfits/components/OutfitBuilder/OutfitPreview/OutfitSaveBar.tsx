@@ -8,10 +8,11 @@ const HINT_ID = 'outfit-save-hint';
 
 interface OutfitSaveBarProps {
   missingPieceCount: number;
+  isDuplicate: boolean;
   hasJustSaved: boolean;
 }
 
-export function OutfitSaveBar({ missingPieceCount, hasJustSaved }: OutfitSaveBarProps) {
+export function OutfitSaveBar({ missingPieceCount, isDuplicate, hasJustSaved }: OutfitSaveBarProps) {
   const isMissingPieces = missingPieceCount > 0;
 
   return (
@@ -20,11 +21,16 @@ export function OutfitSaveBar({ missingPieceCount, hasJustSaved }: OutfitSaveBar
         type="submit"
         variant={ButtonVariant.Action}
         className={styles.submit}
-        disabled={isMissingPieces}
+        disabled={isMissingPieces || isDuplicate}
         aria-describedby={isMissingPieces ? HINT_ID : undefined}
       >
         Créer la tenue
       </Button>
+      {isDuplicate && (
+        <p className={styles.hint} role="status">
+          Cette tenue existe déjà avec exactement ces pièces.
+        </p>
+      )}
       {isMissingPieces && (
         <p id={HINT_ID} className={styles.hint}>
           {buildMissingPiecesHint(missingPieceCount)}

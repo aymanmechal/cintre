@@ -66,7 +66,6 @@ export const MAX_OUTFIT_SCORE = 5;
 
 export const SCORE_VALUES = [1, 2, 3, 4, 5];
 
-export const VARIANT_NAME_SUFFIX = ' (variante)';
 
 export const OUTFITS_STORAGE_KEY = 'cintre.outfits';
 

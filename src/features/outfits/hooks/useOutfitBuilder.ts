@@ -12,6 +12,7 @@ import {
   createEmptySelection,
   createOutfitId,
   findNextEmptySlot,
+  hasSamePieces,
   isSingleSlot,
   removePieceFromSlot,
   selectionFromItems,
@@ -26,6 +27,7 @@ export interface OutfitBuilderState {
   activeSlot: OutfitSlot;
   defaultName: string;
   missingPieceCount: number;
+  isDuplicate: boolean;
   hasJustSaved: boolean;
   hasNoRandomIdea: boolean;
   changeName: (name: string) => void;
@@ -49,6 +51,7 @@ export function useOutfitBuilder(): OutfitBuilderState {
 
   const defaultName = buildDefaultOutfitName(outfits.length);
   const missingPieceCount = countMissingPieces(selection);
+  const isDuplicate = missingPieceCount === 0 && hasSamePieces(outfits, toPieceIds(selection));
 
   function updateSelection(nextSelection: OutfitSelection) {
     setHasJustSaved(false);
@@ -85,7 +88,7 @@ export function useOutfitBuilder(): OutfitBuilderState {
 
   function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (missingPieceCount > 0) return;
+    if (missingPieceCount > 0 || isDuplicate) return;
     createOutfit({
       id: createOutfitId(),
       name: name.trim() || defaultName,
@@ -105,6 +108,7 @@ export function useOutfitBuilder(): OutfitBuilderState {
     activeSlot,
     defaultName,
     missingPieceCount,
+    isDuplicate,
     hasJustSaved,
     hasNoRandomIdea,
     changeName: setName,

@@ -71,13 +71,4 @@ describe('Tenues : occasion', () => {
     expect(readStoredOutfits()).toMatchObject([{ occasion: Occasion.Interview }]);
     expect(screen.getByLabelText('Occasion (facultatif)')).toHaveValue('');
   });
-
-  it('duplique une tenue avec son occasion', async () => {
-    const { user } = renderApp('/tenues', { wardrobe: WARDROBE, outfits: [OUTFITS[0]] });
-    await user.click(screen.getByRole('button', { name: 'Dupliquer la tenue Bureau' }));
-    expect(readStoredOutfits().map((outfit) => outfit.occasion)).toEqual([
-      Occasion.Work,
-      Occasion.Work,
-    ]);
-  });
 });
