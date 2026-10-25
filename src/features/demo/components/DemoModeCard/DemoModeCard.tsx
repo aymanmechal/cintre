@@ -1,9 +1,13 @@
+import { AppFeature } from '../../../../shared/constants/features';
 import { Button, ButtonVariant } from '../../../../shared/ui/Button/Button';
+import { isFeatureVisible } from '../../../../shared/utils/featureFlags';
 import { useDemoMode } from '../../hooks/useDemoMode';
 import styles from './DemoModeCard.module.css';
 
 export function DemoModeCard() {
   const { canStartDemo, isDemoActive, startDemo, stopDemo } = useDemoMode();
+
+  if (!isFeatureVisible(AppFeature.Demo)) return null;
 
   if (isDemoActive) {
     return (

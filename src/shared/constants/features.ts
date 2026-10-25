@@ -12,6 +12,7 @@ export enum AppFeature {
   Stylist = 'stylist',
   Backup = 'backup',
   Account = 'account',
+  Demo = 'demo',
 }
 
 export const V1_FEATURES: readonly AppFeature[] = [
