@@ -66,6 +66,26 @@
   }
 }
 
+@media (max-width: 720px) {
+  .links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pill,
+  .installButton {
+    overflow: hidden;
+    padding: var(--space-3);
+    border-radius: var(--radius-block);
+    text-align: left;
+    text-overflow: ellipsis;
+  }
+
+  .links > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
 .installButton {
   border-color: var(--color-primary);
   background: var(--color-primary);

@@ -10,7 +10,7 @@ export interface FooterLink {
 
 const ALL_FOOTER_LINKS: readonly FooterLink[] = [
   { feature: AppFeature.Stylist, to: ROUTES.stylist, label: '🪄 Mon styliste' },
-  { feature: AppFeature.StyleProfile, to: ROUTES.styleProfile, label: '🎭 Mon profil de style' },
+  { feature: AppFeature.StyleProfile, to: ROUTES.styleProfile, label: '🎭 Mon style' },
   { feature: AppFeature.Stats, to: ROUTES.stats, label: '📊 Mes chiffres' },
   { feature: AppFeature.Wrapped, to: ROUTES.wrapped, label: '🎁 Mon bilan' },
   { feature: AppFeature.Lookbook, to: ROUTES.lookbook, label: '📖 Mon lookbook' },
