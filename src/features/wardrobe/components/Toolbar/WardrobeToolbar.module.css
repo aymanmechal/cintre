@@ -1,22 +1,30 @@
 .toolbar {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   gap: var(--space-3);
   margin-bottom: var(--space-5);
 }
 
-.controls {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-3);
+.selects {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 14rem));
+  gap: var(--space-2);
 }
 
-.filters {
+.selects select {
+  width: 100%;
+  min-width: 0;
+}
+
+.actions {
   display: flex;
-  flex-basis: 100%;
-  flex-direction: column;
-  gap: var(--space-3);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+@media (max-width: 720px) {
+  .actions > button {
+    flex: 1;
+  }
 }

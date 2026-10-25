@@ -5,6 +5,7 @@ import {
 } from '../../../../shared/pieces/constants/categories';
 import { toPieceTypeFilter } from '../../../../shared/pieces/utils/categories';
 import { SelectField } from '../../../../shared/ui/Form/SelectField';
+import { FieldLayout } from '../../../../shared/ui/Form/fieldLayout';
 import type { SelectOption } from '../../../../shared/ui/Form/selectOption';
 
 const TYPE_FILTER_OPTIONS: readonly SelectOption[] = [
@@ -24,6 +25,7 @@ export function WardrobeTypeSelect({ value, onChange }: WardrobeTypeSelectProps)
       label="Type"
       value={value}
       options={TYPE_FILTER_OPTIONS}
+      layout={FieldLayout.Stacked}
       onChange={(selectedValue) => onChange(toPieceTypeFilter(selectedValue))}
     />
   );

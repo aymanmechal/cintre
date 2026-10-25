@@ -6,11 +6,18 @@
   border-radius: var(--radius-card);
   color: var(--color-on-candy);
   text-decoration: none;
+  touch-action: manipulation;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.card:hover {
-  transform: rotate(-2deg) scale(1.03);
+@media (hover: hover) {
+  .card:hover {
+    transform: rotate(-2deg) scale(1.03);
+  }
+}
+
+.card:active {
+  transform: scale(0.96);
 }
 
 .blue {
@@ -27,7 +34,7 @@
 
 .value {
   font-family: var(--font-heading);
-  font-size: clamp(3.5rem, 7vw, 5.5rem);
+  font-size: clamp(2.25rem, 7vw, 5.5rem);
   font-stretch: var(--font-stretch-condensed);
   font-weight: 800;
   line-height: 0.9;
@@ -36,4 +43,15 @@
 .label {
   font-size: 1.125rem;
   font-weight: 600;
+  line-height: 1.2;
+}
+
+@media (max-width: 720px) {
+  .card {
+    padding: var(--space-3);
+  }
+
+  .label {
+    font-size: 0.8125rem;
+  }
 }

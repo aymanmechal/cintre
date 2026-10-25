@@ -25,7 +25,8 @@ export function WardrobeToolbar({ viewState, selection }: WardrobeToolbarProps) 
         countOfStatus={viewState.countOfStatus}
         onSelect={viewState.changeStatus}
       />
-      <div className={styles.controls}>
+      <WardrobeSearchField value={view.search} onChange={viewState.changeSearch} />
+      <div className={styles.selects}>
         <WardrobeTypeSelect value={view.pieceType} onChange={viewState.changePieceType} />
         <WardrobeSortSelect value={view.sortOrder} onChange={viewState.changeSortOrder} />
         <WardrobeGroupingSelect
@@ -33,15 +34,14 @@ export function WardrobeToolbar({ viewState, selection }: WardrobeToolbarProps) 
           value={view.grouping}
           onChange={viewState.changeGrouping}
         />
+      </div>
+      <WardrobeMoreFilters viewState={viewState} />
+      <div className={styles.actions}>
         <EditModeButton isEditing={viewState.isEditing} onToggle={viewState.toggleEditing} />
         <SelectModeButton
           isSelecting={selection.isSelecting}
           onToggle={selection.toggleSelecting}
         />
-      </div>
-      <div className={styles.filters}>
-        <WardrobeSearchField value={view.search} onChange={viewState.changeSearch} />
-        <WardrobeMoreFilters viewState={viewState} />
       </div>
     </div>
   );
