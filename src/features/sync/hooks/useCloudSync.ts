@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useAuth } from '../../auth/context/useAuth';
 import { SYNC_DELAY_MS, SyncStatus } from '../constants/sync';
-import { pullOrUploadContent, uploadLocalContent } from '../utils/cloudSync';
+import { fetchCloudUpdatedAt } from '../api/cloudApi';
+import { pullChangedContent, pullOrUploadContent, uploadLocalContent } from '../utils/cloudSync';
 import { reportSyncStatus } from '../utils/syncStatusStore';
 import { EMPTY_CONTENT, useLocalContent } from './useLocalContent';
 
@@ -21,6 +22,16 @@ export function useCloudSync(): void {
   const contentRef = useRef(content);
   const signedInUserIdRef = useRef<string | null>(null);
   const readyUserIdRef = useRef<string | null>(null);
+  const knownVersionRef = useRef<string | null>(null);
+
+  const rememberCloudVersion = useCallback((id: string) => {
+    Promise.resolve()
+      .then(() => fetchCloudUpdatedAt(id))
+      .then((version) => {
+        knownVersionRef.current = version;
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     contentRef.current = content;
@@ -37,12 +48,32 @@ export function useCloudSync(): void {
     signedInUserIdRef.current = userId;
     runSync(pullOrUploadContent(userId, contentRef.current, applyCloudContent), () => {
       readyUserIdRef.current = userId;
+      rememberCloudVersion(userId);
     });
-  }, [userId, applyCloudContent]);
+  }, [userId, applyCloudContent, rememberCloudVersion]);
+
+  useEffect(() => {
+    if (userId === null) return;
+    const pullWhenBack = () => {
+      if (document.visibilityState !== 'visible' || readyUserIdRef.current !== userId) return;
+      runSync(pullChangedContent(userId, knownVersionRef.current, applyCloudContent), () =>
+        rememberCloudVersion(userId),
+      );
+    };
+    document.addEventListener('visibilitychange', pullWhenBack);
+    window.addEventListener('focus', pullWhenBack);
+    return () => {
+      document.removeEventListener('visibilitychange', pullWhenBack);
+      window.removeEventListener('focus', pullWhenBack);
+    };
+  }, [userId, applyCloudContent, rememberCloudVersion]);
 
   useEffect(() => {
     if (userId === null || readyUserIdRef.current !== userId) return;
-    const timer = setTimeout(() => runSync(uploadLocalContent(userId, content)), SYNC_DELAY_MS);
+    const timer = setTimeout(
+      () => runSync(uploadLocalContent(userId, content), () => rememberCloudVersion(userId)),
+      SYNC_DELAY_MS,
+    );
     return () => clearTimeout(timer);
-  }, [userId, content]);
+  }, [userId, content, rememberCloudVersion]);
 }

@@ -11,6 +11,7 @@ vi.mock('../../../auth/api/authApi', () => ({
 }));
 vi.mock('../../../sync/api/cloudApi', () => ({
   fetchCloudContent: vi.fn().mockResolvedValue(null),
+  fetchCloudUpdatedAt: vi.fn().mockResolvedValue(null),
   pushCloudContent: vi.fn().mockResolvedValue(undefined),
 }));
 vi.mock('../../utils/shareSnapshot', () => ({

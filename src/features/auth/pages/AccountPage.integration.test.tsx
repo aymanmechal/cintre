@@ -17,6 +17,7 @@ vi.mock('../api/authApi', () => ({
 }));
 vi.mock('../../sync/api/cloudApi', () => ({
   fetchCloudContent: vi.fn(),
+  fetchCloudUpdatedAt: vi.fn().mockResolvedValue(null),
   pushCloudContent: vi.fn(),
 }));
 
