@@ -21,7 +21,7 @@ export function PhotoTools({ photoId, onPhotoChange, onRecognized }: PhotoToolsP
           ✨ Remplir avec la photo
         </Button>
         <Button variant={ButtonVariant.Ghost} disabled={tools.isBusy} onClick={tools.cutout}>
-          ✂️ Détourer
+          🖼️ Détourer
         </Button>
       </div>
       <p className={isFailed ? styles.failed : styles.message} role="status">
