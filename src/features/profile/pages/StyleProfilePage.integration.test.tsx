@@ -31,6 +31,9 @@ describe('Mon profil de style', () => {
     });
     expect(screen.getByText(/Une touche de couleur/)).toBeInTheDocument();
     expect(screen.getByText('Rouge')).toBeInTheDocument();
-    expect(screen.getByText('Jean noir')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Jean noir/ })).toHaveAttribute(
+      'href',
+      '/garde-robe/2/modifier',
+    );
   });
 });

@@ -1,8 +1,11 @@
+import { Link } from 'react-router';
 import { OCCASION_LABELS } from '../../../outfits/constants/occasions';
 import {
   PIECE_COLOR_LABELS,
   PIECE_COLOR_SWATCHES,
 } from '../../../../shared/pieces/constants/colors';
+import { buildEditPieceUrl } from '../../../../shared/routes';
+import { formatBrand } from '../../../../shared/utils/format';
 import { RISK_DESCRIPTIONS, RISK_EMOJIS, RISK_TITLES } from '../../constants/profile';
 import type { StyleProfile } from '../../types/profile';
 import styles from './StyleProfileCard.module.css';
@@ -47,8 +50,16 @@ export function StyleProfileCard({ profile }: StyleProfileCardProps) {
           Tes pièces fétiches
         </h2>
         <ul className={styles.list}>
-          {profile.favoritePieces.map((item) => (
-            <li key={item.piece.id}>{item.piece.title}</li>
+          {profile.favoritePieces.map(({ piece }) => (
+            <li key={piece.id}>
+              <Link to={buildEditPieceUrl(piece.id)} className={styles.pieceLink}>
+                <span className={styles.pieceName}>{piece.title}</span>
+                <span className={styles.pieceBrand}>{formatBrand(piece.brand)}</span>
+                <span className={styles.pieceArrow} aria-hidden="true">
+                  ›
+                </span>
+              </Link>
+            </li>
           ))}
         </ul>
       </section>
