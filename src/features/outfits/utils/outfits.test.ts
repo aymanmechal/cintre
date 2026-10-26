@@ -125,6 +125,7 @@ describe('findNextEmptySlot', () => {
       ...createEmptySelection(),
       [OutfitSlot.Bottom]: [2],
       [OutfitSlot.Shoes]: [3],
+      [OutfitSlot.Jacket]: [5],
       [OutfitSlot.Accessory]: [4],
     };
     expect(findNextEmptySlot(selection, OutfitSlot.Accessory)).toBe(OutfitSlot.Top);
@@ -132,6 +133,7 @@ describe('findNextEmptySlot', () => {
 
   it('reste sur place quand tout est rempli', () => {
     const selection = {
+      [OutfitSlot.Jacket]: [5],
       [OutfitSlot.Top]: [1],
       [OutfitSlot.Bottom]: [2],
       [OutfitSlot.Shoes]: [3],

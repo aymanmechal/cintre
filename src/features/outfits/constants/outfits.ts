@@ -3,6 +3,7 @@ import { PieceColor } from '../../../shared/pieces/constants/colors';
 import { Season } from '../../../shared/pieces/constants/seasons';
 
 export enum OutfitSlot {
+  Jacket = 'veste',
   Top = 'haut',
   Bottom = 'bas',
   Shoes = 'chaussures',
@@ -10,6 +11,7 @@ export enum OutfitSlot {
 }
 
 export const OUTFIT_SLOT_LABELS: Record<OutfitSlot, string> = {
+  [OutfitSlot.Jacket]: 'Veste',
   [OutfitSlot.Top]: 'Haut',
   [OutfitSlot.Bottom]: 'Bas',
   [OutfitSlot.Shoes]: 'Chaussures',
@@ -17,6 +19,7 @@ export const OUTFIT_SLOT_LABELS: Record<OutfitSlot, string> = {
 };
 
 export const OUTFIT_SLOT_PROMPTS: Record<OutfitSlot, string> = {
+  [OutfitSlot.Jacket]: 'Choisis ta veste',
   [OutfitSlot.Top]: 'Choisis ton haut',
   [OutfitSlot.Bottom]: 'Choisis ton bas',
   [OutfitSlot.Shoes]: 'Choisis tes chaussures',
@@ -26,6 +29,7 @@ export const OUTFIT_SLOT_PROMPTS: Record<OutfitSlot, string> = {
 export const MAX_ACCESSORIES_PER_OUTFIT = 4;
 
 export const OUTFIT_SLOT_CAPACITY: Record<OutfitSlot, number> = {
+  [OutfitSlot.Jacket]: 1,
   [OutfitSlot.Top]: 1,
   [OutfitSlot.Bottom]: 1,
   [OutfitSlot.Shoes]: 1,
@@ -39,7 +43,7 @@ export const FIRST_OUTFIT_SLOT = OutfitSlot.Top;
 export const OUTFIT_SLOT_BY_PIECE_TYPE: Record<PieceType, OutfitSlot> = {
   [PieceType.Shirts]: OutfitSlot.Top,
   [PieceType.Tops]: OutfitSlot.Top,
-  [PieceType.Jackets]: OutfitSlot.Accessory,
+  [PieceType.Jackets]: OutfitSlot.Jacket,
   [PieceType.Dresses]: OutfitSlot.Top,
   [PieceType.Bottoms]: OutfitSlot.Bottom,
   [PieceType.Shoes]: OutfitSlot.Shoes,

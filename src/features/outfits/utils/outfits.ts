@@ -14,6 +14,7 @@ import { findWardrobeItem } from '../../wardrobe/utils/wardrobe';
 
 export function createEmptySelection(): OutfitSelection {
   return {
+    [OutfitSlot.Jacket]: [],
     [OutfitSlot.Top]: [],
     [OutfitSlot.Bottom]: [],
     [OutfitSlot.Shoes]: [],
