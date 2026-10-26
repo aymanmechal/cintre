@@ -27,6 +27,7 @@ export const OUTFIT_IMAGE_EXPORT_ERROR = 'Impossible de créer l’image. Réess
 export const OUTFIT_IMAGE_TILE_COLORS: Record<PieceType, string> = {
   [PieceType.Shirts]: '#5b78ff',
   [PieceType.Tops]: '#ff7a3d',
+  [PieceType.Jackets]: '#ff5c8a',
   [PieceType.Bottoms]: '#7be0c3',
   [PieceType.Dresses]: '#ff9ec7',
   [PieceType.Shoes]: '#3dd68c',

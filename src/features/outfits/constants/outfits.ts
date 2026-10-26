@@ -39,6 +39,7 @@ export const FIRST_OUTFIT_SLOT = OutfitSlot.Top;
 export const OUTFIT_SLOT_BY_PIECE_TYPE: Record<PieceType, OutfitSlot> = {
   [PieceType.Shirts]: OutfitSlot.Top,
   [PieceType.Tops]: OutfitSlot.Top,
+  [PieceType.Jackets]: OutfitSlot.Accessory,
   [PieceType.Dresses]: OutfitSlot.Top,
   [PieceType.Bottoms]: OutfitSlot.Bottom,
   [PieceType.Shoes]: OutfitSlot.Shoes,

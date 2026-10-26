@@ -24,6 +24,8 @@ export const ILLUSTRATION_SHAPES: Record<PieceType, string> = {
     '<path d="M110 50 L150 70 L190 50 L250 85 L225 135 L205 125 L205 255 L95 255 L95 125 L75 135 L50 85 Z"/><path d="M150 70 L150 255"/>',
   [PieceType.Tops]:
     '<path d="M105 50 Q150 85 195 50 L255 90 L228 140 L205 128 L205 250 L95 250 L95 128 L72 140 L45 90 Z"/>',
+  [PieceType.Jackets]:
+    '<path d="M105 45 L150 75 L195 45 L258 90 L235 150 L208 135 L208 255 L92 255 L92 135 L65 150 L42 90 Z"/><path d="M150 75 L150 255"/>',
   [PieceType.Bottoms]:
     '<path d="M95 40 L205 40 L222 265 L160 265 L150 120 L140 265 L78 265 Z"/><path d="M95 40 L205 40 L205 58 L95 58 Z"/>',
   [PieceType.Dresses]:
