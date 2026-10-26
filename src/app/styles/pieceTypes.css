@@ -6,6 +6,10 @@
   --piece-type-color: var(--candy-orange);
 }
 
+[data-piece-type='vestes'] {
+  --piece-type-color: var(--candy-coral);
+}
+
 [data-piece-type='robes'] {
   --piece-type-color: var(--candy-pink);
 }
