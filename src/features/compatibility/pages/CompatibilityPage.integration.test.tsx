@@ -53,8 +53,8 @@ describe('Mes associations', () => {
     expect(screen.getByText(/Ajoute des hauts, des bas et des chaussures/)).toBeInTheDocument();
   });
 
-  it('est accessible depuis le pied de page', async () => {
-    const { user } = renderApp('/', { wardrobe: WARDROBE });
+  it('est accessible depuis la page Moi', async () => {
+    const { user } = renderApp('/moi', { wardrobe: WARDROBE });
     await user.click(screen.getByRole('link', { name: /Mes associations/ }));
     expect(screen.getByRole('heading', { level: 1, name: 'Mes associations' })).toBeInTheDocument();
   });

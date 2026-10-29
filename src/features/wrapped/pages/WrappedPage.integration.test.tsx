@@ -50,8 +50,8 @@ describe('Mon bilan', () => {
     expect(screen.getByText(/Rien de noté sur cette période/)).toBeInTheDocument();
   });
 
-  it('est accessible depuis le pied de page', async () => {
-    const { user } = renderApp('/', { wardrobe: [makeWardrobeItem({ id: 1 })] });
+  it('est accessible depuis la page Moi', async () => {
+    const { user } = renderApp('/moi', { wardrobe: [makeWardrobeItem({ id: 1 })] });
     await user.click(screen.getByRole('link', { name: /Mon bilan/ }));
     expect(screen.getByRole('heading', { level: 1, name: 'Mon bilan' })).toBeInTheDocument();
   });

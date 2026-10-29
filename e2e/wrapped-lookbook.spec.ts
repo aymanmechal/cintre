@@ -11,7 +11,7 @@ test('bilan du mois et lookbook', async ({ page }) => {
     'cintre.wornlog': [{ id: 'w1', date: TODAY, outfitId: 'a' }],
   });
 
-  await page.goto('/');
+  await page.goto('/moi');
   await page.getByRole('link', { name: /Mon bilan/ }).click();
   await expect(page.getByRole('heading', { name: 'Mon bilan' })).toBeVisible();
   await expect(page.getByText('Cosy')).toBeVisible();
@@ -19,6 +19,7 @@ test('bilan du mois et lookbook', async ({ page }) => {
   await expect(page.getByText('Pull chaud')).toHaveCount(2);
   await expect(page.getByText(/ton vêtement le plus porté/)).toBeVisible();
 
+  await page.getByRole('link', { name: 'Moi', exact: true }).click();
   await page.getByRole('link', { name: /Mon lookbook/ }).click();
   await expect(page.getByRole('article', { name: 'Cosy' })).toBeVisible();
 

@@ -8,13 +8,14 @@ const ITEM = makeWardrobeItem({ id: 7, title: 'Chemise 7', thumbnail: '' });
 const TODAY = toIsoDate(new Date());
 
 describe('Corbeille', () => {
-  it('reçoit la pièce supprimée, accessible depuis la garde-robe', async () => {
+  it('reçoit la pièce supprimée, accessible depuis la page Moi', async () => {
     const { user } = renderApp('/garde-robe/7/modifier', { wardrobe: [ITEM] });
     await user.click(screen.getByRole('button', { name: 'Supprimer' }));
     await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Supprimer' }));
 
     await waitFor(() => expect(readStoredTrash()).toHaveLength(1));
-    await user.click(await screen.findByRole('link', { name: /Corbeille \(1\)/ }));
+    await user.click(screen.getByRole('link', { name: 'Moi' }));
+    await user.click(await screen.findByRole('link', { name: /Corbeille\s*1/ }));
     expect(screen.getByRole('heading', { name: 'Chemise 7' })).toBeInTheDocument();
     expect(screen.getByText('Disparaît dans 30 jours')).toBeInTheDocument();
   });
@@ -40,10 +41,5 @@ describe('Corbeille', () => {
   it('oublie les pièces restées plus de 30 jours', () => {
     renderApp('/corbeille', { trash: [{ item: ITEM, deletedOn: '2000-01-01' }] });
     expect(screen.getByText('Corbeille vide')).toBeInTheDocument();
-  });
-
-  it('cache le lien de la corbeille quand elle est vide', () => {
-    renderApp('/garde-robe', { wardrobe: [ITEM] });
-    expect(screen.queryByRole('link', { name: /Corbeille/ })).not.toBeInTheDocument();
   });
 });

@@ -19,6 +19,7 @@ export const ROUTES = {
   account: '/compte',
   stylist: '/styliste',
   styleProfile: '/profil',
+  me: '/moi',
   sharedOutfit: '/partage/:id',
 } as const;
 

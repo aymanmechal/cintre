@@ -23,8 +23,8 @@ test('prépare une valise et la coche jusqu’au bout', async ({ page }) => {
     ],
   });
 
-  await page.goto('/');
-  await page.getByRole('link', { name: 'Valise' }).click();
+  await page.goto('/moi');
+  await page.getByRole('link', { name: /Ma valise/ }).click();
   await page.getByLabel('Destination').fill('Lyon');
   await page.getByRole('button', { name: /Préparer ma valise/ }).click();
 

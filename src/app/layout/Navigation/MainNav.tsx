@@ -5,11 +5,11 @@ import { NavItem } from './NavItem';
 import styles from './MainNav.module.css';
 
 const NAV_ITEMS = [
-  { feature: AppFeature.Catalog, to: ROUTES.catalog, label: 'Catalogue' },
   { feature: AppFeature.Wardrobe, to: ROUTES.wardrobe, label: 'Ma garde-robe' },
   { feature: AppFeature.Outfits, to: ROUTES.outfits, label: 'Mes tenues' },
   { feature: AppFeature.Calendar, to: ROUTES.calendar, label: 'Calendrier' },
-  { feature: AppFeature.Suitcase, to: ROUTES.suitcase, label: 'Valise' },
+  { feature: AppFeature.Catalog, to: ROUTES.catalog, label: 'Catalogue' },
+  { feature: AppFeature.Me, to: ROUTES.me, label: 'Moi' },
 ].filter((item) => isFeatureVisible(item.feature));
 
 export function MainNav() {

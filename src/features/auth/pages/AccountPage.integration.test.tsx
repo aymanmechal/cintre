@@ -33,8 +33,8 @@ describe('Mon compte', () => {
     vi.mocked(signOut).mockResolvedValue();
   });
 
-  it('est accessible depuis le pied de page', async () => {
-    const { user } = renderApp('/');
+  it('est accessible depuis la page Moi', async () => {
+    const { user } = renderApp('/moi');
     await user.click(screen.getByRole('link', { name: /Mon compte/ }));
     expect(
       await screen.findByRole('heading', { name: 'Mon compte', level: 1 }),

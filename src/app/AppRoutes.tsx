@@ -7,6 +7,7 @@ import { BackupPage } from '../features/backup/pages/BackupPage';
 import { CalendarPage } from '../features/calendar/pages/CalendarPage';
 import { CompatibilityPage } from '../features/compatibility/pages/CompatibilityPage';
 import { HomePage } from '../features/home/pages/HomePage';
+import { MePage } from '../features/me/pages/MePage';
 import { LookbookPage } from '../features/lookbook/pages/LookbookPage';
 import { ColorIdeasPage } from '../features/outfits/pages/ColorIdeasPage';
 import { OutfitIdeasPage } from '../features/outfits/pages/OutfitIdeasPage';
@@ -79,6 +80,7 @@ export function AppRoutes() {
         />
         <Route path={ROUTES.styleProfile} element={<StyleProfilePage />} />
         <Route path={ROUTES.account} element={<AccountPage />} />
+        <Route path={ROUTES.me} element={<MePage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

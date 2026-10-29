@@ -13,6 +13,7 @@ export enum AppFeature {
   Backup = 'backup',
   Account = 'account',
   Demo = 'demo',
+  Me = 'me',
 }
 
 export const V1_FEATURES: readonly AppFeature[] = [
@@ -25,4 +26,5 @@ export const V1_FEATURES: readonly AppFeature[] = [
   AppFeature.Lookbook,
   AppFeature.StyleProfile,
   AppFeature.Account,
+  AppFeature.Me,
 ];

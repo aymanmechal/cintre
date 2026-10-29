@@ -1,5 +1,4 @@
 import { EmptyWardrobe } from '../components/EmptyWardrobe/EmptyWardrobe';
-import { TrashLink } from '../components/TrashLink/TrashLink';
 import { WardrobeHeader } from '../components/WardrobeHeader/WardrobeHeader';
 import { WardrobeResults } from '../components/WardrobeResults/WardrobeResults';
 import { WardrobeToolbar } from '../components/Toolbar/WardrobeToolbar';
@@ -18,7 +17,6 @@ export function WardrobePage() {
     <section>
       <title>{formatPageTitle('Ma garde-robe')}</title>
       <WardrobeHeader />
-      <TrashLink />
       {items.length === 0 ? (
         <EmptyWardrobe />
       ) : (

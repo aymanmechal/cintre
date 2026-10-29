@@ -1,0 +1,21 @@
+.button {
+  align-self: flex-start;
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 2px;
+}
