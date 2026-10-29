@@ -37,6 +37,7 @@ test.describe('Ajouter, modifier, supprimer une pièce', () => {
     await page.getByRole('button', { name: 'Enregistrer' }).click();
     await expect(page.getByText('Modifications enregistrées')).toBeVisible();
 
+    await page.locator('summary', { hasText: /Plus d.actions/ }).click();
     await page.getByRole('button', { name: 'Supprimer' }).click();
     await page.getByRole('dialog').getByRole('button', { name: 'Supprimer' }).click();
     await expect(page.getByText('Ta garde-robe est vide')).toBeVisible();

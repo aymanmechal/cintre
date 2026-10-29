@@ -1,3 +1,6 @@
+import { AVAILABILITY_OPTIONS } from '../../../wardrobe/constants/selectOptions';
+import { OwnershipStatus } from '../../../wardrobe/constants/wardrobe';
+import { toAvailability } from '../../../wardrobe/utils/wardrobe';
 import { SEASON_OPTIONS, NO_SEASON } from '../../../../shared/pieces/constants/seasonOptions';
 import { toSeason } from '../../../../shared/pieces/utils/seasons';
 import type { ChangePieceFormField, PieceFormErrors, PieceFormValues } from '../../types/pieceForm';
@@ -5,7 +8,6 @@ import { FieldLayout } from '../../../../shared/ui/Form/fieldLayout';
 import { SelectField } from '../../../../shared/ui/Form/SelectField';
 import { TextField } from '../../../../shared/ui/Form/TextField';
 import { TextFieldType } from '../../../../shared/ui/Form/textFieldType';
-import { ColorPicker } from '../ColorPicker/ColorPicker';
 import { ExtraPhotosField } from '../ExtraPhotosField/ExtraPhotosField';
 import styles from './PieceDetailsFields.module.css';
 
@@ -20,8 +22,17 @@ export function PieceDetailsFields({ values, errors, onChange }: PieceDetailsFie
     <details className={styles.details}>
       <summary className={styles.summary}>Plus de détails (facultatif)</summary>
       <div className={styles.fields}>
+        {values.status === OwnershipStatus.Owned && (
+          <SelectField
+            id="piece-availability"
+            label="Disponibilité"
+            layout={FieldLayout.Stacked}
+            value={values.availability}
+            options={AVAILABILITY_OPTIONS}
+            onChange={(value) => onChange('availability', toAvailability(value))}
+          />
+        )}
         <ExtraPhotosField values={values} onChange={onChange} />
-        <ColorPicker value={values.color} onChange={(color) => onChange('color', color)} />
         <SelectField
           id="piece-season"
           label="Saison"

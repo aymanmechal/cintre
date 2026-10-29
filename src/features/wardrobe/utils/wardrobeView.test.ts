@@ -208,6 +208,55 @@ describe('buildWardrobeGroups : recherche et filtres', () => {
     ]);
   });
 
+  it('garde une pièce dont la couleur secondaire est cochée', () => {
+    const striped = makeWardrobeItem({
+      id: 14,
+      title: 'Rayé',
+      color: PieceColor.White,
+      secondaryColor: PieceColor.Blue,
+    });
+    const groups = buildWardrobeGroups([striped, RED_SCARF], view({ colors: [PieceColor.Blue] }));
+    expect(groups.flatMap((group) => group.items.map((item) => item.piece.title))).toEqual([
+      'Rayé',
+    ]);
+  });
+
+  it('garde une pièce dont la principale OU la secondaire est cochée', () => {
+    const striped = makeWardrobeItem({
+      id: 14,
+      title: 'Rayé',
+      color: PieceColor.White,
+      secondaryColor: PieceColor.Blue,
+    });
+    const titles = buildWardrobeGroups(
+      [striped, RED_SCARF, BLUE_TEE],
+      view({ colors: [PieceColor.White, PieceColor.Red] }),
+    ).flatMap((group) => group.items.map((item) => item.piece.title));
+    expect(titles.sort()).toEqual(['Rayé', 'Écharpe']);
+  });
+
+  it('ignore une pièce sans aucune des couleurs cochées, même avec une secondaire', () => {
+    const striped = makeWardrobeItem({
+      id: 14,
+      title: 'Rayé',
+      color: PieceColor.White,
+      secondaryColor: PieceColor.Blue,
+    });
+    const groups = buildWardrobeGroups([striped], view({ colors: [PieceColor.Green] }));
+    expect(groups).toEqual([]);
+  });
+
+  it('garde une pièce sans couleur principale mais avec une secondaire cochée', () => {
+    const onlySecondary = makeWardrobeItem({
+      id: 15,
+      title: 'Seconde',
+      color: null,
+      secondaryColor: PieceColor.Red,
+    });
+    const groups = buildWardrobeGroups([onlySecondary], view({ colors: [PieceColor.Red] }));
+    expect(groups).toHaveLength(1);
+  });
+
   it('ne filtre pas par couleur quand aucune couleur n’est cochée', () => {
     expect(titlesOf({ colors: [] })).toHaveLength(2);
   });
@@ -347,6 +396,23 @@ describe('matchesSearch', () => {
     expect(matchesSearch(BLUE_BAG, 'bleu')).toBe(true);
     expect(matchesSearch(BLUE_BAG, 'BLEU')).toBe(true);
     expect(matchesSearch(BLUE_BAG, 'rouge')).toBe(false);
+  });
+
+  it('trouve par le libellé de la couleur secondaire', () => {
+    const striped = makeWardrobeItem({
+      title: 'Rayé',
+      color: PieceColor.White,
+      secondaryColor: PieceColor.Burgundy,
+    });
+    expect(matchesSearch(striped, 'bordeaux')).toBe(true);
+    expect(matchesSearch(striped, 'blanc')).toBe(true);
+    expect(matchesSearch(striped, 'rouge')).toBe(false);
+  });
+
+  it('trouve une couleur à plusieurs mots ou accentuée', () => {
+    const navy = makeWardrobeItem({ color: PieceColor.Navy, secondaryColor: PieceColor.Cream });
+    expect(matchesSearch(navy, 'bleu marine')).toBe(true);
+    expect(matchesSearch(navy, 'creme')).toBe(true);
   });
 
   it('trouve par le libellé du type de pièce', () => {

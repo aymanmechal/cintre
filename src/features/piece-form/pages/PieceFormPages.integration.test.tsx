@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest';
 import { makeWardrobeItem } from '../../../test/factories';
 import { readStoredWardrobe, renderApp } from '../../../test/renderApp';
 
+const MORE_ACTIONS = /^Plus d.actions$/;
+
 function sidebar(): HTMLElement {
   return screen.getByRole('complementary', { name: 'Aperçu et résultat' });
 }
@@ -46,11 +48,15 @@ describe('Ajouter une pièce : formulaire', () => {
     expect(screen.getByText(/doit commencer par http/)).toBeInTheDocument();
   });
 
-  it("masque le rangement quand c'est une envie", async () => {
+  it("masque la disponibilité quand c'est une envie", async () => {
     const { user } = renderApp('/ajouter');
-    expect(screen.getByLabelText('Rangée')).toBeInTheDocument();
-    await user.selectOptions(screen.getByLabelText('Statut'), 'wanted');
-    expect(screen.queryByLabelText('Rangée')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Disponibilité')).toBeInTheDocument();
+    await user.click(
+      within(screen.getByRole('group', { name: 'Statut' })).getByRole('button', {
+        name: /^J.en ai envie$/,
+      }),
+    );
+    expect(screen.queryByLabelText('Disponibilité')).not.toBeInTheDocument();
   });
 });
 
@@ -127,6 +133,7 @@ describe('Supprimer une pièce', () => {
 
   it('demande confirmation et peut être annulé', async () => {
     const { user } = renderApp('/garde-robe/7/modifier', { wardrobe: [CATALOG] });
+    await user.click(screen.getByText(MORE_ACTIONS));
     await user.click(screen.getByRole('button', { name: 'Supprimer' }));
     const dialog = screen.getByRole('dialog');
     expect(within(dialog).getByText('Supprimer ?')).toBeInTheDocument();
@@ -136,6 +143,7 @@ describe('Supprimer une pièce', () => {
 
   it('supprime la pièce de la garde-robe, puis revient à la garde-robe', async () => {
     const { user } = renderApp('/garde-robe/7/modifier', { wardrobe: [CATALOG] });
+    await user.click(screen.getByText(MORE_ACTIONS));
     await user.click(screen.getByRole('button', { name: 'Supprimer' }));
     await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Supprimer' }));
 

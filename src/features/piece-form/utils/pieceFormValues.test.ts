@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { makePiece, makeWardrobeItem } from '../../../test/factories';
+import { PieceColor } from '../../../shared/pieces/constants/colors';
 import { makeFormValues } from '../../../test/pieceFormValues';
-import { OwnershipStatus, StorageLocation } from '../../wardrobe/constants/wardrobe';
+import { OwnershipStatus } from '../../wardrobe/constants/wardrobe';
 import {
   applyPieceFormValues,
   buildWardrobeItem,
@@ -30,6 +31,25 @@ describe('toPieceFields', () => {
     ]);
   });
 
+  it('garde les couleurs principale et secondaire', () => {
+    const fields = toPieceFields(
+      makeFormValues({ color: PieceColor.Blue, secondaryColor: PieceColor.Beige }),
+    );
+    expect(fields).toMatchObject({ color: PieceColor.Blue, secondaryColor: PieceColor.Beige });
+  });
+
+  it('promeut la couleur secondaire en principale quand il n’y a pas de principale', () => {
+    const fields = toPieceFields(makeFormValues({ color: null, secondaryColor: PieceColor.Beige }));
+    expect(fields).toMatchObject({ color: PieceColor.Beige, secondaryColor: null });
+  });
+
+  it('ne garde pas de doublon entre les deux couleurs', () => {
+    const fields = toPieceFields(
+      makeFormValues({ color: PieceColor.Blue, secondaryColor: PieceColor.Blue }),
+    );
+    expect(fields).toMatchObject({ color: PieceColor.Blue, secondaryColor: null });
+  });
+
   it("met la date d'achat à null quand elle est vide", () => {
     expect(toPieceFields(makeFormValues({ boughtOn: '' })).boughtOn).toBeNull();
     expect(toPieceFields(makeFormValues({ boughtOn: '2025-01-10' })).boughtOn).toBe('2025-01-10');
@@ -45,16 +65,11 @@ describe('applyPieceFormValues', () => {
 });
 
 describe('buildWardrobeItem', () => {
-  it('reprend le statut et le rangement du formulaire', () => {
-    const values = makeFormValues({
-      status: OwnershipStatus.Wanted,
-      location: StorageLocation.Drawer,
-    });
-    expect(buildWardrobeItem(makePiece(), values)).toMatchObject({
-      status: OwnershipStatus.Wanted,
-      location: StorageLocation.Drawer,
-      lastWornOn: null,
-    });
+  it('reprend le statut du formulaire, sans écrire de rangement', () => {
+    const values = makeFormValues({ status: OwnershipStatus.Wanted });
+    const item = buildWardrobeItem(makePiece(), values);
+    expect(item).toMatchObject({ status: OwnershipStatus.Wanted, lastWornOn: null });
+    expect(item).not.toHaveProperty('location');
   });
 
   it('conserve la date de dernier port quand on modifie une pièce', () => {

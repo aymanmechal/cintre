@@ -25,10 +25,12 @@ export function toRecognizedValues(
   values: PieceFormValues,
   recognition: PhotoRecognition,
 ): Partial<PieceFormValues> {
+  const color = recognition.color ?? values.color;
   return {
     title: values.title.trim() === '' && recognition.title ? recognition.title : values.title,
     pieceType: recognition.pieceType ?? values.pieceType,
-    color: recognition.color ?? values.color,
+    color,
+    secondaryColor: values.secondaryColor === color ? null : values.secondaryColor,
     season: recognition.season ?? values.season,
   };
 }

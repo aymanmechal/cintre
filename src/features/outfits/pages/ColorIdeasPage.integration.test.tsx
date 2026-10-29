@@ -43,7 +43,7 @@ describe('Tenue autour d’une couleur', () => {
   });
 
   it('refuse une couleur inconnue', () => {
-    renderApp('/tenues/couleur/turquoise', { wardrobe });
+    renderApp('/tenues/couleur/multicolore', { wardrobe });
     expect(screen.getByText('Pièce introuvable')).toBeInTheDocument();
   });
 });

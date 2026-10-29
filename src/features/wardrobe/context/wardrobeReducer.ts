@@ -1,9 +1,4 @@
-import {
-  Availability,
-  DEFAULT_STORAGE_LOCATION,
-  OwnershipStatus,
-  type ArchiveReason,
-} from '../constants/wardrobe';
+import { Availability, OwnershipStatus, type ArchiveReason } from '../constants/wardrobe';
 import type { Piece } from '../../../shared/pieces/types/piece';
 import type { TrashedItem, WardrobeItem, WardrobeState } from '../types/wardrobe';
 import { findWardrobeItem, toPieceSnapshot } from '../utils/wardrobe';
@@ -53,7 +48,6 @@ function createItem(piece: Piece, status: OwnershipStatus): WardrobeItem {
   return {
     piece: toPieceSnapshot(piece),
     status,
-    location: DEFAULT_STORAGE_LOCATION,
     availability: Availability.Available,
     lastWornOn: null,
   };

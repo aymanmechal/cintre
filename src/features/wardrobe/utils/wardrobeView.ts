@@ -53,16 +53,26 @@ function matchesPieceTypes(item: WardrobeItem, pieceTypes: readonly PieceType[])
   return pieceTypes.length === 0 || pieceTypes.includes(item.piece.pieceType);
 }
 
+function listPieceColors(item: WardrobeItem): PieceColor[] {
+  const { color, secondaryColor } = item.piece;
+  return [color, secondaryColor].filter((pieceColor) => pieceColor !== null);
+}
+
 function matchesColors(item: WardrobeItem, colors: readonly PieceColor[]): boolean {
-  return colors.length === 0 || (item.piece.color !== null && colors.includes(item.piece.color));
+  return colors.length === 0 || listPieceColors(item).some((color) => colors.includes(color));
 }
 
 export function matchesSearch(item: WardrobeItem, search: string): boolean {
-  const { title, brand, size, tags, color, pieceType } = item.piece;
-  const colorLabel = color === null ? '' : PIECE_COLOR_LABELS[color];
-  const words = [title, brand ?? '', size, colorLabel, PIECE_TYPE_LABELS[pieceType], ...tags].join(
-    ' ',
-  );
+  const { title, brand, size, tags, pieceType } = item.piece;
+  const colorLabels = listPieceColors(item).map((color) => PIECE_COLOR_LABELS[color]);
+  const words = [
+    title,
+    brand ?? '',
+    size,
+    ...colorLabels,
+    PIECE_TYPE_LABELS[pieceType],
+    ...tags,
+  ].join(' ');
   return normalizeForSearch(words).includes(normalizeForSearch(search));
 }
 

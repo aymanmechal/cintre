@@ -1,22 +1,12 @@
 import { PieceType } from '../../../shared/pieces/constants/categories';
-import { PieceColor } from '../../../shared/pieces/constants/colors';
+import { PIECE_COLOR_SWATCHES, PieceColor } from '../../../shared/pieces/constants/colors';
 
 export const ILLUSTRATION_BACKGROUND = '#f4efe6';
 export const ILLUSTRATION_STROKE = '#1f1f1f';
 
 export const ILLUSTRATION_COLORS: Record<PieceColor, string> = {
+  ...PIECE_COLOR_SWATCHES,
   [PieceColor.Black]: '#2b2b2b',
-  [PieceColor.White]: '#ffffff',
-  [PieceColor.Grey]: '#9e9e9e',
-  [PieceColor.Beige]: '#e3d3b4',
-  [PieceColor.Brown]: '#7b5134',
-  [PieceColor.Blue]: '#3f6fd8',
-  [PieceColor.Green]: '#3f9b5b',
-  [PieceColor.Red]: '#d64141',
-  [PieceColor.Pink]: '#f29ac0',
-  [PieceColor.Yellow]: '#f2cf3d',
-  [PieceColor.Purple]: '#8a5cc7',
-  [PieceColor.Multicolor]: '#e8833a',
 };
 
 export const ILLUSTRATION_SHAPES: Record<PieceType, string> = {

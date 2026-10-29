@@ -20,28 +20,6 @@ export const OWNERSHIP_SECTION_TITLES: Record<OwnershipStatus, string> = {
 
 export const OWNERSHIP_STATUSES = Object.values(OwnershipStatus);
 
-export enum StorageLocation {
-  Wardrobe = 'armoire',
-  Dresser = 'commode',
-  Drawer = 'tiroir',
-  Suitcase = 'valise',
-  ParentsHome = 'chez-mes-parents',
-  Other = 'autre',
-}
-
-export const STORAGE_LOCATION_LABELS: Record<StorageLocation, string> = {
-  [StorageLocation.Wardrobe]: 'Armoire',
-  [StorageLocation.Dresser]: 'Commode',
-  [StorageLocation.Drawer]: 'Tiroir',
-  [StorageLocation.Suitcase]: 'Valise',
-  [StorageLocation.ParentsHome]: 'Chez mes parents',
-  [StorageLocation.Other]: 'Autre',
-};
-
-export const STORAGE_LOCATIONS = Object.values(StorageLocation);
-
-export const DEFAULT_STORAGE_LOCATION = StorageLocation.Wardrobe;
-
 export enum Availability {
   Available = 'disponible',
   Dirty = 'sale',

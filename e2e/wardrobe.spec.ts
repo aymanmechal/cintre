@@ -74,6 +74,7 @@ test.describe('Garde-robe', () => {
   }) => {
     await page.goto('/garde-robe');
     await page.getByRole('link', { name: 'Chemise lin', exact: true }).click();
+    await page.locator('summary', { hasText: /Plus d.actions/ }).click();
     await page.getByRole('button', { name: 'Supprimer', exact: true }).click();
     await page.getByRole('dialog').getByRole('button', { name: 'Supprimer' }).click();
     await expect(page.getByRole('heading', { name: 'Chemise lin' })).toHaveCount(0);

@@ -20,8 +20,8 @@ describe('listWearableColors', () => {
   it('liste les couleurs présentes, une fois chacune', () => {
     expect(listWearableColors([redTop, blackBottom, blueBottom, redTop])).toEqual([
       PieceColor.Black,
-      PieceColor.Blue,
       PieceColor.Red,
+      PieceColor.Blue,
     ]);
   });
 });

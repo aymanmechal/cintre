@@ -1,0 +1,18 @@
+.infos {
+  margin-top: var(--space-5);
+}
+
+.infosTitle {
+  font-size: 1.5rem;
+}
+
+.moreActions {
+  margin-top: var(--space-5);
+}
+
+.summary {
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-weight: 700;
+  cursor: pointer;
+}

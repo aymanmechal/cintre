@@ -19,6 +19,20 @@ describe('parsePhotoRecognition', () => {
     ).toEqual({ title: 'Pull', pieceType: null, color: PieceColor.Grey, season: null });
   });
 
+  it('ne produit jamais « multicolore » : la couleur devient null', () => {
+    expect(parsePhotoRecognition({ title: 'Robe', color: 'multicolore' })).toEqual({
+      title: 'Robe',
+      pieceType: null,
+      color: null,
+      season: null,
+    });
+    expect(parsePhotoRecognition({ color: 'Multicolore' })).toBeNull();
+  });
+
+  it('reconnaît les nouvelles couleurs', () => {
+    expect(parsePhotoRecognition({ color: 'bleu-marine' })?.color).toBe(PieceColor.Navy);
+  });
+
   it('refuse une réponse vide ou illisible', () => {
     expect(parsePhotoRecognition({ pieceType: 'fusée' })).toBeNull();
     expect(parsePhotoRecognition('pull')).toBeNull();
@@ -27,9 +41,25 @@ describe('parsePhotoRecognition', () => {
 
 describe('toRecognizedValues', () => {
   it('remplit le nom seulement s’il est vide', () => {
-    expect(toRecognizedValues(INITIAL_PIECE_FORM_VALUES, RECOGNITION)).toEqual(RECOGNITION);
+    expect(toRecognizedValues(INITIAL_PIECE_FORM_VALUES, RECOGNITION)).toEqual({
+      ...RECOGNITION,
+      secondaryColor: null,
+    });
     const typed = { ...INITIAL_PIECE_FORM_VALUES, title: 'Mon pull' };
     expect(toRecognizedValues(typed, RECOGNITION).title).toBe('Mon pull');
+  });
+
+  it('garde la couleur secondaire saisie', () => {
+    const values = { ...INITIAL_PIECE_FORM_VALUES, secondaryColor: PieceColor.Beige };
+    expect(toRecognizedValues(values, RECOGNITION).secondaryColor).toBe(PieceColor.Beige);
+  });
+
+  it('retire la couleur secondaire si la couleur reconnue est la même', () => {
+    const values = { ...INITIAL_PIECE_FORM_VALUES, secondaryColor: PieceColor.Grey };
+    expect(toRecognizedValues(values, RECOGNITION)).toMatchObject({
+      color: PieceColor.Grey,
+      secondaryColor: null,
+    });
   });
 
   it('garde les valeurs actuelles pour ce qui n’est pas reconnu', () => {

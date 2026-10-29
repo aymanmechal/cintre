@@ -29,7 +29,6 @@ describe('bulkEdit', () => {
     expect(item.status).toBe(OwnershipStatus.Owned);
     expect(item.piece).toEqual(wanted.piece);
     expect(item.availability).toBe(wanted.availability);
-    expect(item.location).toBe(wanted.location);
     expect(wanted.status).toBe(OwnershipStatus.Wanted);
   });
 

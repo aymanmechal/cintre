@@ -9,6 +9,7 @@ const ITEM = makeWardrobeItem({ id: 7, title: 'Chemise 7', thumbnail: '' });
 describe('Archives', () => {
   it('archive une pièce vendue depuis sa fiche', async () => {
     const { user } = renderApp('/garde-robe/7/modifier', { wardrobe: [ITEM] });
+    await user.click(screen.getByText(/^Plus d.actions$/));
     await user.click(screen.getByRole('button', { name: 'Vendue' }));
 
     await waitFor(() => expect(readStoredArchive()).toHaveLength(1));

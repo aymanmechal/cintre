@@ -1,0 +1,21 @@
+.colors {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.primary,
+.secondary {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+}
+
+.primary {
+  width: 14px;
+  height: 14px;
+}
+
+.secondary {
+  width: 10px;
+  height: 10px;
+}

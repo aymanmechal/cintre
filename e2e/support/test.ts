@@ -19,7 +19,6 @@ export function wardrobeItem(
   return {
     piece: { id, title, brand: 'Marque', pieceType, price: 50, thumbnail: '' },
     status: 'owned',
-    location: 'armoire',
     lastWornOn,
   };
 }

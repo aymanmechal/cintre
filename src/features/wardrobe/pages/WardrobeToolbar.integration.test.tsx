@@ -174,7 +174,9 @@ describe('Barre d’outils : panneau « Filtres »', () => {
     const group = within(colorGroup());
     expect(group.getByText('Bleu')).toBeInTheDocument();
     expect(group.getByText('Rouge')).toBeInTheDocument();
-    expect(group.getByText('Multicolore')).toBeInTheDocument();
+    expect(group.getByText('Bordeaux')).toBeInTheDocument();
+    expect(group.getByText('Bleu marine')).toBeInTheDocument();
+    expect(group.queryByText('Multicolore')).not.toBeInTheDocument();
   });
 
   it('affiche les pièces des deux couleurs cochées (OU entre couleurs)', async () => {

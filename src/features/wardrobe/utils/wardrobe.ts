@@ -1,11 +1,8 @@
 import {
   AVAILABILITIES,
   Availability,
-  DEFAULT_STORAGE_LOCATION,
   OWNERSHIP_STATUSES,
   OwnershipStatus,
-  STORAGE_LOCATIONS,
-  type StorageLocation,
 } from '../constants/wardrobe';
 import type { Piece } from '../../../shared/pieces/types/piece';
 import type { WardrobeItem } from '../types/wardrobe';
@@ -16,6 +13,7 @@ export function toPieceSnapshot(piece: Piece): Piece {
     photoId,
     extraPhotoIds,
     color,
+    secondaryColor,
     season,
     size,
     material,
@@ -34,6 +32,7 @@ export function toPieceSnapshot(piece: Piece): Piece {
     photoId,
     extraPhotoIds,
     color,
+    secondaryColor,
     season,
     size,
     material,
@@ -76,8 +75,4 @@ export function toOwnershipStatus(value: string): OwnershipStatus {
 
 export function toAvailability(value: string): Availability {
   return AVAILABILITIES.find((availability) => availability === value) ?? Availability.Available;
-}
-
-export function toStorageLocation(value: string): StorageLocation {
-  return STORAGE_LOCATIONS.find((location) => location === value) ?? DEFAULT_STORAGE_LOCATION;
 }

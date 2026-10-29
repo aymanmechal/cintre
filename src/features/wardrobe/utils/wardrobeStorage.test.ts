@@ -44,6 +44,50 @@ describe('wardrobeStorage', () => {
     expect(loadStoredWardrobe(KEY)[0].piece).toEqual(piece);
   });
 
+  it('relit sans erreur une ancienne pièce avec location et la réécrit sans', () => {
+    const { piece, ...item } = makeWardrobeItem({ id: 1 });
+    localStorage.setItem(KEY, JSON.stringify([{ ...item, piece, location: 'tiroir' }]));
+    const [loaded] = loadStoredWardrobe(KEY);
+    expect(loaded.piece.id).toBe(1);
+    expect(loaded).not.toHaveProperty('location');
+    saveWardrobe(KEY, [loaded]);
+    expect(localStorage.getItem(KEY)).not.toContain('location');
+  });
+
+  it('relit une pièce avec une location inconnue ou absente', () => {
+    const { piece, ...item } = makeWardrobeItem({ id: 1 });
+    localStorage.setItem(
+      KEY,
+      JSON.stringify([
+        { ...item, piece, location: 'cave' },
+        { ...item, piece: { ...piece, id: 2 } },
+        { ...item, piece: { ...piece, id: 3 }, location: 5 },
+      ]),
+    );
+    expect(loadStoredWardrobe(KEY).map((stored) => stored.piece.id)).toEqual([1, 2, 3]);
+  });
+
+  it('transforme une ancienne couleur multicolore en aucune couleur', () => {
+    const { piece, ...item } = makeWardrobeItem({ id: 1 });
+    localStorage.setItem(
+      KEY,
+      JSON.stringify([{ ...item, piece: { ...piece, color: 'multicolore' } }]),
+    );
+    const [loaded] = loadStoredWardrobe(KEY);
+    expect(loaded.piece.color).toBeNull();
+    expect(loaded.piece.secondaryColor).toBeNull();
+  });
+
+  it('promeut une couleur secondaire sans principale à la lecture', () => {
+    const { piece, ...item } = makeWardrobeItem({ id: 1 });
+    const stored = { ...piece, color: null, secondaryColor: 'rouge' };
+    localStorage.setItem(KEY, JSON.stringify([{ ...item, piece: stored }]));
+    expect(loadStoredWardrobe(KEY)[0].piece).toMatchObject({
+      color: 'rouge',
+      secondaryColor: null,
+    });
+  });
+
   it('donne la disponibilité « disponible » aux anciennes pièces', () => {
     const { availability, ...oldItem } = makeWardrobeItem({ id: 1 });
     expect(availability).toBe(Availability.Available);

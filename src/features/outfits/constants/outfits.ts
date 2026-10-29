@@ -89,8 +89,11 @@ export const NEUTRAL_COLORS: readonly PieceColor[] = [
   PieceColor.Black,
   PieceColor.White,
   PieceColor.Grey,
+  PieceColor.Cream,
   PieceColor.Beige,
   PieceColor.Brown,
+  PieceColor.Navy,
+  PieceColor.Silver,
 ];
 
 export const OPPOSITE_SEASON: Record<Season, Season | null> = {

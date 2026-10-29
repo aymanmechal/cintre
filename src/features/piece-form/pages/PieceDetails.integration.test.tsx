@@ -16,8 +16,8 @@ describe('Ajouter une pièce : détails et photo', () => {
   it('enregistre la couleur, la saison, la taille et la date d’achat', async () => {
     const { user } = renderApp('/ajouter');
     await user.type(screen.getByLabelText(/^Nom/), 'Pull marin');
-    await user.click(screen.getByText('Plus de détails (facultatif)'));
     await user.click(screen.getByRole('button', { name: 'Bleu' }));
+    await user.click(screen.getByText('Plus de détails (facultatif)'));
     await user.selectOptions(screen.getByLabelText('Saison'), 'hiver');
     await user.type(screen.getByLabelText('Taille'), 'M');
     await user.type(screen.getByLabelText('Date d’achat'), '2025-11-02');

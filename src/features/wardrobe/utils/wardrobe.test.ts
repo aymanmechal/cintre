@@ -1,13 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { makePiece, makeWardrobeItem } from '../../../test/factories';
-import { OwnershipStatus, StorageLocation } from '../constants/wardrobe';
+import { OwnershipStatus } from '../constants/wardrobe';
 import {
   countItemsByStatus,
   findWardrobeItem,
   selectItemsByStatus,
   toOwnershipStatus,
   toPieceSnapshot,
-  toStorageLocation,
 } from './wardrobe';
 
 const OWNED = makeWardrobeItem({ id: 1 });
@@ -28,8 +27,6 @@ describe('wardrobe utils', () => {
   it('convertit les valeurs de select avec une valeur de secours', () => {
     expect(toOwnershipStatus('wanted')).toBe(OwnershipStatus.Wanted);
     expect(toOwnershipStatus('?')).toBe(OwnershipStatus.Owned);
-    expect(toStorageLocation('tiroir')).toBe(StorageLocation.Drawer);
-    expect(toStorageLocation('?')).toBe(StorageLocation.Wardrobe);
   });
 
   it('ne garde que les champs utiles dans la copie de la pièce', () => {

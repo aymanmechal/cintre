@@ -6,7 +6,6 @@ import {
   AVAILABILITIES,
   Availability,
   OWNERSHIP_STATUSES,
-  STORAGE_LOCATIONS,
 } from '../constants/wardrobe';
 import type { ArchivedItem, TrashedItem, WardrobeItem } from '../types/wardrobe';
 import { readJsonFromStorage, writeJsonToStorage } from '../../../shared/utils/storage';
@@ -30,8 +29,7 @@ function isStoredWardrobeItem(value: unknown): value is StoredWardrobeItem {
   return (
     isRecord(value) &&
     isStoredPiece(value.piece) &&
-    OWNERSHIP_STATUSES.some((status) => status === value.status) &&
-    STORAGE_LOCATIONS.some((location) => location === value.location)
+    OWNERSHIP_STATUSES.some((status) => status === value.status)
   );
 }
 
@@ -39,7 +37,6 @@ function toWardrobeItem(stored: StoredWardrobeItem): WardrobeItem {
   return {
     piece: toPiece(stored.piece),
     status: stored.status,
-    location: stored.location,
     availability:
       AVAILABILITIES.find((value) => value === stored.availability) ?? Availability.Available,
     lastWornOn: typeof stored.lastWornOn === 'string' ? stored.lastWornOn : null,

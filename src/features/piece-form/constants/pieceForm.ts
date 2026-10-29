@@ -1,9 +1,5 @@
 import { DEFAULT_PIECE_TYPE } from '../../../shared/pieces/constants/categories';
-import {
-  Availability,
-  DEFAULT_STORAGE_LOCATION,
-  OwnershipStatus,
-} from '../../wardrobe/constants/wardrobe';
+import { Availability, OwnershipStatus } from '../../wardrobe/constants/wardrobe';
 import type { PieceFormLabels, PieceFormValues } from '../types/pieceForm';
 
 export enum SubmitStatus {
@@ -26,9 +22,9 @@ export const INITIAL_PIECE_FORM_VALUES: PieceFormValues = {
   photoId: null,
   extraPhotoIds: [],
   status: OwnershipStatus.Owned,
-  location: DEFAULT_STORAGE_LOCATION,
   availability: Availability.Available,
   color: null,
+  secondaryColor: null,
   season: null,
   size: '',
   material: '',
@@ -57,6 +53,11 @@ export const EDIT_PIECE_FORM_LABELS: PieceFormLabels = {
   submitting: 'Enregistrement…',
   success: 'Modifications enregistrées',
   error: 'Impossible d’enregistrer. Vérifie ta connexion puis réessaie.',
+};
+
+export const OWNERSHIP_STATUS_CHOICE_LABELS: Record<OwnershipStatus, string> = {
+  [OwnershipStatus.Owned]: "Je l'ai",
+  [OwnershipStatus.Wanted]: "J'en ai envie",
 };
 
 export const PREVIEW_TITLE_PLACEHOLDER = 'Nom de ta pièce';

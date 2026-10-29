@@ -4,8 +4,6 @@ import {
   AVAILABILITY_LABELS,
   OWNERSHIP_STATUS_LABELS,
   OWNERSHIP_STATUSES,
-  STORAGE_LOCATION_LABELS,
-  STORAGE_LOCATIONS,
 } from './wardrobe';
 
 export const OWNERSHIP_STATUS_OPTIONS: readonly SelectOption[] = OWNERSHIP_STATUSES.map(
@@ -16,7 +14,3 @@ export const AVAILABILITY_OPTIONS: readonly SelectOption[] = AVAILABILITIES.map(
   value: availability,
   label: AVAILABILITY_LABELS[availability],
 }));
-
-export const STORAGE_LOCATION_OPTIONS: readonly SelectOption[] = STORAGE_LOCATIONS.map(
-  (location) => ({ value: location, label: STORAGE_LOCATION_LABELS[location] }),
-);

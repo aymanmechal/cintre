@@ -3,10 +3,10 @@ import type { PhotoRecognition } from '../../types/photoRecognition';
 import type { PieceFormErrors, PieceFormValues, ChangePieceFormField } from '../../types/pieceForm';
 import { toPieceType } from '../../../../shared/pieces/utils/categories';
 import { FieldLayout } from '../../../../shared/ui/Form/fieldLayout';
-import { FormSection } from '../../../../shared/ui/Form/FormSection';
 import { SelectField } from '../../../../shared/ui/Form/SelectField';
 import { TextField } from '../../../../shared/ui/Form/TextField';
 import { TextFieldType } from '../../../../shared/ui/Form/textFieldType';
+import { ColorFields } from '../ColorFields/ColorFields';
 import { PhotoField } from '../PhotoField/PhotoField';
 
 interface PieceIdentityFieldsProps {
@@ -23,7 +23,15 @@ export function PieceIdentityFields({
   onRecognized,
 }: PieceIdentityFieldsProps) {
   return (
-    <FormSection legend="La pièce">
+    <>
+      <PhotoField
+        photoId={values.photoId}
+        imageUrl={values.imageUrl}
+        imageUrlError={errors.imageUrl}
+        onChange={(photoId) => onChange('photoId', photoId)}
+        onImageUrlChange={(value) => onChange('imageUrl', value)}
+        onRecognized={onRecognized}
+      />
       <TextField
         id="piece-title"
         label="Nom"
@@ -33,13 +41,6 @@ export function PieceIdentityFields({
         error={errors.title}
         onChange={(value) => onChange('title', value)}
       />
-      <TextField
-        id="piece-brand"
-        label="Marque"
-        placeholder="Ex. Uniqlo"
-        value={values.brand}
-        onChange={(value) => onChange('brand', value)}
-      />
       <SelectField
         id="piece-type"
         label="Type"
@@ -47,6 +48,14 @@ export function PieceIdentityFields({
         value={values.pieceType}
         options={PIECE_TYPE_OPTIONS}
         onChange={(value) => onChange('pieceType', toPieceType(value))}
+      />
+      <ColorFields values={values} onChange={onChange} />
+      <TextField
+        id="piece-brand"
+        label="Marque"
+        placeholder="Ex. Uniqlo"
+        value={values.brand}
+        onChange={(value) => onChange('brand', value)}
       />
       <TextField
         id="piece-price"
@@ -57,14 +66,6 @@ export function PieceIdentityFields({
         error={errors.price}
         onChange={(value) => onChange('price', value)}
       />
-      <PhotoField
-        photoId={values.photoId}
-        imageUrl={values.imageUrl}
-        imageUrlError={errors.imageUrl}
-        onChange={(photoId) => onChange('photoId', photoId)}
-        onImageUrlChange={(value) => onChange('imageUrl', value)}
-        onRecognized={onRecognized}
-      />
-    </FormSection>
+    </>
   );
 }

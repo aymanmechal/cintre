@@ -17,13 +17,15 @@ export function PieceForm({ form, labels }: PieceFormProps) {
 
   return (
     <form className={styles.form} noValidate onSubmit={submit}>
-      <PieceIdentityFields
-        values={values}
-        errors={errors}
-        onChange={changeField}
-        onRecognized={applyRecognition}
-      />
-      <PieceStorageFields values={values} onChange={changeField} />
+      <div className={styles.fields}>
+        <PieceIdentityFields
+          values={values}
+          errors={errors}
+          onChange={changeField}
+          onRecognized={applyRecognition}
+        />
+        <PieceStorageFields values={values} onChange={changeField} />
+      </div>
       <PieceDetailsFields values={values} errors={errors} onChange={changeField} />
       <p className={styles.requiredHint}>* champ obligatoire</p>
       <div className={styles.footer}>

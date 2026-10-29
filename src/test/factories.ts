@@ -1,8 +1,4 @@
-import {
-  Availability,
-  OwnershipStatus,
-  StorageLocation,
-} from '../features/wardrobe/constants/wardrobe';
+import { Availability, OwnershipStatus } from '../features/wardrobe/constants/wardrobe';
 import type { WardrobeItem } from '../features/wardrobe/types/wardrobe';
 import type { Outfit } from '../features/outfits/types/outfit';
 import { PieceType } from '../shared/pieces/constants/categories';
@@ -21,6 +17,7 @@ export function makePiece(overrides: Partial<Piece> = {}): Piece {
     photoId: null,
     extraPhotoIds: [],
     color: null,
+    secondaryColor: null,
     season: null,
     size: '',
     material: '',
@@ -39,7 +36,6 @@ export function makeWardrobeItem(
   return {
     piece: makePiece(pieceOverrides),
     status: OwnershipStatus.Owned,
-    location: StorageLocation.Wardrobe,
     availability: Availability.Available,
     lastWornOn: null,
     ...itemOverrides,

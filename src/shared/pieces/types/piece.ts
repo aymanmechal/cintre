@@ -12,6 +12,7 @@ export interface Piece {
   photoId: string | null;
   extraPhotoIds: string[];
   color: PieceColor | null;
+  secondaryColor: PieceColor | null;
   season: Season | null;
   size: string;
   material: string;

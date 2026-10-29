@@ -1,6 +1,7 @@
 import { DEFAULT_PIECE_TYPE, PIECE_TYPES } from '../constants/categories';
 import { PIECE_COLORS } from '../constants/colors';
 import { MAX_EXTRA_PHOTOS } from '../constants/photos';
+import { normalizePieceColors } from './colors';
 import { SEASONS } from '../constants/seasons';
 import type { Piece } from '../types/piece';
 
@@ -26,6 +27,8 @@ function readTexts(value: unknown): string[] {
 }
 
 export function toPiece(stored: StoredPiece): Piece {
+  const color = findAllowed(PIECE_COLORS, stored.color);
+  const secondaryColor = findAllowed(PIECE_COLORS, stored.secondaryColor);
   return {
     id: Number(stored.id),
     title: readText(stored.title),
@@ -35,7 +38,7 @@ export function toPiece(stored: StoredPiece): Piece {
     thumbnail: readText(stored.thumbnail),
     photoId: readNullableText(stored.photoId),
     extraPhotoIds: readTexts(stored.extraPhotoIds).slice(0, MAX_EXTRA_PHOTOS),
-    color: findAllowed(PIECE_COLORS, stored.color),
+    ...normalizePieceColors(color, secondaryColor),
     season: findAllowed(SEASONS, stored.season),
     size: readText(stored.size),
     material: readText(stored.material),

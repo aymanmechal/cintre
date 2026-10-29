@@ -1,5 +1,5 @@
 import type { Outfit } from '../../outfits/types/outfit';
-import { Availability, StorageLocation } from '../../wardrobe/constants/wardrobe';
+import { Availability } from '../../wardrobe/constants/wardrobe';
 import type { WardrobeItem } from '../../wardrobe/types/wardrobe';
 import { toIsoDate } from '../../wardrobe/utils/wornDates';
 import {
@@ -28,6 +28,7 @@ function toDemoItem(spec: DemoPieceSpec, today: Date): WardrobeItem {
       photoId: null,
       extraPhotoIds: [],
       color: spec.color,
+      secondaryColor: null,
       season: spec.season,
       size: '',
       material: '',
@@ -37,7 +38,6 @@ function toDemoItem(spec: DemoPieceSpec, today: Date): WardrobeItem {
       tags: [],
     },
     status: spec.status,
-    location: StorageLocation.Wardrobe,
     availability: Availability.Available,
     lastWornOn:
       spec.daysSinceWorn === null ? null : toIsoDate(subtractDays(today, spec.daysSinceWorn)),

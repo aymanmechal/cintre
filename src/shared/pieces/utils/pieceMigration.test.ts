@@ -28,6 +28,7 @@ describe('toPiece', () => {
       photoId: null,
       extraPhotoIds: [],
       color: null,
+      secondaryColor: null,
       season: null,
       size: '',
       material: '',
@@ -56,6 +57,59 @@ describe('toPiece', () => {
   it('garde au plus trois photos supplémentaires valides', () => {
     const piece = toPiece({ ...OLD_PIECE, extraPhotoIds: ['a', 4, 'b', 'c', 'd'] });
     expect(piece.extraPhotoIds).toEqual(['a', 'b', 'c']);
+  });
+
+  it('transforme « multicolore » en aucune couleur, sans erreur', () => {
+    expect(() => toPiece({ ...OLD_PIECE, color: 'multicolore' })).not.toThrow();
+    expect(toPiece({ ...OLD_PIECE, color: 'multicolore' }).color).toBeNull();
+    expect(toPiece({ ...OLD_PIECE, secondaryColor: 'multicolore' }).secondaryColor).toBeNull();
+  });
+
+  it('transforme toute couleur inconnue ou illisible en aucune couleur', () => {
+    for (const color of ['fluo', 'Noir', 42, {}, [], true, '']) {
+      expect(toPiece({ ...OLD_PIECE, color, secondaryColor: color })).toMatchObject({
+        color: null,
+        secondaryColor: null,
+      });
+    }
+  });
+
+  it('garde les anciennes couleurs avec leur valeur de stockage', () => {
+    const stored = [
+      'noir',
+      'blanc',
+      'gris',
+      'beige',
+      'marron',
+      'bleu',
+      'vert',
+      'rouge',
+      'rose',
+      'jaune',
+      'violet',
+    ];
+    for (const color of stored) {
+      expect(toPiece({ ...OLD_PIECE, color }).color).toBe(color);
+    }
+  });
+
+  it('lit une couleur secondaire valide', () => {
+    const piece = toPiece({ ...OLD_PIECE, color: 'bleu', secondaryColor: 'bleu-marine' });
+    expect(piece).toMatchObject({ color: PieceColor.Blue, secondaryColor: PieceColor.Navy });
+  });
+
+  it('ne garde pas de doublon entre couleur principale et secondaire', () => {
+    const piece = toPiece({ ...OLD_PIECE, color: 'bleu', secondaryColor: 'bleu' });
+    expect(piece).toMatchObject({ color: PieceColor.Blue, secondaryColor: null });
+  });
+
+  it('promeut une couleur secondaire sans principale en principale', () => {
+    const piece = toPiece({ ...OLD_PIECE, secondaryColor: 'beige' });
+    expect(piece).toMatchObject({ color: PieceColor.Beige, secondaryColor: null });
+  });
+
+  it('ignore un champ location stocké sur la pièce', () => {
+    expect(toPiece({ ...OLD_PIECE, location: 'tiroir' })).not.toHaveProperty('location');
   });
 
   it('ignore une couleur ou une saison inconnue', () => {

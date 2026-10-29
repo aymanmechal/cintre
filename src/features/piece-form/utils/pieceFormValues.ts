@@ -1,3 +1,4 @@
+import { normalizePieceColors } from '../../../shared/pieces/utils/colors';
 import { formatTags, parseTags } from '../../../shared/pieces/utils/tags';
 import type { PieceFormValues } from '../types/pieceForm';
 import type { Piece } from '../../../shared/pieces/types/piece';
@@ -18,7 +19,7 @@ export function toPieceFields(values: PieceFormValues): PieceFormFields {
     thumbnail: values.imageUrl.trim(),
     photoId: values.photoId,
     extraPhotoIds: values.extraPhotoIds,
-    color: values.color,
+    ...normalizePieceColors(values.color, values.secondaryColor),
     season: values.season,
     size: values.size.trim(),
     material: values.material.trim(),
@@ -40,7 +41,6 @@ export function buildWardrobeItem(
   return {
     piece,
     status: values.status,
-    location: values.location,
     availability: values.availability,
     lastWornOn,
   };
@@ -57,9 +57,9 @@ export function toPieceFormValues(item: WardrobeItem): PieceFormValues {
     photoId: piece.photoId,
     extraPhotoIds: piece.extraPhotoIds,
     status: item.status,
-    location: item.location,
     availability: item.availability,
     color: piece.color,
+    secondaryColor: piece.secondaryColor,
     season: piece.season,
     size: piece.size,
     material: piece.material,

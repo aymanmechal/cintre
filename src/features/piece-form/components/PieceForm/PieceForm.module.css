@@ -9,6 +9,12 @@
   background: var(--color-surface);
 }
 
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
 .requiredHint {
   margin-top: calc(-1 * var(--space-4));
   color: var(--color-ink-muted);
@@ -25,5 +31,9 @@
 @media (max-width: 640px) {
   .form {
     padding: var(--space-4);
+  }
+
+  .fields {
+    grid-template-columns: 1fr;
   }
 }

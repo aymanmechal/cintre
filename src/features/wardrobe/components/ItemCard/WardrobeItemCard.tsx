@@ -9,6 +9,7 @@ import { WornStatus } from '../WornStatus/WornStatus';
 import { PieceImage } from '../../../../shared/ui/PieceImage/PieceImage';
 import { AvailabilityTag } from './AvailabilityTag';
 import { ItemSelectBox } from './ItemSelectBox';
+import { WardrobeItemColors } from './WardrobeItemColors';
 import { WardrobeItemTags } from './WardrobeItemTags';
 import { WardrobeItemTitle } from './WardrobeItemTitle';
 import styles from './WardrobeItemCard.module.css';
@@ -42,7 +43,10 @@ export function WardrobeItemCard({ item, selection }: WardrobeItemCardProps) {
       </div>
       <div className={styles.body}>
         <div className={styles.text}>
-          <p className={styles.brand}>{formatBrand(piece.brand)}</p>
+          <div className={styles.meta}>
+            <p className={styles.brand}>{formatBrand(piece.brand)}</p>
+            <WardrobeItemColors piece={piece} />
+          </div>
           <WardrobeItemTitle piece={piece} isLinked={!selection.isSelecting} />
           <WardrobeItemTags piece={piece} />
         </div>

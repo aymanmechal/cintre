@@ -10,6 +10,7 @@ import { DeletePieceSection } from '../DeletePiece/DeletePieceSection';
 import { PieceWearCostSection } from '../PieceWearCost/PieceWearCostSection';
 import { PieceOutfitsSection } from '../PieceOutfits/PieceOutfitsSection';
 import { PieceFormWorkspace } from '../PieceFormWorkspace/PieceFormWorkspace';
+import styles from './EditPieceContent.module.css';
 
 interface EditPieceContentProps {
   item: WardrobeItem;
@@ -27,11 +28,19 @@ export function EditPieceContent({ item }: EditPieceContentProps) {
         onSave={savePiece}
         shouldResetOnSuccess={false}
       />
-      {item.status === OwnershipStatus.Owned && <PieceWearCostSection piece={item.piece} />}
-      {item.status === OwnershipStatus.Wanted && <BeforeBuyingSection item={item} />}
-      <PieceOutfitsSection item={item} />
-      {item.status === OwnershipStatus.Owned && <ArchivePieceSection piece={item.piece} />}
-      <DeletePieceSection piece={item.piece} />
+      <section className={styles.infos} aria-labelledby="piece-infos-title">
+        <h2 id="piece-infos-title" className={styles.infosTitle}>
+          Infos
+        </h2>
+        {item.status === OwnershipStatus.Owned && <PieceWearCostSection piece={item.piece} />}
+        {item.status === OwnershipStatus.Wanted && <BeforeBuyingSection item={item} />}
+        <PieceOutfitsSection item={item} />
+      </section>
+      <details className={styles.moreActions}>
+        <summary className={styles.summary}>Plus d’actions</summary>
+        {item.status === OwnershipStatus.Owned && <ArchivePieceSection piece={item.piece} />}
+        <DeletePieceSection piece={item.piece} />
+      </details>
     </>
   );
 }
