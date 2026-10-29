@@ -73,6 +73,8 @@ describe('Accueil : tenue météo', () => {
 
     expect(await screen.findByText('Il fait froid à Lyon')).toBeInTheDocument();
     expect(screen.getByText('4 à 9 °C')).toBeInTheDocument();
+    expect(screen.queryByRole('article', { name: 'Tenue conseillée' })).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Voir la tenue' }));
     const idea = screen.getByRole('article', { name: 'Tenue conseillée' });
     expect(idea).toHaveTextContent('Gros pull');
     expect(idea).not.toHaveTextContent('Débardeur');
@@ -82,6 +84,7 @@ describe('Accueil : tenue météo', () => {
   it('garde la tenue conseillée', async () => {
     localStorage.setItem(WEATHER_PLACE_STORAGE_KEY, JSON.stringify(LYON));
     const { user } = renderApp('/', { wardrobe: WARDROBE });
+    await user.click(await screen.findByRole('button', { name: 'Voir la tenue' }));
     const idea = await screen.findByRole('article', { name: 'Tenue conseillée' });
 
     await user.click(within(idea).getByRole('button', { name: 'Garder cette tenue' }));

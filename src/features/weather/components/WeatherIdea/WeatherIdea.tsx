@@ -1,3 +1,4 @@
+import { buildWeatherTips } from '../../utils/weatherMessages';
 import { useWeatherOutfit } from '../../hooks/useWeatherOutfit';
 import type { WeatherSummary } from '../../types/weather';
 import { KeptOutfitMessage } from '../../../outfits/components/OutfitIdeas/KeptOutfitMessage';
@@ -15,6 +16,11 @@ export function WeatherIdea({ weather }: WeatherIdeaProps) {
 
   return (
     <div className={styles.idea}>
+      <ul className={styles.tips}>
+        {buildWeatherTips(weather).map((tip) => (
+          <li key={tip}>{tip}</li>
+        ))}
+      </ul>
       {idea === null && (
         <p className={styles.empty}>
           Pas de nouvelle tenue complète pour ce temps-là. Ajoute un haut et un bas de saison.

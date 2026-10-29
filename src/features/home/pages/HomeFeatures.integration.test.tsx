@@ -14,38 +14,7 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-describe('Accueil : défi et démo', () => {
-  it('propose une pièce oubliée comme défi du jour', () => {
-    const item = makeWardrobeItem({ id: 7, title: 'Veste oubliée' }, { lastWornOn: '2025-12-01' });
-    renderApp('/', { wardrobe: [item] });
-
-    const challenge = screen.getByRole('region', { name: 'Le défi du jour' });
-    expect(challenge).toHaveTextContent('Veste oubliée');
-    expect(screen.getByRole('link', { name: 'Trouver une tenue' })).toHaveAttribute(
-      'href',
-      '/tenues/idees/7',
-    );
-  });
-
-  it('change de défi quand il y a le choix', async () => {
-    const wardrobe = [
-      makeWardrobeItem({ id: 1, title: 'Veste' }, { lastWornOn: '2025-12-01' }),
-      makeWardrobeItem({ id: 2, title: 'Jupe' }, { lastWornOn: '2025-12-02' }),
-    ];
-    const { user } = renderApp('/', { wardrobe });
-    const challenge = screen.getByRole('region', { name: 'Le défi du jour' });
-    const before = challenge.textContent;
-
-    await user.click(screen.getByRole('button', { name: 'Un autre défi' }));
-    expect(challenge.textContent).not.toBe(before);
-  });
-
-  it("n'affiche pas de défi quand rien n'est oublié", () => {
-    const item = makeWardrobeItem({ id: 1 }, { lastWornOn: '2026-03-14' });
-    renderApp('/', { wardrobe: [item] });
-    expect(screen.queryByRole('region', { name: 'Le défi du jour' })).not.toBeInTheDocument();
-  });
-
+describe('Accueil : démo', () => {
   it('charge puis retire la garde-robe de démo', async () => {
     const { user } = renderApp('/');
     await user.click(screen.getByRole('button', { name: 'Essayer avec une démo' }));
@@ -57,6 +26,12 @@ describe('Accueil : défi et démo', () => {
     await user.click(screen.getByRole('button', { name: 'Retirer la démo' }));
     expect(readStoredWardrobe()).toEqual([]);
     expect(readStoredOutfits()).toEqual([]);
+  });
+
+  it("n'affiche plus de défi du jour", () => {
+    const item = makeWardrobeItem({ id: 7, title: 'Veste oubliée' }, { lastWornOn: '2025-12-01' });
+    renderApp('/', { wardrobe: [item] });
+    expect(screen.queryByRole('region', { name: 'Le défi du jour' })).not.toBeInTheDocument();
   });
 
   it("ne propose pas la démo quand la garde-robe n'est pas vide", () => {

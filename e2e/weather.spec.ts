@@ -25,6 +25,7 @@ test('conseille une tenue selon la météo de sa ville', async ({ page }) => {
   await weather.getByRole('button', { name: 'Voir la météo' }).click();
 
   await expect(weather.getByText('Il fait froid à Lyon')).toBeVisible();
+  await weather.getByRole('button', { name: 'Voir la tenue' }).click();
   await expect(weather.getByText(/pense au parapluie/)).toBeVisible();
   await weather.getByRole('button', { name: 'Garder cette tenue' }).click();
   await expect(weather.getByText(/est dans tes tenues/)).toBeVisible();

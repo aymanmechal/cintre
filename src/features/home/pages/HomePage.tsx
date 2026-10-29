@@ -1,6 +1,5 @@
 import { DemoModeCard } from '../../demo/components/DemoModeCard/DemoModeCard';
 import { CandyMarquee } from '../components/CandyMarquee/CandyMarquee';
-import { ForgottenChallenge } from '../components/ForgottenChallenge/ForgottenChallenge';
 import { ForgottenSpotlight } from '../components/ForgottenSpotlight/ForgottenSpotlight';
 import { HomeHero } from '../components/HomeHero/HomeHero';
 import { HomeStats } from '../components/HomeStats/HomeStats';
@@ -17,7 +16,6 @@ export function HomePage() {
       <WeatherOutfit />
       <CandyMarquee />
       <HomeStats />
-      <ForgottenChallenge />
       <ForgottenSpotlight />
     </div>
   );

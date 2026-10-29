@@ -12,10 +12,10 @@ export function HomeHero() {
         oublier ce qui dort au fond du tiroir.
       </p>
       <div className={styles.actions}>
-        <ButtonLink to={ROUTES.wardrobe} variant={ButtonVariant.Action}>
-          Ma garde-robe
+        <ButtonLink to={ROUTES.addPiece} variant={ButtonVariant.Action}>
+          Ajouter une pièce
         </ButtonLink>
-        <ButtonLink to={ROUTES.addPiece}>Ajouter une pièce</ButtonLink>
+        <ButtonLink to={ROUTES.wardrobe}>Ma garde-robe</ButtonLink>
       </div>
     </header>
   );

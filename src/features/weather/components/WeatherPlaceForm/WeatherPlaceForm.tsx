@@ -19,9 +19,6 @@ export function WeatherPlaceForm({ isSearching, onLocate, onSearch }: WeatherPla
 
   return (
     <div className={styles.place}>
-      <p className={styles.intro}>
-        Dis-moi où tu es, je choisis une tenue adaptée au temps du jour.
-      </p>
       <Button variant={ButtonVariant.Action} disabled={isSearching} onClick={onLocate}>
         📍 Utiliser ma position
       </Button>

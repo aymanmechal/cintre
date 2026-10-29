@@ -1,6 +1,5 @@
 import type { WeatherSummary, WeatherPlace } from '../../types/weather';
 import {
-  buildWeatherTips,
   formatRainChance,
   formatTemperatureRange,
   formatWeatherFeel,
@@ -21,11 +20,6 @@ export function WeatherReport({ place, weather }: WeatherReportProps) {
       <ul className={styles.facts}>
         <li className={styles.fact}>{formatTemperatureRange(weather)}</li>
         <li className={styles.fact}>{formatRainChance(weather)}</li>
-      </ul>
-      <ul className={styles.tips}>
-        {buildWeatherTips(weather).map((tip) => (
-          <li key={tip}>{tip}</li>
-        ))}
       </ul>
     </div>
   );
