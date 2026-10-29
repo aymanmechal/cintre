@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { PieceType } from '../../../shared/pieces/constants/categories';
 import { PieceColor } from '../../../shared/pieces/constants/colors';
 import { makeOutfit, makeWardrobeItem } from '../../../test/factories';
+import { openMyOutfitsTab, openOutfitMenu } from '../../../test/outfitsNavigation';
 import { renderApp } from '../../../test/renderApp';
 
 const SHIRT = makeWardrobeItem({ id: 1, title: 'Chemise lin', color: PieceColor.Blue, price: 40 });
@@ -40,8 +41,9 @@ function list(): HTMLElement {
 }
 
 describe('Tenues : harmonie des couleurs expliquée', () => {
-  it('explique les couleurs sur chaque tenue', () => {
-    renderApp('/tenues', { wardrobe: WARDROBE, outfits: [OUTFITS[0]] });
+  it('explique les couleurs sur chaque tenue', async () => {
+    const { user } = renderApp('/tenues', { wardrobe: WARDROBE, outfits: [OUTFITS[0]] });
+    await openMyOutfitsTab(user);
     expect(within(list()).getByText('Une touche de couleur')).toBeInTheDocument();
     expect(within(list()).getByText(/Une seule couleur vive \(bleu\)/)).toBeInTheDocument();
   });
@@ -100,8 +102,11 @@ describe('Tenues : je garde ces pièces', () => {
 describe('Tenues : comparer', () => {
   it('compare deux tenues côte à côte', async () => {
     const { user } = renderApp('/tenues', { wardrobe: WARDROBE, outfits: OUTFITS });
+    await openMyOutfitsTab(user);
+    await openOutfitMenu(user, 'Ville');
     await user.click(screen.getByLabelText('Comparer Ville'));
     expect(screen.queryByRole('region', { name: 'Comparer mes tenues' })).not.toBeInTheDocument();
+    await openOutfitMenu(user, 'Plage');
     await user.click(screen.getByLabelText('Comparer Plage'));
 
     const comparison = screen.getByRole('region', { name: 'Comparer mes tenues' });
@@ -114,17 +119,25 @@ describe('Tenues : comparer', () => {
 
   it('limite la comparaison à trois tenues', async () => {
     const { user } = renderApp('/tenues', { wardrobe: WARDROBE, outfits: OUTFITS });
+    await openMyOutfitsTab(user);
+    await openOutfitMenu(user, 'Ville');
     await user.click(screen.getByLabelText('Comparer Ville'));
+    await openOutfitMenu(user, 'Plage');
     await user.click(screen.getByLabelText('Comparer Plage'));
+    await openOutfitMenu(user, 'Sport');
     await user.click(screen.getByLabelText('Comparer Sport'));
 
+    await openOutfitMenu(user, 'Soir');
     expect(screen.getByLabelText('Comparer Soir')).toBeDisabled();
     expect(screen.getByLabelText('Comparer Sport')).toBeEnabled();
   });
 
   it('ferme la comparaison', async () => {
     const { user } = renderApp('/tenues', { wardrobe: WARDROBE, outfits: OUTFITS });
+    await openMyOutfitsTab(user);
+    await openOutfitMenu(user, 'Ville');
     await user.click(screen.getByLabelText('Comparer Ville'));
+    await openOutfitMenu(user, 'Plage');
     await user.click(screen.getByLabelText('Comparer Plage'));
     await user.click(screen.getByRole('button', { name: 'Fermer la comparaison' }));
 

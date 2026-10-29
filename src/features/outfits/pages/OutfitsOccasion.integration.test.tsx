@@ -2,6 +2,7 @@ import { screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { PieceType } from '../../../shared/pieces/constants/categories';
 import { makeOutfit, makeWardrobeItem } from '../../../test/factories';
+import { openMoreOptions, openMyOutfitsTab, openOutfitMenu } from '../../../test/outfitsNavigation';
 import { readStoredOutfits, renderApp } from '../../../test/renderApp';
 import { Occasion } from '../constants/occasions';
 
@@ -25,6 +26,7 @@ function outfitNames(): string[] {
 describe('Tenues : occasion', () => {
   it('filtre la liste par occasion', async () => {
     const { user } = renderApp('/tenues', { wardrobe: WARDROBE, outfits: OUTFITS });
+    await openMyOutfitsTab(user);
     expect(outfitNames()).toHaveLength(3);
 
     await user.selectOptions(screen.getByLabelText('Occasion'), Occasion.Party);
@@ -36,12 +38,14 @@ describe('Tenues : occasion', () => {
 
   it('prévient quand aucune tenue ne correspond à l’occasion', async () => {
     const { user } = renderApp('/tenues', { wardrobe: WARDROBE, outfits: OUTFITS });
+    await openMyOutfitsTab(user);
     await user.selectOptions(screen.getByLabelText('Occasion'), Occasion.Wedding);
     expect(screen.getByText('Aucune tenue ne correspond à cette occasion.')).toBeInTheDocument();
   });
 
   it('combine la recherche et l’occasion', async () => {
     const { user } = renderApp('/tenues', { wardrobe: WARDROBE, outfits: OUTFITS });
+    await openMyOutfitsTab(user);
     await user.type(screen.getByLabelText('Rechercher une tenue'), 'bureau');
     await user.selectOptions(screen.getByLabelText('Occasion'), Occasion.Party);
     expect(screen.getByText('Aucune tenue ne correspond à « bureau ».')).toBeInTheDocument();
@@ -49,6 +53,8 @@ describe('Tenues : occasion', () => {
 
   it('change l’occasion d’une tenue enregistrée', async () => {
     const { user } = renderApp('/tenues', { wardrobe: WARDROBE, outfits: OUTFITS });
+    await openMyOutfitsTab(user);
+    await openOutfitMenu(user, 'Sans occasion');
     await user.selectOptions(screen.getByLabelText('Occasion de Sans occasion'), Occasion.Date);
 
     expect(readStoredOutfits().find((outfit) => outfit.id === 'c')?.occasion).toBe(Occasion.Date);
@@ -65,6 +71,7 @@ describe('Tenues : occasion', () => {
         name: /Jean brut/,
       }),
     );
+    await openMoreOptions(user);
     await user.selectOptions(screen.getByLabelText('Occasion (facultatif)'), Occasion.Interview);
     await user.click(screen.getByRole('button', { name: 'Créer la tenue' }));
 

@@ -1,6 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { makeOutfit, makeWardrobeItem } from '../../../test/factories';
+import { openMyOutfitsTab, openOutfitMenu } from '../../../test/outfitsNavigation';
 import { renderApp } from '../../../test/renderApp';
 
 const WARDROBE = [makeWardrobeItem({ id: 1 }), makeWardrobeItem({ id: 2, title: 'Jean' })];
@@ -22,6 +23,8 @@ describe('Tenue en image', () => {
   it('prévient quand l’image ne peut pas être créée', async () => {
     vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null);
     const { user } = renderApp('/tenues', { wardrobe: WARDROBE, outfits: OUTFITS });
+    await openMyOutfitsTab(user);
+    await openOutfitMenu(user, 'Cosy');
     await user.click(screen.getByRole('button', { name: 'Enregistrer la tenue Cosy en image' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('Impossible de créer l’image');
   });
@@ -49,6 +52,8 @@ describe('Tenue en image', () => {
     const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
 
     const { user } = renderApp('/tenues', { wardrobe: WARDROBE, outfits: OUTFITS });
+    await openMyOutfitsTab(user);
+    await openOutfitMenu(user, 'Cosy');
     await user.click(screen.getByRole('button', { name: 'Enregistrer la tenue Cosy en image' }));
 
     await waitFor(() => expect(click).toHaveBeenCalled());

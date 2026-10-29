@@ -2,6 +2,7 @@ import { screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { PieceType } from '../../../shared/pieces/constants/categories';
 import { makeOutfit, makeWardrobeItem } from '../../../test/factories';
+import { openMyOutfitsTab } from '../../../test/outfitsNavigation';
 import { readStoredOutfits, renderApp } from '../../../test/renderApp';
 import { Availability } from '../../wardrobe/constants/wardrobe';
 
@@ -62,6 +63,7 @@ describe('Pièces sans tenue', () => {
   it('liste les pièces absentes de toutes les tenues avec un lien vers leurs idées', async () => {
     const outfit = makeOutfit({ pieceIds: [1, 2] });
     const { user } = renderApp('/tenues', { wardrobe: WARDROBE, outfits: [outfit] });
+    await openMyOutfitsTab(user);
     await user.click(screen.getByText('Pièces sans tenue (1)'));
     await user.click(screen.getByRole('link', { name: /Chino beige/ }));
     expect(screen.getByText('Autour de « Chino beige »')).toBeInTheDocument();

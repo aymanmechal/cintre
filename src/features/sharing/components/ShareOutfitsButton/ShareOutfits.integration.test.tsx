@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { makeOutfit, makeWardrobeItem } from '../../../../test/factories';
+import { openMyOutfitsTab, openOutfitMenu } from '../../../../test/outfitsNavigation';
 import { renderApp } from '../../../../test/renderApp';
 import { createShare, fetchMyShares } from '../../api/sharingApi';
 
@@ -29,6 +30,8 @@ describe('Partager une tenue', () => {
       wardrobe: [makeWardrobeItem({ id: 1 })],
       outfits: [makeOutfit({ name: 'Brunch', pieceIds: [1] })],
     });
+    await openMyOutfitsTab(user);
+    await openOutfitMenu(user, 'Brunch');
     await user.click(await screen.findByRole('button', { name: 'Partager la tenue Brunch' }));
     expect(await screen.findByText(/Lien copié/)).toBeInTheDocument();
     expect(createShare).toHaveBeenCalledWith('Brunch', [{ name: 'Brunch', image: 'img' }]);
@@ -40,6 +43,7 @@ describe('Partager une tenue', () => {
       wardrobe: [makeWardrobeItem({ id: 1 })],
       outfits: [makeOutfit({ name: 'Brunch', pieceIds: [1] })],
     });
+    await openMyOutfitsTab(user);
     await user.click(await screen.findByText('🔗 Mes tenues partagées'));
     expect(fetchMyShares).toHaveBeenCalled();
     await user.click(await screen.findByRole('button', { name: 'Arrêter le partage de Brunch' }));

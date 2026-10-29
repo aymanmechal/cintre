@@ -2,6 +2,7 @@ import { screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { PieceType } from '../../../shared/pieces/constants/categories';
 import { makeOutfit, makeWardrobeItem } from '../../../test/factories';
+import { openMyOutfitsTab, openOutfitMenu } from '../../../test/outfitsNavigation';
 import { readStoredOutfits, renderApp } from '../../../test/renderApp';
 import { OwnershipStatus } from '../../wardrobe/constants/wardrobe';
 import { MAX_ACCESSORIES_PER_OUTFIT } from '../constants/outfits';
@@ -158,6 +159,7 @@ describe('Tenues : enregistrer', () => {
     await user.click(within(shelf()).getByRole('button', { name: /Jean brut/ }));
     await user.type(screen.getByLabelText('Nom de la tenue'), 'Sortie du samedi');
     await user.click(screen.getByRole('button', { name: 'Créer la tenue' }));
+    await openMyOutfitsTab(user);
 
     const list = screen.getByRole('region', { name: 'Mes tenues (1)' });
     expect(within(list).getByRole('heading', { name: 'Sortie du samedi' })).toBeInTheDocument();
@@ -188,6 +190,7 @@ describe('Tenues : enregistrer', () => {
     await user.click(slotTab(/^Accessoire/));
     await user.click(within(shelf()).getByRole('button', { name: /Montre dorée/ }));
     await user.click(screen.getByRole('button', { name: 'Créer la tenue' }));
+    await openMyOutfitsTab(user);
 
     const list = screen.getByRole('region', { name: 'Mes tenues (1)' });
     expect(within(list).getByText('Objectif')).toBeInTheDocument();
@@ -196,28 +199,33 @@ describe('Tenues : enregistrer', () => {
 });
 
 describe('Tenues : liste', () => {
-  it("affiche un message quand il n'y a aucune tenue", () => {
-    renderApp('/tenues', { wardrobe: ALL_ITEMS });
+  it("affiche un message quand il n'y a aucune tenue", async () => {
+    const { user } = renderApp('/tenues', { wardrobe: ALL_ITEMS });
+    await openMyOutfitsTab(user);
     expect(screen.getByText(/Aucune tenue pour l.instant/)).toBeInTheDocument();
   });
 
   it('supprime une tenue', async () => {
     const outfit = makeOutfit({ id: 'o1', name: 'Ancienne', pieceIds: [1, 2] });
     const { user } = renderApp('/tenues', { wardrobe: ALL_ITEMS, outfits: [outfit] });
+    await openMyOutfitsTab(user);
+    await openOutfitMenu(user, 'Ancienne');
     await user.click(screen.getByRole('button', { name: 'Supprimer la tenue Ancienne' }));
     expect(screen.getByText(/Aucune tenue pour l.instant/)).toBeInTheDocument();
     expect(readStoredOutfits()).toEqual([]);
   });
 
-  it('ignore les pièces qui ne sont plus dans la garde-robe', () => {
+  it('ignore les pièces qui ne sont plus dans la garde-robe', async () => {
     const outfit = makeOutfit({ id: 'o1', name: 'Fantôme', pieceIds: [1, 999] });
-    renderApp('/tenues', { wardrobe: ALL_ITEMS, outfits: [outfit] });
+    const { user } = renderApp('/tenues', { wardrobe: ALL_ITEMS, outfits: [outfit] });
+    await openMyOutfitsTab(user);
     expect(screen.getByRole('heading', { name: 'Fantôme' })).toBeInTheDocument();
   });
 
-  it('marque prête une tenue de pièces possédées', () => {
+  it('marque prête une tenue de pièces possédées', async () => {
     const outfit = makeOutfit({ id: 'o1', name: 'Prête', pieceIds: [1, 2] });
-    renderApp('/tenues', { wardrobe: ALL_ITEMS, outfits: [outfit] });
+    const { user } = renderApp('/tenues', { wardrobe: ALL_ITEMS, outfits: [outfit] });
+    await openMyOutfitsTab(user);
     expect(screen.getByText('Prête', { selector: 'span' })).toBeInTheDocument();
     expect(OwnershipStatus.Owned).toBe('owned');
   });

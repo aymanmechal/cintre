@@ -36,6 +36,7 @@ test.describe('Tenues', () => {
     await expect(preview.getByRole('button', { name: 'Retirer Lunettes noires' })).toBeVisible();
 
     await page.getByRole('button', { name: 'Créer la tenue' }).click();
+    await page.getByRole('tab', { name: 'Mes tenues' }).click();
     const list = page.getByRole('region', { name: 'Mes tenues (1)' });
     await expect(list.getByText('Prête')).toBeVisible();
     await expect(list.getByText('Lunettes noires')).toBeVisible();
@@ -50,6 +51,7 @@ test.describe('Tenues', () => {
       .click();
     await shelf.getByRole('button', { name: /Montre dorée/ }).click();
     await page.getByRole('button', { name: 'Créer la tenue' }).click();
+    await page.getByRole('tab', { name: 'Mes tenues' }).click();
     const list = page.getByRole('region', { name: 'Mes tenues (1)' });
     await expect(list.getByText('Objectif')).toBeVisible();
     await expect(list.getByText(/À obtenir/)).toBeVisible();
@@ -62,7 +64,9 @@ test.describe('Tenues', () => {
     await page.getByLabel('Nom de la tenue').fill('Bureau');
     await page.getByRole('button', { name: 'Créer la tenue' }).click();
     await page.reload();
+    await page.getByRole('tab', { name: 'Mes tenues' }).click();
     await expect(page.getByRole('heading', { name: 'Bureau' })).toBeVisible();
+    await page.getByLabel('Plus d’actions pour la tenue Bureau').click();
     await page.getByRole('button', { name: 'Supprimer la tenue Bureau' }).click();
     await expect(page.getByText(/Aucune tenue pour l.instant/)).toBeVisible();
   });

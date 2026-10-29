@@ -2,6 +2,7 @@ import { screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { PieceType } from '../../../shared/pieces/constants/categories';
 import { makeOutfit, makeWardrobeItem } from '../../../test/factories';
+import { openMyOutfitsTab, openOutfitMenu } from '../../../test/outfitsNavigation';
 import { readStoredOutfits, renderApp } from '../../../test/renderApp';
 
 const SHIRT = makeWardrobeItem({ id: 1, title: 'Chemise lin', thumbnail: '' });
@@ -26,17 +27,21 @@ function card(): HTMLElement {
 describe('Tenues : actions sur une tenue', () => {
   it('remplace juste une pièce par une autre du même type', async () => {
     const { user } = renderApp('/tenues', { wardrobe: [SHIRT, JEANS, CHINO], outfits: [OUTFIT] });
+    await openMyOutfitsTab(user);
     await user.click(within(card()).getByRole('button', { name: 'Remplacer Jean brut' }));
     expect(readStoredOutfits()[0].pieceIds).toEqual([1, 3]);
   });
 
-  it("ne propose pas de remplacement quand il n'y a pas d'autre pièce", () => {
-    renderApp('/tenues', { wardrobe: [SHIRT, JEANS], outfits: [OUTFIT] });
+  it("ne propose pas de remplacement quand il n'y a pas d'autre pièce", async () => {
+    const { user } = renderApp('/tenues', { wardrobe: [SHIRT, JEANS], outfits: [OUTFIT] });
+    await openMyOutfitsTab(user);
     expect(screen.queryByRole('button', { name: /^Remplacer/ })).not.toBeInTheDocument();
   });
 
   it('enregistre un score, qu’on peut retirer en recliquant', async () => {
     const { user } = renderApp('/tenues', { wardrobe: [SHIRT, JEANS], outfits: [OUTFIT] });
+    await openMyOutfitsTab(user);
+    await openOutfitMenu(user, 'Sortie');
     await user.click(screen.getByText(/^Note et score/));
     await user.click(screen.getByRole('button', { name: '4 sur 5' }));
     expect(readStoredOutfits()[0].score).toBe(4);
@@ -46,6 +51,8 @@ describe('Tenues : actions sur une tenue', () => {
 
   it('enregistre une note perso', async () => {
     const { user } = renderApp('/tenues', { wardrobe: [SHIRT, JEANS], outfits: [OUTFIT] });
+    await openMyOutfitsTab(user);
+    await openOutfitMenu(user, 'Sortie');
     await user.click(screen.getByText(/^Note et score/));
     await user.type(screen.getByLabelText('Note perso'), 'Top');
     expect(readStoredOutfits()[0].note).toBe('Top');
