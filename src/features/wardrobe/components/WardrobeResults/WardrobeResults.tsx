@@ -41,7 +41,7 @@ export function WardrobeResults({ viewState, selection }: WardrobeResultsProps) 
           onShowForgotten={viewState.changeSortOrder}
         />
       )}
-      <WardrobeGroupList groups={groups} isEditing={viewState.isEditing} selection={selection} />
+      <WardrobeGroupList groups={groups} selection={selection} />
     </>
   );
 }

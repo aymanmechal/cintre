@@ -1,16 +1,11 @@
 import {
   PIECE_TYPE_LABELS,
   PIECE_TYPES,
-  ALL_PIECE_TYPES,
-  type PieceTypeFilter,
+  type PieceType,
 } from '../../../shared/pieces/constants/categories';
+import { PIECE_COLOR_LABELS, type PieceColor } from '../../../shared/pieces/constants/colors';
 import { normalizeForSearch } from '../../../shared/utils/text';
-import {
-  Availability,
-  STORAGE_LOCATION_LABELS,
-  STORAGE_LOCATIONS,
-  type OwnershipStatus,
-} from '../constants/wardrobe';
+import { Availability, type OwnershipStatus } from '../constants/wardrobe';
 import {
   GROUPINGS_BY_STATUS,
   UNGROUPED_ID,
@@ -54,22 +49,29 @@ function sortWardrobeItems(
   }
 }
 
-function matchesPieceType(item: WardrobeItem, pieceType: PieceTypeFilter): boolean {
-  return pieceType === ALL_PIECE_TYPES || item.piece.pieceType === pieceType;
+function matchesPieceTypes(item: WardrobeItem, pieceTypes: readonly PieceType[]): boolean {
+  return pieceTypes.length === 0 || pieceTypes.includes(item.piece.pieceType);
+}
+
+function matchesColors(item: WardrobeItem, colors: readonly PieceColor[]): boolean {
+  return colors.length === 0 || (item.piece.color !== null && colors.includes(item.piece.color));
 }
 
 export function matchesSearch(item: WardrobeItem, search: string): boolean {
-  const { title, brand, size, tags } = item.piece;
-  const words = [title, brand ?? '', size, ...tags].join(' ');
+  const { title, brand, size, tags, color, pieceType } = item.piece;
+  const colorLabel = color === null ? '' : PIECE_COLOR_LABELS[color];
+  const words = [title, brand ?? '', size, colorLabel, PIECE_TYPE_LABELS[pieceType], ...tags].join(
+    ' ',
+  );
   return normalizeForSearch(words).includes(normalizeForSearch(search));
 }
 
 function matchesView(item: WardrobeItem, view: WardrobeView): boolean {
   const { piece } = item;
   return (
-    matchesPieceType(item, view.pieceType) &&
+    matchesPieceTypes(item, view.pieceTypes) &&
+    matchesColors(item, view.colors) &&
     matchesSearch(item, view.search) &&
-    (view.color === null || piece.color === view.color) &&
     (view.season === null || piece.season === view.season) &&
     (view.tag === null || piece.tags.includes(view.tag)) &&
     (!view.onlyFavorites || piece.isFavorite) &&
@@ -80,13 +82,30 @@ function matchesView(item: WardrobeItem, view: WardrobeView): boolean {
 export function hasActiveFilters(view: WardrobeView): boolean {
   return (
     view.search.trim() !== '' ||
-    view.pieceType !== ALL_PIECE_TYPES ||
-    view.color !== null ||
+    view.pieceTypes.length > 0 ||
+    view.colors.length > 0 ||
     view.season !== null ||
     view.tag !== null ||
     view.onlyFavorites ||
     view.onlyAvailable
   );
+}
+
+export function toggleValue<Value>(values: readonly Value[], value: Value): Value[] {
+  return values.includes(value)
+    ? values.filter((current) => current !== value)
+    : [...values, value];
+}
+
+export function countActiveFilters(view: WardrobeView): number {
+  const activeFilters = [
+    view.colors.length > 0,
+    view.season !== null,
+    view.tag !== null,
+    view.onlyFavorites,
+    view.onlyAvailable,
+  ];
+  return activeFilters.filter(Boolean).length;
 }
 
 function buildGroups<Key extends string>(
@@ -109,13 +128,6 @@ function groupWardrobeItems(
   grouping: WardrobeGrouping,
 ): WardrobeGroup[] {
   switch (grouping) {
-    case WardrobeGrouping.Location:
-      return buildGroups(
-        STORAGE_LOCATIONS,
-        STORAGE_LOCATION_LABELS,
-        (item) => item.location,
-        items,
-      );
     case WardrobeGrouping.PieceType:
       return buildGroups(PIECE_TYPES, PIECE_TYPE_LABELS, (item) => item.piece.pieceType, items);
     case WardrobeGrouping.None:

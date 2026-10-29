@@ -1,19 +1,17 @@
-import { PIECE_COLOR_OPTIONS } from '../../../../shared/pieces/constants/colorOptions';
 import { SEASON_OPTIONS } from '../../../../shared/pieces/constants/seasonOptions';
-import { toPieceColor } from '../../../../shared/pieces/utils/colors';
 import { toSeason } from '../../../../shared/pieces/utils/seasons';
+import { Button, ButtonVariant } from '../../../../shared/ui/Button/Button';
 import { CheckboxField } from '../../../../shared/ui/Form/CheckboxField';
 import { SelectField } from '../../../../shared/ui/Form/SelectField';
 import type { SelectOption } from '../../../../shared/ui/Form/selectOption';
 import type { WardrobeViewState } from '../../hooks/useWardrobeView';
+import { countActiveFilters, hasActiveFilters } from '../../utils/wardrobeView';
+import { WardrobeColorFilter } from '../ColorFilter/WardrobeColorFilter';
+import { WardrobeGroupingSelect } from './WardrobeGroupingSelect';
+import { WardrobeSortSelect } from './WardrobeSortSelect';
 import styles from './WardrobeMoreFilters.module.css';
 
 const ALL = '';
-
-const COLOR_FILTER_OPTIONS: readonly SelectOption[] = [
-  { value: ALL, label: 'Toutes les couleurs' },
-  ...PIECE_COLOR_OPTIONS,
-];
 
 const SEASON_FILTER_OPTIONS: readonly SelectOption[] = [
   { value: ALL, label: 'Toutes les saisons' },
@@ -26,6 +24,7 @@ interface WardrobeMoreFiltersProps {
 
 export function WardrobeMoreFilters({ viewState }: WardrobeMoreFiltersProps) {
   const { view, tags } = viewState;
+  const activeFilterCount = countActiveFilters(view);
   const tagOptions: SelectOption[] = [
     { value: ALL, label: 'Tous les tags' },
     ...tags.map((tag) => ({ value: tag, label: `#${tag}` })),
@@ -33,15 +32,11 @@ export function WardrobeMoreFilters({ viewState }: WardrobeMoreFiltersProps) {
 
   return (
     <details className={styles.details}>
-      <summary className={styles.summary}>Plus de filtres</summary>
+      <summary className={styles.summary}>
+        Filtres {activeFilterCount > 0 && <span className={styles.badge}>{activeFilterCount}</span>}
+      </summary>
       <div className={styles.fields}>
-        <SelectField
-          id="wardrobe-color"
-          label="Couleur"
-          value={view.color ?? ALL}
-          options={COLOR_FILTER_OPTIONS}
-          onChange={(value) => viewState.changeColor(toPieceColor(value))}
-        />
+        <WardrobeColorFilter selectedColors={view.colors} onToggle={viewState.toggleColor} />
         <SelectField
           id="wardrobe-season"
           label="Saison"
@@ -70,6 +65,17 @@ export function WardrobeMoreFilters({ viewState }: WardrobeMoreFiltersProps) {
           isChecked={view.onlyAvailable}
           onChange={viewState.toggleOnlyAvailable}
         />
+        <WardrobeSortSelect value={view.sortOrder} onChange={viewState.changeSortOrder} />
+        <WardrobeGroupingSelect
+          status={view.status}
+          value={view.grouping}
+          onChange={viewState.changeGrouping}
+        />
+        {hasActiveFilters(view) && (
+          <Button variant={ButtonVariant.Ghost} onClick={viewState.resetFilters}>
+            Effacer les filtres
+          </Button>
+        )}
       </div>
     </details>
   );

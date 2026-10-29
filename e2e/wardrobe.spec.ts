@@ -15,16 +15,32 @@ test.describe('Garde-robe', () => {
     await expect(page.getByText(/1 pièce dort dans ta garde-robe/)).toBeVisible();
     await expect(page.getByText('À ressortir')).toHaveCount(1);
     await page.getByRole('button', { name: 'Voir les plus oubliées' }).click();
-    await expect(page.getByLabel('Trier', { exact: true })).toHaveValue('oubliees');
+    await expect(page.getByLabel('Trier par', { exact: true })).toHaveValue('oubliees');
   });
 
-  test("cache les boutons d'édition jusqu'au mode Modifier", async ({ page }) => {
+  test('un seul mode « Sélectionner », sans mode « Modifier »', async ({ page }) => {
     await page.goto('/garde-robe');
-    await expect(page.getByRole('link', { name: 'Modifier Chemise lin' })).toHaveCount(0);
-    await page.getByRole('button', { name: 'Modifier', exact: true }).click();
-    await expect(page.getByRole('link', { name: 'Modifier Chemise lin' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Modifier', exact: true })).toHaveCount(0);
+    await expect(page.getByLabel('Sélectionner Chemise lin')).toHaveCount(0);
+    await page.getByRole('button', { name: 'Sélectionner', exact: true }).click();
+    await expect(page.getByLabel('Sélectionner Chemise lin')).toBeVisible();
     await page.getByRole('button', { name: 'Terminer' }).click();
-    await expect(page.getByRole('link', { name: 'Modifier Chemise lin' })).toHaveCount(0);
+    await expect(page.getByLabel('Sélectionner Chemise lin')).toHaveCount(0);
+  });
+
+  test('filtre par pastilles de type et par couleurs depuis le panneau Filtres', async ({
+    page,
+  }) => {
+    await page.goto('/garde-robe');
+    const types = page.getByRole('group', { name: 'Type de pièce' });
+    await types.getByRole('button', { name: 'Chaussures' }).click();
+    await expect(page.getByRole('heading', { name: 'Baskets' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Chemise lin' })).toHaveCount(0);
+    await types.getByRole('button', { name: 'Tous' }).click();
+    await expect(page.getByRole('heading', { name: 'Chemise lin' })).toBeVisible();
+
+    await page.locator('summary', { hasText: 'Filtres' }).click();
+    await expect(page.getByRole('group', { name: 'Couleur' })).toBeVisible();
   });
 
   test('ouvre la fiche en touchant la carte, sans gêner le favori', async ({ page }) => {
@@ -53,13 +69,16 @@ test.describe('Garde-robe', () => {
     );
   });
 
-  test('retire une pièce puis la restaure depuis la corbeille', async ({ page }) => {
+  test('supprime une pièce depuis sa fiche puis la restaure depuis la corbeille', async ({
+    page,
+  }) => {
     await page.goto('/garde-robe');
-    await page.getByRole('button', { name: 'Modifier', exact: true }).click();
-    await page.getByRole('button', { name: 'Retirer Chemise lin de ma garde-robe' }).click();
+    await page.getByRole('link', { name: 'Chemise lin', exact: true }).click();
+    await page.getByRole('button', { name: 'Supprimer', exact: true }).click();
+    await page.getByRole('dialog').getByRole('button', { name: 'Supprimer' }).click();
     await expect(page.getByRole('heading', { name: 'Chemise lin' })).toHaveCount(0);
 
-    await page.getByRole('link', { name: /Corbeille \(1\)/ }).click();
+    await page.goto('/corbeille');
     await page.getByRole('button', { name: 'Restaurer' }).click();
     await expect(page.getByText('Corbeille vide')).toBeVisible();
     await page.getByRole('link', { name: 'Retour à ma garde-robe' }).click();
@@ -74,9 +93,8 @@ test.describe('Garde-robe', () => {
     await expect(page.getByRole('button', { name: 'Retirer Baskets des favoris' })).toBeVisible();
   });
 
-  test('regroupe par type à la demande', async ({ page }) => {
+  test('regroupe par type par défaut', async ({ page }) => {
     await page.goto('/garde-robe');
-    await page.getByLabel('Ranger', { exact: true }).selectOption('type');
     await expect(page.getByRole('heading', { name: 'Chaussures' })).toBeVisible();
   });
 });

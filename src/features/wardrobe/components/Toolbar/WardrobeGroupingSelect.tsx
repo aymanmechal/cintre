@@ -23,7 +23,7 @@ export function WardrobeGroupingSelect({ status, value, onChange }: WardrobeGrou
   return (
     <SelectField
       id="wardrobe-grouping"
-      label="Ranger"
+      label="Regrouper"
       value={value}
       options={options}
       layout={FieldLayout.Stacked}

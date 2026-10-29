@@ -5,7 +5,6 @@ import { formatBrand, formatPrice } from '../../../../shared/utils/format';
 import { Badge } from '../../../../shared/ui/Badge/Badge';
 import { FavoriteButton } from '../FavoriteButton/FavoriteButton';
 import type { WardrobeSelection } from '../../hooks/useWardrobeSelection';
-import { ItemEditTools } from '../ItemEditTools/ItemEditTools';
 import { WornStatus } from '../WornStatus/WornStatus';
 import { PieceImage } from '../../../../shared/ui/PieceImage/PieceImage';
 import { AvailabilityTag } from './AvailabilityTag';
@@ -16,15 +15,14 @@ import styles from './WardrobeItemCard.module.css';
 
 interface WardrobeItemCardProps {
   item: WardrobeItem;
-  isEditing: boolean;
   selection: WardrobeSelection;
 }
 
-export function WardrobeItemCard({ item, isEditing, selection }: WardrobeItemCardProps) {
+export function WardrobeItemCard({ item, selection }: WardrobeItemCardProps) {
   const { piece } = item;
 
   return (
-    <article className={styles.card} data-piece-type={piece.pieceType} data-editing={isEditing}>
+    <article className={styles.card} data-piece-type={piece.pieceType}>
       <div className={styles.media}>
         <PieceImage imageUrl={piece.thumbnail} photoId={piece.photoId} />
         <div className={styles.badgePosition}>
@@ -33,15 +31,13 @@ export function WardrobeItemCard({ item, isEditing, selection }: WardrobeItemCar
         <div className={styles.favoritePosition}>
           <FavoriteButton piece={piece} />
         </div>
-        {selection.isSelecting ? (
+        {selection.isSelecting && (
           <ItemSelectBox
             pieceId={piece.id}
             pieceTitle={piece.title}
             isSelected={selection.isSelected(piece.id)}
             onToggle={() => selection.toggleItem(piece.id)}
           />
-        ) : (
-          isEditing && <ItemEditTools piece={piece} />
         )}
       </div>
       <div className={styles.body}>

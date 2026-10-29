@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Availability } from '../constants/wardrobe';
+import type { Availability, OwnershipStatus } from '../constants/wardrobe';
 import { useWardrobe } from '../context/useWardrobe';
 import type { WardrobeItem } from '../types/wardrobe';
 import {
@@ -8,6 +8,7 @@ import {
   toggleId,
   withAvailability,
   withFavorite,
+  withStatus,
   withTags,
 } from '../utils/bulkEdit';
 
@@ -21,6 +22,7 @@ export interface WardrobeSelection {
   selectAll: () => void;
   clearSelection: () => void;
   applyAvailability: (availability: Availability) => void;
+  applyStatus: (status: OwnershipStatus) => void;
   applyFavorite: () => void;
   applyTags: (tagsText: string) => void;
 }
@@ -50,6 +52,7 @@ export function useWardrobeSelection(visibleItems: readonly WardrobeItem[]): War
     clearSelection: () => setSelectedIds([]),
     applyAvailability: (availability) =>
       updateSelectedItems((item) => withAvailability(item, availability)),
+    applyStatus: (status) => updateSelectedItems((item) => withStatus(item, status)),
     applyFavorite: () => updateSelectedItems((item) => withFavorite(item, !allAreFavorites)),
     applyTags: (tagsText) => updateSelectedItems((item) => withTags(item, tagsText)),
   };

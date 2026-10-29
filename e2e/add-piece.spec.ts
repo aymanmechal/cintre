@@ -31,8 +31,7 @@ test.describe('Ajouter, modifier, supprimer une pièce', () => {
     await expect(page.getByText('Pièce ajoutée')).toBeVisible();
 
     await page.getByRole('link', { name: 'Voir ma garde-robe' }).click();
-    await page.getByRole('button', { name: 'Modifier', exact: true }).click();
-    await page.getByRole('link', { name: 'Modifier Veste en jean' }).click();
+    await page.getByRole('link', { name: 'Veste en jean', exact: true }).click();
 
     await page.getByTestId('piece-title').fill('Veste rénovée');
     await page.getByRole('button', { name: 'Enregistrer' }).click();

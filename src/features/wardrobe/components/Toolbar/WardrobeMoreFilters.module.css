@@ -1,15 +1,45 @@
+.details[open] {
+  flex-basis: 100%;
+}
+
 .summary {
-  width: fit-content;
-  color: var(--color-ink-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.75rem;
+  padding: 0 var(--space-3);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-ink);
   font-size: 0.875rem;
   font-weight: 600;
+  list-style: none;
   cursor: pointer;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary:hover {
+  border-color: var(--color-ink);
+}
+
+.badge {
+  min-width: 1.5rem;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: 0.75rem;
+  text-align: center;
 }
 
 .fields {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: var(--space-3);
   margin-top: var(--space-3);
 }

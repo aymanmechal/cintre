@@ -12,7 +12,7 @@ export function SelectModeButton({ isSelecting, onToggle }: SelectModeButtonProp
       aria-pressed={isSelecting}
       onClick={onToggle}
     >
-      {isSelecting ? 'Annuler la sélection' : 'Sélectionner'}
+      {isSelecting ? 'Terminer' : 'Sélectionner'}
     </Button>
   );
 }

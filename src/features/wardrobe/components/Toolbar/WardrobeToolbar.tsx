@@ -1,13 +1,10 @@
 import type { WardrobeSelection } from '../../hooks/useWardrobeSelection';
 import type { WardrobeViewState } from '../../hooks/useWardrobeView';
-import { EditModeButton } from './EditModeButton';
+import { WardrobeTypeChips } from '../TypeChips/WardrobeTypeChips';
 import { SelectModeButton } from './SelectModeButton';
 import { StatusTabs } from './StatusTabs';
 import { WardrobeMoreFilters } from './WardrobeMoreFilters';
 import { WardrobeSearchField } from './WardrobeSearchField';
-import { WardrobeGroupingSelect } from './WardrobeGroupingSelect';
-import { WardrobeSortSelect } from './WardrobeSortSelect';
-import { WardrobeTypeSelect } from './WardrobeTypeSelect';
 import styles from './WardrobeToolbar.module.css';
 
 interface WardrobeToolbarProps {
@@ -26,18 +23,13 @@ export function WardrobeToolbar({ viewState, selection }: WardrobeToolbarProps) 
         onSelect={viewState.changeStatus}
       />
       <WardrobeSearchField value={view.search} onChange={viewState.changeSearch} />
-      <div className={styles.selects}>
-        <WardrobeTypeSelect value={view.pieceType} onChange={viewState.changePieceType} />
-        <WardrobeSortSelect value={view.sortOrder} onChange={viewState.changeSortOrder} />
-        <WardrobeGroupingSelect
-          status={view.status}
-          value={view.grouping}
-          onChange={viewState.changeGrouping}
-        />
-      </div>
-      <WardrobeMoreFilters viewState={viewState} />
+      <WardrobeTypeChips
+        selectedTypes={view.pieceTypes}
+        onToggle={viewState.togglePieceType}
+        onClear={viewState.clearPieceTypes}
+      />
       <div className={styles.actions}>
-        <EditModeButton isEditing={viewState.isEditing} onToggle={viewState.toggleEditing} />
+        <WardrobeMoreFilters viewState={viewState} />
         <SelectModeButton
           isSelecting={selection.isSelecting}
           onToggle={selection.toggleSelecting}

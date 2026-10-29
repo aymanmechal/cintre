@@ -1,9 +1,13 @@
 import { parseTags } from '../../../shared/pieces/utils/tags';
-import type { Availability } from '../constants/wardrobe';
+import type { Availability, OwnershipStatus } from '../constants/wardrobe';
 import type { WardrobeItem } from '../types/wardrobe';
 
 export function withAvailability(item: WardrobeItem, availability: Availability): WardrobeItem {
   return { ...item, availability };
+}
+
+export function withStatus(item: WardrobeItem, status: OwnershipStatus): WardrobeItem {
+  return { ...item, status };
 }
 
 export function withFavorite(item: WardrobeItem, isFavorite: boolean): WardrobeItem {

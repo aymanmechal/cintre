@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PieceType } from '../../../shared/pieces/constants/categories';
 import { makeOutfit, makeWardrobeItem } from '../../../test/factories';
 import { readStoredWardrobe, renderApp } from '../../../test/renderApp';
-import { OwnershipStatus, StorageLocation } from '../constants/wardrobe';
+import { OwnershipStatus } from '../constants/wardrobe';
 import { toIsoDate } from '../utils/wornDates';
 
 const TODAY = new Date(2026, 2, 15, 12, 0);
@@ -15,7 +15,7 @@ function isoDaysAgo(days: number): string {
 const SHIRT = makeWardrobeItem({ id: 1, title: 'Chemise lin', thumbnail: '' });
 const SHOES = makeWardrobeItem(
   { id: 2, title: 'Baskets', pieceType: PieceType.Shoes, thumbnail: '' },
-  { location: StorageLocation.Drawer, lastWornOn: isoDaysAgo(2) },
+  { lastWornOn: isoDaysAgo(2) },
 );
 const WISH = makeWardrobeItem(
   { id: 3, title: 'Montre dorée', pieceType: PieceType.Watches, thumbnail: '' },
@@ -42,10 +42,10 @@ describe('Garde-robe : affichage', () => {
     expect(screen.getByText('Ta garde-robe est vide')).toBeInTheDocument();
   });
 
-  it('range les pièces possédées par rangement', () => {
+  it('range les pièces possédées par type, sans les envies', () => {
     renderApp('/garde-robe', { wardrobe: ITEMS });
-    expect(screen.getByRole('heading', { name: 'Armoire' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Tiroir' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Chemises' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Chaussures' })).toBeInTheDocument();
     expect(screen.queryByText('Montre dorée')).not.toBeInTheDocument();
   });
 
@@ -64,16 +64,20 @@ describe('Garde-robe : affichage', () => {
 
   it('filtre par type', async () => {
     const { user } = renderApp('/garde-robe', { wardrobe: ITEMS });
-    await user.selectOptions(screen.getByLabelText('Type'), 'chaussures');
+    await user.click(
+      within(screen.getByRole('group', { name: 'Type de pièce' })).getByRole('button', {
+        name: 'Chaussures',
+      }),
+    );
     expect(screen.getByText('Baskets')).toBeInTheDocument();
     expect(screen.queryByText('Chemise lin')).not.toBeInTheDocument();
   });
 
-  it('regroupe par type à la demande', async () => {
+  it('retire le regroupement à la demande', async () => {
     const { user } = renderApp('/garde-robe', { wardrobe: ITEMS });
-    await user.selectOptions(screen.getByLabelText('Ranger'), 'type');
-    expect(screen.getByRole('heading', { name: 'Chemises' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Chaussures' })).toBeInTheDocument();
+    await user.selectOptions(screen.getByLabelText('Regrouper'), 'aucun');
+    expect(screen.queryByRole('heading', { name: 'Chemises' })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Baskets' })).toBeInTheDocument();
   });
 });
 
@@ -94,15 +98,15 @@ describe('Garde-robe : pièces oubliées', () => {
   it("trie les plus oubliées d'abord et masque le bandeau", async () => {
     const { user } = renderApp('/garde-robe', { wardrobe: ITEMS });
     await user.click(screen.getByRole('button', { name: 'Voir les plus oubliées' }));
-    expect(screen.getByLabelText('Trier')).toHaveValue('oubliees');
+    expect(screen.getByLabelText('Trier par')).toHaveValue('oubliees');
     expect(screen.queryByText(/dort dans ta garde-robe/)).not.toBeInTheDocument();
   });
 });
 
 describe('Garde-robe : dernier port', () => {
-  it('ne propose aucun bouton pour marquer une pièce comme portée, même en mode Modifier', async () => {
+  it('ne propose aucun bouton pour marquer une pièce comme portée, même en mode Sélectionner', async () => {
     const { user } = renderApp('/garde-robe', { wardrobe: ITEMS });
-    await user.click(screen.getByRole('button', { name: 'Modifier' }));
+    await user.click(screen.getByRole('button', { name: 'Sélectionner' }));
     expect(screen.queryByRole('button', { name: /Portée aujourd'hui/ })).not.toBeInTheDocument();
   });
 
@@ -117,29 +121,22 @@ describe('Garde-robe : dernier port', () => {
   });
 });
 
-describe('Garde-robe : mode Modifier', () => {
-  it("cache les boutons d'édition par défaut", () => {
-    renderApp('/garde-robe', { wardrobe: ITEMS });
+describe('Garde-robe : un seul mode « Sélectionner »', () => {
+  it('ne propose plus de mode « Modifier »', async () => {
+    const { user } = renderApp('/garde-robe', { wardrobe: ITEMS });
+    expect(screen.queryByRole('button', { name: 'Modifier' })).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Sélectionner' }));
+    expect(screen.queryByRole('button', { name: 'Modifier' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Modifier Chemise lin' })).not.toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: 'Retirer Chemise lin de ma garde-robe' }),
     ).not.toBeInTheDocument();
   });
 
-  it('les montre avec « Modifier » et les cache avec « Terminer »', async () => {
-    const { user } = renderApp('/garde-robe', { wardrobe: ITEMS });
-    await user.click(screen.getByRole('button', { name: 'Modifier' }));
-    expect(screen.getByRole('link', { name: 'Modifier Chemise lin' })).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Terminer' }));
-    expect(screen.queryByRole('link', { name: 'Modifier Chemise lin' })).not.toBeInTheDocument();
-  });
-
-  it('retire une pièce de la garde-robe', async () => {
-    const { user } = renderApp('/garde-robe', { wardrobe: ITEMS });
-    await user.click(screen.getByRole('button', { name: 'Modifier' }));
-    await user.click(screen.getByRole('button', { name: 'Retirer Chemise lin de ma garde-robe' }));
-    expect(screen.queryByText('Chemise lin')).not.toBeInTheDocument();
-    expect(readStoredWardrobe().map((item) => item.piece.id)).toEqual([2, 3]);
+  it('ne montre plus le choix de statut ni le lien de modification sur les cartes', () => {
+    renderApp('/garde-robe', { wardrobe: ITEMS });
+    expect(within(cardOf('Chemise lin')).queryByRole('combobox')).not.toBeInTheDocument();
+    expect(within(cardOf('Chemise lin')).queryByRole('link', { name: /^Modifier/ })).toBeNull();
   });
 });
 

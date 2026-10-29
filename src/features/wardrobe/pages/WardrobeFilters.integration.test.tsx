@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { PieceColor } from '../../../shared/pieces/constants/colors';
 import { makeWardrobeItem } from '../../../test/factories';
@@ -32,7 +32,7 @@ describe('Garde-robe : recherche et filtres', () => {
 
   it('filtre par couleur', async () => {
     const { user } = renderApp('/garde-robe', { wardrobe: [SCARF, TEE] });
-    await user.selectOptions(screen.getByLabelText('Couleur'), 'bleu');
+    await user.click(within(screen.getByRole('group', { name: 'Couleur' })).getByText('Bleu'));
     expect(isShown('T-shirt bleu')).toBe(true);
     expect(isShown('Écharpe rouge')).toBe(false);
   });
@@ -48,7 +48,8 @@ describe('Garde-robe : recherche et filtres', () => {
     const { user } = renderApp('/garde-robe', { wardrobe: [SCARF, TEE] });
     await user.type(screen.getByLabelText('Rechercher'), 'zzz');
     expect(screen.getByText('Aucune pièce trouvée')).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Effacer les filtres' }));
+    const [clearFilters] = screen.getAllByRole('button', { name: 'Effacer les filtres' });
+    await user.click(clearFilters);
     expect(isShown('Écharpe rouge')).toBe(true);
     expect(screen.getByLabelText('Rechercher')).toHaveValue('');
   });

@@ -83,7 +83,7 @@ describe('Garde-robe : sélection multiple', () => {
   it('quitte le mode sélection en annulant', async () => {
     const user = await startSelecting();
     await user.click(screen.getByLabelText('Sélectionner Jean brut'));
-    await user.click(screen.getByRole('button', { name: 'Annuler la sélection' }));
+    await user.click(screen.getByRole('button', { name: 'Terminer' }));
 
     expect(screen.queryByLabelText('Sélectionner Jean brut')).not.toBeInTheDocument();
     expect(screen.queryByText(/sélectionnée/)).not.toBeInTheDocument();

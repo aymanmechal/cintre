@@ -27,9 +27,9 @@ const VALID_BACKUP = JSON.stringify(
 );
 
 describe('Sauvegarde', () => {
-  it('est accessible depuis le pied de page', async () => {
-    const { user } = renderApp('/');
-    await user.click(screen.getByRole('link', { name: /Sauvegarder mes données/ }));
+  it('est accessible depuis la page Moi', async () => {
+    const { user } = renderApp('/moi');
+    await user.click(screen.getByRole('link', { name: /Sauvegarde/ }));
     expect(screen.getByRole('heading', { name: 'Sauvegarde', level: 1 })).toBeInTheDocument();
   });
 

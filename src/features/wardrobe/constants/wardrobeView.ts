@@ -1,4 +1,3 @@
-import { ALL_PIECE_TYPES } from '../../../shared/pieces/constants/categories';
 import type { WardrobeView } from '../types/wardrobeView';
 import { OwnershipStatus } from './wardrobe';
 
@@ -21,13 +20,11 @@ export const WARDROBE_SORT_ORDER_LABELS: Record<WardrobeSortOrder, string> = {
 export const WARDROBE_SORT_ORDERS = Object.values(WardrobeSortOrder);
 
 export enum WardrobeGrouping {
-  Location = 'rangement',
   PieceType = 'type',
   None = 'aucun',
 }
 
 export const WARDROBE_GROUPING_LABELS: Record<WardrobeGrouping, string> = {
-  [WardrobeGrouping.Location]: 'Par rangement',
   [WardrobeGrouping.PieceType]: 'Par type',
   [WardrobeGrouping.None]: 'Sans regroupement',
 };
@@ -43,11 +40,11 @@ export const UNGROUPED_ID = 'toutes';
 
 export const NO_FILTERS: Pick<
   WardrobeView,
-  'search' | 'pieceType' | 'color' | 'season' | 'tag' | 'onlyFavorites' | 'onlyAvailable'
+  'search' | 'pieceTypes' | 'colors' | 'season' | 'tag' | 'onlyFavorites' | 'onlyAvailable'
 > = {
   search: '',
-  pieceType: ALL_PIECE_TYPES,
-  color: null,
+  pieceTypes: [],
+  colors: [],
   season: null,
   tag: null,
   onlyFavorites: false,
@@ -58,5 +55,5 @@ export const INITIAL_WARDROBE_VIEW: WardrobeView = {
   status: OwnershipStatus.Owned,
   ...NO_FILTERS,
   sortOrder: WardrobeSortOrder.Recent,
-  grouping: WardrobeGrouping.Location,
+  grouping: WardrobeGrouping.PieceType,
 };

@@ -22,7 +22,7 @@ export function WardrobeSortSelect({ value, onChange }: WardrobeSortSelectProps)
   return (
     <SelectField
       id="wardrobe-sort-order"
-      label="Trier"
+      label="Trier par"
       value={value}
       options={SORT_OPTIONS}
       layout={FieldLayout.Stacked}

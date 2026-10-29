@@ -5,16 +5,15 @@ import styles from './WardrobeItemGrid.module.css';
 
 interface WardrobeItemGridProps {
   items: readonly WardrobeItem[];
-  isEditing: boolean;
   selection: WardrobeSelection;
 }
 
-export function WardrobeItemGrid({ items, isEditing, selection }: WardrobeItemGridProps) {
+export function WardrobeItemGrid({ items, selection }: WardrobeItemGridProps) {
   return (
     <ul className={styles.grid}>
       {items.map((item) => (
         <li key={item.piece.id}>
-          <WardrobeItemCard item={item} isEditing={isEditing} selection={selection} />
+          <WardrobeItemCard item={item} selection={selection} />
         </li>
       ))}
     </ul>

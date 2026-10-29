@@ -13,11 +13,6 @@
   background: var(--piece-type-color, var(--color-surface));
 }
 
-.card[data-editing='true'] .media {
-  outline: 3px dashed var(--color-ink-muted);
-  outline-offset: 3px;
-}
-
 .badgePosition {
   position: absolute;
   top: var(--space-3);

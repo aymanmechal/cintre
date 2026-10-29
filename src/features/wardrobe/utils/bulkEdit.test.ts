@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { makeWardrobeItem } from '../../../test/factories';
-import { Availability } from '../constants/wardrobe';
+import { Availability, OwnershipStatus } from '../constants/wardrobe';
+import type { WardrobeItem } from '../types/wardrobe';
 import {
   areAllFavorites,
   formatSelectionCount,
@@ -8,6 +9,7 @@ import {
   toggleId,
   withAvailability,
   withFavorite,
+  withStatus,
   withTags,
 } from './bulkEdit';
 
@@ -19,6 +21,34 @@ describe('bulkEdit', () => {
     const item = withAvailability(ONE, Availability.Dirty);
     expect(item.availability).toBe(Availability.Dirty);
     expect(item.piece).toEqual(ONE.piece);
+  });
+
+  it('applique un statut sans toucher au reste', () => {
+    const wanted = makeWardrobeItem({ id: 5 }, { status: OwnershipStatus.Wanted });
+    const item = withStatus(wanted, OwnershipStatus.Owned);
+    expect(item.status).toBe(OwnershipStatus.Owned);
+    expect(item.piece).toEqual(wanted.piece);
+    expect(item.availability).toBe(wanted.availability);
+    expect(item.location).toBe(wanted.location);
+    expect(wanted.status).toBe(OwnershipStatus.Wanted);
+  });
+
+  it('applique un statut à toute une sélection', () => {
+    const wishes = [1, 2, 3].map((id) =>
+      makeWardrobeItem({ id }, { status: OwnershipStatus.Wanted }),
+    );
+    const updated = wishes.map((item) => withStatus(item, OwnershipStatus.Owned));
+    expect(updated.map((item) => item.status)).toEqual([
+      OwnershipStatus.Owned,
+      OwnershipStatus.Owned,
+      OwnershipStatus.Owned,
+    ]);
+    expect(updated.map((item) => item.piece.id)).toEqual([1, 2, 3]);
+  });
+
+  it('ne change rien pour une sélection vide', () => {
+    const selection: WardrobeItem[] = [];
+    expect(selection.map((item) => withStatus(item, OwnershipStatus.Owned))).toEqual([]);
   });
 
   it('met ou retire un favori', () => {
