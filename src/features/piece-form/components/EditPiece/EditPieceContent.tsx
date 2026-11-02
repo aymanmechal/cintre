@@ -3,6 +3,7 @@ import { useEditPiece } from '../../hooks/useEditPiece';
 import { OwnershipStatus } from '../../../wardrobe/constants/wardrobe';
 import type { WardrobeItem } from '../../../wardrobe/types/wardrobe';
 import { toPieceFormValues } from '../../utils/pieceFormValues';
+import { Disclosure } from '../../../../shared/ui/Disclosure/Disclosure';
 import { PageHeader } from '../../../../shared/ui/PageHeader/PageHeader';
 import { BeforeBuyingSection } from '../BeforeBuying/BeforeBuyingSection';
 import { ArchivePieceSection } from '../ArchivePiece/ArchivePieceSection';
@@ -36,11 +37,10 @@ export function EditPieceContent({ item }: EditPieceContentProps) {
         {item.status === OwnershipStatus.Wanted && <BeforeBuyingSection item={item} />}
         <PieceOutfitsSection item={item} />
       </section>
-      <details className={styles.moreActions}>
-        <summary className={styles.summary}>Plus d’actions</summary>
+      <Disclosure summary="Plus d’actions" className={styles.moreActions}>
         {item.status === OwnershipStatus.Owned && <ArchivePieceSection piece={item.piece} />}
         <DeletePieceSection piece={item.piece} />
-      </details>
+      </Disclosure>
     </>
   );
 }

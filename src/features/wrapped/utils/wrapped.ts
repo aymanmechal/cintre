@@ -39,6 +39,10 @@ function selectTopPiece(owned: readonly WardrobeItem[], counts: ReadonlyMap<numb
 
 const CLOTHING_SLOTS: readonly OutfitSlot[] = [OutfitSlot.Top, OutfitSlot.Bottom];
 
+export function isPairOfShoes(item: WardrobeItem): boolean {
+  return OUTFIT_SLOT_BY_PIECE_TYPE[item.piece.pieceType] === OutfitSlot.Shoes;
+}
+
 export function isClothing(item: WardrobeItem): boolean {
   return CLOTHING_SLOTS.includes(OUTFIT_SLOT_BY_PIECE_TYPE[item.piece.pieceType]);
 }
@@ -88,7 +92,7 @@ export function buildWrapped(
 
   return {
     wornDayCount: new Set(periodEntries.map((entry) => entry.date)).size,
-    topPiece: selectTopPiece(owned, counts),
+    topPair: selectTopPiece(owned.filter(isPairOfShoes), counts),
     topClothing: selectTopPiece(owned.filter(isClothing), counts),
     topOutfit: selectTopOutfit(periodEntries, outfits),
     topColor: selectTopColor(owned, counts),

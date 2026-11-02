@@ -5,6 +5,7 @@ import {
   PIECE_COLOR_SWATCHES,
 } from '../../../../shared/pieces/constants/colors';
 import { buildEditPieceUrl } from '../../../../shared/routes';
+import { Disclosure } from '../../../../shared/ui/Disclosure/Disclosure';
 import { formatBrand } from '../../../../shared/utils/format';
 import { RISK_DESCRIPTIONS, RISK_EMOJIS, RISK_TITLES } from '../../constants/profile';
 import type { StyleProfile } from '../../types/profile';
@@ -27,11 +28,8 @@ export function StyleProfileCard({ profile }: StyleProfileCardProps) {
         </p>
         <p className={styles.hint}>{RISK_DESCRIPTIONS[profile.risk]}</p>
       </section>
-      <section className={styles.block} aria-labelledby="profile-colors">
-        <h2 id="profile-colors" className={styles.title}>
-          Tes couleurs
-        </h2>
-        <ul className={styles.list}>
+      <Disclosure summary="Tes couleurs" className={styles.block} labelClassName={styles.title}>
+        <ul className={`${styles.list} ${styles.colorList}`}>
           {profile.topColors.map(({ color, share }) => (
             <li key={color} className={styles.row}>
               <span
@@ -44,7 +42,7 @@ export function StyleProfileCard({ profile }: StyleProfileCardProps) {
             </li>
           ))}
         </ul>
-      </section>
+      </Disclosure>
       <section className={styles.block} aria-labelledby="profile-pieces">
         <h2 id="profile-pieces" className={styles.title}>
           Tes pièces fétiches

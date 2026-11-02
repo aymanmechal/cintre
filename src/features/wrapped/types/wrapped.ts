@@ -14,7 +14,7 @@ export interface WornOutfit {
 
 export interface Wrapped {
   wornDayCount: number;
-  topPiece: WornPiece | null;
+  topPair: WornPiece | null;
   topClothing: WornPiece | null;
   topOutfit: WornOutfit | null;
   topColor: PieceColor | null;

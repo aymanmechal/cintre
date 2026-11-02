@@ -39,9 +39,7 @@ describe('Mon bilan', () => {
     const wornLog = [{ id: '1', date: '2026-03-10', outfitId: 'a' }];
     const { user } = renderApp('/bilan', { wardrobe, outfits, wornLog });
 
-    const links = screen.getAllByRole('link', { name: 'Pull rouge' });
-    expect(links).toHaveLength(2);
-    await user.click(links[1]);
+    await user.click(screen.getByRole('link', { name: 'Pull rouge' }));
     expect(screen.getByDisplayValue('Pull rouge')).toBeInTheDocument();
   });
 

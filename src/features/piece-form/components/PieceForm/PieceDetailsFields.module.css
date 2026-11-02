@@ -3,13 +3,6 @@
   padding-top: var(--space-3);
 }
 
-.summary {
-  font-family: var(--font-heading);
-  font-size: 1.125rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
 .fields {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -3,7 +3,7 @@ import { useOutfits } from '../../outfits/context/useOutfits';
 import { useWardrobe } from '../../wardrobe/context/useWardrobe';
 import { useWornLog } from '../context/useWornLog';
 import { isFutureDate } from '../../wardrobe/utils/wornDates';
-import { findRepeatedPieceIds } from '../utils/repeatedPieces';
+import { formatWeekday, findRepeatedPieces } from '../utils/repeatedPieces';
 import { createWornEntryId } from '../utils/wornLog';
 import { useToday } from '../../../shared/hooks/useToday';
 
@@ -11,7 +11,7 @@ export interface LogOutfitWornState {
   outfitId: string;
   isPlanning: boolean;
   hasJustSaved: boolean;
-  repeatedTitles: string[];
+  repeatedLabels: string[];
   changeOutfit: (outfitId: string) => void;
   save: (event: FormEvent<HTMLFormElement>) => void;
 }
@@ -27,12 +27,14 @@ export function useLogOutfitWorn(date: string): LogOutfitWornState {
   const selectedOutfit = outfits.find((outfit) => outfit.id === chosenOutfitId) ?? outfits[0];
   const isPlanning = isFutureDate(date, today);
 
-  const repeatedPieceIds = selectedOutfit
-    ? findRepeatedPieceIds(entries, outfits, date, selectedOutfit)
+  const repeatedLabels = selectedOutfit
+    ? findRepeatedPieces(entries, outfits, date, selectedOutfit).flatMap(
+        ({ pieceId, date: wornOn }) => {
+          const item = items.find((candidate) => candidate.piece.id === pieceId);
+          return item ? [`${item.piece.title} (${formatWeekday(wornOn)})`] : [];
+        },
+      )
     : [];
-  const repeatedTitles = items
-    .filter((item) => repeatedPieceIds.includes(item.piece.id))
-    .map((item) => item.piece.title);
 
   function changeOutfit(outfitId: string) {
     setHasJustSaved(false);
@@ -51,7 +53,7 @@ export function useLogOutfitWorn(date: string): LogOutfitWornState {
     outfitId: selectedOutfit?.id ?? '',
     isPlanning,
     hasJustSaved,
-    repeatedTitles,
+    repeatedLabels,
     changeOutfit,
     save,
   };

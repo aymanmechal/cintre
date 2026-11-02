@@ -16,9 +16,9 @@ export function LogOutfitForm({ date }: LogOutfitFormProps) {
     <form className={styles.form} noValidate onSubmit={form.save}>
       <h3 className={styles.title}>{form.isPlanning ? 'Que prévois-tu ?' : "Qu'as-tu porté ?"}</h3>
       <OutfitSelect value={form.outfitId} onChange={form.changeOutfit} />
-      {form.repeatedTitles.length > 0 && (
+      {form.repeatedLabels.length > 0 && (
         <p className={styles.repeat}>
-          🔁 Déjà portés cette semaine : {form.repeatedTitles.join(', ')}
+          🔁 Déjà portés cette semaine : {form.repeatedLabels.join(', ')}
         </p>
       )}
       <Button type="submit" variant={ButtonVariant.Action}>

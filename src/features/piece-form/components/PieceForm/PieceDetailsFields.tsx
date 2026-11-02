@@ -4,6 +4,7 @@ import { toAvailability } from '../../../wardrobe/utils/wardrobe';
 import { SEASON_OPTIONS, NO_SEASON } from '../../../../shared/pieces/constants/seasonOptions';
 import { toSeason } from '../../../../shared/pieces/utils/seasons';
 import type { ChangePieceFormField, PieceFormErrors, PieceFormValues } from '../../types/pieceForm';
+import { Disclosure } from '../../../../shared/ui/Disclosure/Disclosure';
 import { FieldLayout } from '../../../../shared/ui/Form/fieldLayout';
 import { SelectField } from '../../../../shared/ui/Form/SelectField';
 import { TextField } from '../../../../shared/ui/Form/TextField';
@@ -19,8 +20,7 @@ interface PieceDetailsFieldsProps {
 
 export function PieceDetailsFields({ values, errors, onChange }: PieceDetailsFieldsProps) {
   return (
-    <details className={styles.details}>
-      <summary className={styles.summary}>Plus de détails (facultatif)</summary>
+    <Disclosure summary="Plus de détails (facultatif)" className={styles.details}>
       <div className={styles.fields}>
         {values.status === OwnershipStatus.Owned && (
           <SelectField
@@ -79,6 +79,6 @@ export function PieceDetailsFields({ values, errors, onChange }: PieceDetailsFie
           onChange={(value) => onChange('productUrl', value)}
         />
       </div>
-    </details>
+    </Disclosure>
   );
 }

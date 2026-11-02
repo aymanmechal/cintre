@@ -1,29 +1,53 @@
 import type { Outfit } from '../../outfits/types/outfit';
+import { toIsoDate } from '../../wardrobe/utils/wornDates';
+import { DAYS_PER_WEEK } from '../constants/calendar';
 import type { WornEntry } from '../types/wornLog';
 
-const REPEAT_WINDOW_DAYS = 6;
-const MILLISECONDS_PER_DAY = 86_400_000;
-
-function daysBetween(firstIsoDate: string, secondIsoDate: string): number {
-  const gap = Date.parse(firstIsoDate) - Date.parse(secondIsoDate);
-  return Math.abs(Math.round(gap / MILLISECONDS_PER_DAY));
+export interface RepeatedPiece {
+  pieceId: number;
+  date: string;
 }
 
-function isNearbyOtherDay(entry: WornEntry, isoDate: string): boolean {
-  return entry.date !== isoDate && daysBetween(entry.date, isoDate) <= REPEAT_WINDOW_DAYS;
+function toWeekBounds(isoDate: string): { first: string; last: string } {
+  const day = new Date(`${isoDate}T00:00:00`);
+  const daysSinceMonday = (day.getDay() + DAYS_PER_WEEK - 1) % DAYS_PER_WEEK;
+  const monday = new Date(day.getFullYear(), day.getMonth(), day.getDate() - daysSinceMonday);
+  const sunday = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + 6);
+  return { first: toIsoDate(monday), last: toIsoDate(sunday) };
 }
 
-export function findRepeatedPieceIds(
+function collectWearDates(
+  entries: readonly WornEntry[],
+  outfits: readonly Outfit[],
+  isoDate: string,
+): Map<number, string> {
+  const { first, last } = toWeekBounds(isoDate);
+  const latestDateByPiece = new Map<number, string>();
+  entries
+    .filter((entry) => entry.date !== isoDate && entry.date >= first && entry.date <= last)
+    .forEach((entry) => {
+      const outfit = outfits.find((other) => other.id === entry.outfitId);
+      outfit?.pieceIds.forEach((pieceId) => {
+        const known = latestDateByPiece.get(pieceId);
+        if (known === undefined || entry.date > known) latestDateByPiece.set(pieceId, entry.date);
+      });
+    });
+  return latestDateByPiece;
+}
+
+export function formatWeekday(isoDate: string): string {
+  return new Date(`${isoDate}T00:00:00`).toLocaleDateString('fr-FR', { weekday: 'long' });
+}
+
+export function findRepeatedPieces(
   entries: readonly WornEntry[],
   outfits: readonly Outfit[],
   isoDate: string,
   outfit: Outfit,
-): number[] {
-  const nearbyOutfitIds = new Set(
-    entries.filter((entry) => isNearbyOtherDay(entry, isoDate)).map((entry) => entry.outfitId),
-  );
-  const nearbyPieceIds = new Set(
-    outfits.filter((other) => nearbyOutfitIds.has(other.id)).flatMap((other) => other.pieceIds),
-  );
-  return outfit.pieceIds.filter((pieceId) => nearbyPieceIds.has(pieceId));
+): RepeatedPiece[] {
+  const wearDates = collectWearDates(entries, outfits, isoDate);
+  return outfit.pieceIds.flatMap((pieceId) => {
+    const date = wearDates.get(pieceId);
+    return date === undefined ? [] : [{ pieceId, date }];
+  });
 }

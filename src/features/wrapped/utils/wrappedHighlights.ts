@@ -17,16 +17,16 @@ export function formatTimes(count: number): string {
 }
 
 export function buildWrappedHighlights(wrapped: Wrapped): WrappedHighlight[] {
-  const { topPiece, topClothing, topOutfit, topColor } = wrapped;
+  const { topPair, topClothing, topOutfit, topColor } = wrapped;
   return [
     { icon: '📅', label: 'jours avec une tenue notée', value: String(wrapped.wornDayCount) },
     {
-      icon: '🏆',
-      label: topPiece
-        ? `ta pièce numéro 1, portée ${formatTimes(topPiece.wearCount)}`
-        : 'ta pièce numéro 1',
-      value: topPiece?.item.piece.title ?? NOTHING,
-      to: topPiece ? buildEditPieceUrl(topPiece.item.piece.id) : undefined,
+      icon: '👟',
+      label: topPair
+        ? `ta paire la plus portée, ${formatTimes(topPair.wearCount)}`
+        : 'ta paire la plus portée',
+      value: topPair?.item.piece.title ?? NOTHING,
+      to: topPair ? buildEditPieceUrl(topPair.item.piece.id) : undefined,
     },
     {
       icon: '👕',

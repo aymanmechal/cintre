@@ -40,7 +40,7 @@ describe('buildWrapped', () => {
     const wrapped = buildWrapped(ITEMS, OUTFITS, ENTRIES, WrappedPeriod.Month, TODAY);
     expect(wrapped.wornDayCount).toBe(2);
     expect(wrapped.topOutfit).toMatchObject({ outfit: { name: 'Cosy' }, wearCount: 2 });
-    expect(wrapped.topPiece?.wearCount).toBe(2);
+    expect(wrapped.topClothing?.wearCount).toBe(2);
     expect(wrapped.forgottenCount).toBe(1);
     expect(wrapped.purchaseCount).toBe(1);
     expect(wrapped.spent).toBe(60);
@@ -49,20 +49,21 @@ describe('buildWrapped', () => {
   it('résume l’année entière sans le futur', () => {
     const wrapped = buildWrapped(ITEMS, OUTFITS, ENTRIES, WrappedPeriod.Year, TODAY);
     expect(wrapped.wornDayCount).toBe(3);
-    expect(wrapped.topPiece?.item.piece.title).toBe('Jean');
-    expect(wrapped.topPiece?.wearCount).toBe(3);
+    expect(wrapped.topClothing?.item.piece.title).toBe('Jean');
+    expect(wrapped.topClothing?.wearCount).toBe(3);
     expect(wrapped.topColor).toBe(PieceColor.Blue);
   });
 
   it('ne trouve rien quand rien n’est porté', () => {
     const wrapped = buildWrapped(ITEMS, OUTFITS, [], WrappedPeriod.Month, TODAY);
     expect(hasWornAnything(wrapped)).toBe(false);
-    expect(wrapped.topPiece).toBeNull();
+    expect(wrapped.topClothing).toBeNull();
+    expect(wrapped.topPair).toBeNull();
     expect(wrapped.topColor).toBeNull();
     expect(wrapped.forgottenCount).toBe(3);
   });
 
-  it('isole le vêtement le plus porté des chaussures', () => {
+  it('isole le vêtement et la paire les plus portés', () => {
     const items = [
       makeWardrobeItem({ id: 1, title: 'Baskets', pieceType: PieceType.Shoes }),
       makeWardrobeItem({ id: 2, title: 'Tee-shirt', pieceType: PieceType.Tops }),
@@ -81,7 +82,10 @@ describe('buildWrapped', () => {
       outfitId: outfit.id,
     }));
     const wrapped = buildWrapped(items, outfits, entries, WrappedPeriod.Month, TODAY);
-    expect(wrapped.topPiece?.item.piece.title).toBe('Baskets');
+    expect(wrapped.topPair).toMatchObject({
+      item: { piece: { title: 'Baskets' } },
+      wearCount: 4,
+    });
     expect(wrapped.topClothing).toMatchObject({
       item: { piece: { title: 'Tee-shirt' } },
       wearCount: 3,
@@ -93,7 +97,7 @@ describe('buildWrapped', () => {
     const outfits = [makeOutfit({ id: 'a', pieceIds: [1] })];
     const entries = [{ id: '1', date: '2026-03-10', outfitId: 'a' }];
     const wrapped = buildWrapped(items, outfits, entries, WrappedPeriod.Month, TODAY);
-    expect(wrapped.topPiece?.item.piece.title).toBe('Montre');
+    expect(wrapped.topPair).toBeNull();
     expect(wrapped.topClothing).toBeNull();
   });
 
@@ -107,6 +111,6 @@ describe('buildWrappedHighlights', () => {
   it('prépare les cartes à afficher', () => {
     const wrapped = buildWrapped(ITEMS, OUTFITS, ENTRIES, WrappedPeriod.Month, TODAY);
     const values = buildWrappedHighlights(wrapped).map((highlight) => highlight.value);
-    expect(values).toEqual(['2', 'Pull', 'Pull', 'Cosy', 'Rouge', '1', '1']);
+    expect(values).toEqual(['2', '—', 'Pull', 'Cosy', 'Rouge', '1', '1']);
   });
 });
