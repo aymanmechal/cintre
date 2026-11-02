@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { cutoutPhoto } from '../../../shared/photos/utils/cutoutPhoto';
 import { createPhotoId, loadPhoto, savePhoto } from '../../../shared/photos/utils/photoStore';
+import { readPhotoFromUrl } from '../../../shared/photos/utils/readPhotoFromUrl';
 import { recognizePhoto } from '../api/recognizeApi';
 import { BUSY_PHOTO_TOOL_STATUSES, PhotoToolStatus } from '../constants/photoTools';
 import type { PhotoRecognition } from '../types/photoRecognition';
 import { parsePhotoRecognition } from '../utils/photoRecognition';
 
 interface PhotoToolsOptions {
-  photoId: string;
+  photoId: string | null;
+  imageUrl: string;
   onPhotoChange: (photoId: string) => void;
   onRecognized: (recognition: PhotoRecognition) => void;
 }
@@ -19,7 +21,8 @@ export interface PhotoToolsState {
   recognize: () => void;
 }
 
-async function readPhoto(photoId: string): Promise<string> {
+async function readPhoto(photoId: string | null, imageUrl: string): Promise<string> {
+  if (photoId === null) return readPhotoFromUrl(imageUrl);
   const photo = await loadPhoto(photoId);
   if (photo === undefined) throw new Error('Photo introuvable');
   return photo;
@@ -27,6 +30,7 @@ async function readPhoto(photoId: string): Promise<string> {
 
 export function usePhotoTools({
   photoId,
+  imageUrl,
   onPhotoChange,
   onRecognized,
 }: PhotoToolsOptions): PhotoToolsState {
@@ -34,13 +38,15 @@ export function usePhotoTools({
 
   async function runCutout() {
     const cutoutId = createPhotoId();
-    await savePhoto(cutoutId, await cutoutPhoto(await readPhoto(photoId)));
+    await savePhoto(cutoutId, await cutoutPhoto(await readPhoto(photoId, imageUrl)));
     onPhotoChange(cutoutId);
     setStatus(PhotoToolStatus.Idle);
   }
 
   async function runRecognition() {
-    const recognition = parsePhotoRecognition(await recognizePhoto(await readPhoto(photoId)));
+    const recognition = parsePhotoRecognition(
+      await recognizePhoto(await readPhoto(photoId, imageUrl)),
+    );
     if (!recognition) throw new Error('Rien reconnu');
     onRecognized(recognition);
     setStatus(PhotoToolStatus.Recognized);

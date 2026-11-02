@@ -76,14 +76,16 @@ export function PhotoField({
             imageUrl={imageUrl.trim()}
             onCropped={onChange}
           />
-          {photoId && (
-            <PhotoTools
-              key={`tools-${photoId}`}
-              photoId={photoId}
-              onPhotoChange={onChange}
-              onRecognized={onRecognized}
-            />
-          )}
+          <PhotoTools
+            key={`tools-${photoId ?? imageUrl.trim()}`}
+            photoId={photoId}
+            imageUrl={imageUrl.trim()}
+            onPhotoChange={(newPhotoId) => {
+              onChange(newPhotoId);
+              onImageUrlChange('');
+            }}
+            onRecognized={onRecognized}
+          />
         </div>
       )}
     </div>

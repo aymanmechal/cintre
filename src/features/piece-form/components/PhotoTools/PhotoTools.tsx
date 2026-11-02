@@ -5,13 +5,14 @@ import type { PhotoRecognition } from '../../types/photoRecognition';
 import styles from './PhotoTools.module.css';
 
 interface PhotoToolsProps {
-  photoId: string;
+  photoId: string | null;
+  imageUrl: string;
   onPhotoChange: (photoId: string) => void;
   onRecognized: (recognition: PhotoRecognition) => void;
 }
 
-export function PhotoTools({ photoId, onPhotoChange, onRecognized }: PhotoToolsProps) {
-  const tools = usePhotoTools({ photoId, onPhotoChange, onRecognized });
+export function PhotoTools({ photoId, imageUrl, onPhotoChange, onRecognized }: PhotoToolsProps) {
+  const tools = usePhotoTools({ photoId, imageUrl, onPhotoChange, onRecognized });
   const isFailed = FAILED_PHOTO_TOOL_STATUSES.includes(tools.status);
 
   return (

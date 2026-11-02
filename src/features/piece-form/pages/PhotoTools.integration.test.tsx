@@ -33,6 +33,20 @@ describe('Outils photo', () => {
     expect(screen.queryByRole('button', { name: /Détourer/ })).not.toBeInTheDocument();
   });
 
+  it('détourent une photo donnée par un lien et retirent le lien', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => ({ ok: true, blob: async () => new Blob(['x'], { type: 'image/jpeg' }) })),
+    );
+    vi.mocked(cutoutPhoto).mockResolvedValue(CUTOUT);
+    const { user } = renderApp('/ajouter');
+    await user.type(screen.getByLabelText('Ou lien d’une photo'), 'https://site.fr/pull.jpg');
+    await user.click(screen.getByRole('button', { name: /Détourer/ }));
+    await waitFor(() => expect(cutoutPhoto).toHaveBeenCalledWith('data:image/jpeg;base64,eA=='));
+    await waitFor(() => expect(screen.getByLabelText('Ou lien d’une photo')).toHaveValue(''));
+    vi.unstubAllGlobals();
+  });
+
   it('remplissent le nom, le type et la couleur d’après la photo', async () => {
     vi.mocked(recognizePhoto).mockResolvedValue({
       title: 'Pull col roulé',
